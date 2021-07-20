@@ -26,12 +26,10 @@ export interface CommandActionContext {
     arguments: string[];
 }
 
-export type OptionType = 'boolean' | 'string';
-
 export interface Option {
     name: string;
     alias?: string;
-    type: OptionType;
+    flag: boolean;
     description: string;
     default?: string | boolean;
 }
