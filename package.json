@@ -1,8 +1,8 @@
 {
   "name": "biscut",
   "version": "1.0.0",
-  "description": "A simple CLI toolkit.",
-  "main": "index.js",
+  "description": "A simple CLI framework.",
+  "main": "dist/application.js",
   "scripts": {
     "clean": "rimraf dist",
     "build": "tsc",
