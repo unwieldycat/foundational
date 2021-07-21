@@ -8,3 +8,17 @@ export function deepFreeze<T>(object: T): Readonly<T> {
     }
     return Object.freeze(object);
 }
+
+export function matchAll(pattern: RegExp, string: string): Array<string>[] {
+    if (!pattern.global) pattern = new RegExp(pattern, 'g');
+
+    const matches = [];
+    let match;
+
+    do {
+        match = pattern.exec(string);
+        if (match) matches.push(match);
+    } while (match);
+
+    return matches;
+}
