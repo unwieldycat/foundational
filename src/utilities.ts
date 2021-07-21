@@ -9,7 +9,7 @@ export function deepFreeze<T>(object: T): Readonly<T> {
     return Object.freeze(object);
 }
 
-export function define<T>(target: T, key: string , value: unknown): void {
+export function define<T>(target: T, key: string, value: unknown): void {
     Object.defineProperty(target, key, {
         value: value,
         enumerable: true,
