@@ -1,10 +1,9 @@
 // =============== Interfaces =============== //
 
 export interface Application {
-    _commands: Command[];
-    _options: Option[];
     command: (command: Command) => void;
     globalOptions: (...options: Option[]) => void;
+    run: (input: string[]) => void;
 }
 
 export interface Command {
