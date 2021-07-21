@@ -7,7 +7,6 @@ import regexes from './regexes';
 // =============== Application =============== //
 
 export default function application(): Application {
-
     // ------------ Private Properties ------------ //
 
     const _commands: Command[] = [];
@@ -15,31 +14,32 @@ export default function application(): Application {
 
     // -------------- Input Parsing -------------- //
 
-    /**
-     * @access private
-     * @param input
-     */
-    const _parseArguments = (spec: string, exec: string[]): Record<string, unknown> => {
+    const _parseArguments = (spec: string, providedArgs: string[]): Record<string, unknown> => {
         const args = {};
 
-        const keys = spec.match(regexes.argParse);
+        const keys = matchAll(regexes.argParse, spec);
         if (!keys) return args;
 
-        const requiredKeys = keys[1].trim().split(' ');
-        const optionalKeys = keys[2];
+        for (const match of keys) {
+            const requiredKeys = match[1].trim().split(' ');
+            const optionalKey = match[2];
 
-        requiredKeys.forEach((key, index) => {
-            if (!exec[index]) throw new Error(`Missing argument: ${key}`);
-            define(args, key, exec[index]);
-        });
+            requiredKeys.forEach((key, index) => {
+                if (!providedArgs[index]) throw new Error(`Missing argument: ${key}`);
+                define(args, key, providedArgs[index]);
+            });
+
+            // requiredKeys.length is passed in because
+            // it's the last index of the array + 1
+            // (due to arrays starting at 0)
+            if (optionalKey && providedArgs[requiredKeys.length]) {
+                define(args, optionalKey, providedArgs[requiredKeys.length]);    
+            }  
+        }
 
         return args;
     };
 
-    /**
-     * @access private
-     * @param input
-     */
     const _parseOptions = (exec: string[]): Record<string, string> => {
         const options = {};
         const stringified = exec.join(' ');
@@ -60,15 +60,11 @@ export default function application(): Application {
 
     // ---------------- Validation ---------------- //
 
-    /**
-     * @access private
-     * @param command
-     */
     const _validateCommand = (command: Command): void => {
         if (_commands.find((e) => e.name === command.name)) {
             throw new Error(`Command ${command.name} already exists`);
         }
-        
+
         if (command.options) {
             _validateOptions(command.options);
             command.options.forEach((o) => {
@@ -83,10 +79,6 @@ export default function application(): Application {
         }
     };
 
-    /**
-     * @access private
-     * @param optionArray
-     */
     const _validateOptions = (optionArray: Option[]): void => {
         for (const option of optionArray) {
             if (!regexes.optionValidate.test(option.name)) {
