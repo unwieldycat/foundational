@@ -6,14 +6,12 @@ export interface Application {
     run: (input: string[]) => void;
 }
 
-export interface Command {
+export interface ApplicationSpec {
     name: string;
-    arguments?: string;
-    options?: Array<Option>;
-    action: (ctx: CommandActionContext) => unknown;
+    defaultHelpCommand?: boolean;
 }
 
-export interface CommandSpec {
+export interface Command {
     name: string;
     arguments?: string;
     options?: Array<Option>;
