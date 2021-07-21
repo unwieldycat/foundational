@@ -1,7 +1,8 @@
 // ================= Imports ================= //
 
 import { Application, Command, Option } from './interfaces';
-import { deepFreeze } from './utilities';
+import { deepFreeze, define, matchAll } from './utilities';
+import regexes from './regexes';
 
 // =============== Application =============== //
 
@@ -9,10 +10,7 @@ export default function application(): Application {
 
     // ------------ Private Properties ------------ //
 
-    /** @access private */
     const _commands: Command[] = [];
-
-    /** @access private */
     const _options: Option[] = [];
 
     // -------------- Input Parsing -------------- //
@@ -23,18 +21,18 @@ export default function application(): Application {
      */
     const _parseArguments = (spec: string, exec: string[]): Record<string, unknown> => {
         const args = {};
-        const specMatch = spec.match(/^((?:<\w*> ?)*)(\[\w*\])?$/gm);
-        if (specMatch) {
-            const requiredKeys = specMatch[1].replace(/[[\]<>]+/g, '').trim().split(' ');
-            requiredKeys.forEach((key, index) => {
-                if (!exec[index]) throw new Error(`Missing required argument: ${key}`);
-                Object.defineProperty(args, key, { value: exec[index] });
-            });
 
-            if (specMatch[2]) {
-                // stuff
-            }
-        }
+        const keys = spec.match(regexes.argParse);
+        if (!keys) return args;
+
+        const requiredKeys = keys[1].trim().split(' ');
+        const optionalKeys = keys[2];
+
+        requiredKeys.forEach((key, index) => {
+            if (!exec[index]) throw new Error(`Missing argument: ${key}`);
+            define(args, key, exec[index]);
+        });
+
         return args;
     };
 
@@ -42,24 +40,19 @@ export default function application(): Application {
      * @access private
      * @param input
      */
-    const _parseOptions = (input: string[]): Record<string, string> => {
+    const _parseOptions = (exec: string[]): Record<string, string> => {
         const options = {};
+        const stringified = exec.join(' ');
+        const regexMatch = matchAll(regexes.optionParse, stringified);
 
-        for (const arg of input) {
-            // im proud of this mean ass regex
-            const regexMatch = arg.match(/^(--?[\w-]*)([= ]?)((?:\w*|"[^"]*"))$/gm);
-            if (!regexMatch || regexMatch.length <= 0) continue;
-
-            const optionKey = regexMatch[1];
-            const optionValue = regexMatch[2];
-
+        for (const match of regexMatch) {
+            const optionKey = match[1];
+            const optionValue = match[2];
             const optionMeta = _options.find((e) => {
-                return e.name === optionKey || e.alias?.includes(optionKey);
+                return e.name === optionKey || e.alias === optionKey;
             });
 
-            Object.defineProperty(options, optionKey, {
-                value: optionMeta?.flag ? true : optionValue
-            });
+            if (optionMeta) define(options, optionKey, optionValue);
         }
 
         return options;
@@ -85,7 +78,7 @@ export default function application(): Application {
             });
         }
 
-        if (command.arguments && !/^((?:<\w*> ?)*)(\[\w*\])?$/gm.test(command.arguments)) {
+        if (command.arguments && !regexes.argValidate.test(command.arguments)) {
             throw new Error(`Arguments for command ${command.name} are formatted incorrectly`);
         }
     };
@@ -96,15 +89,13 @@ export default function application(): Application {
      */
     const _validateOptions = (optionArray: Option[]): void => {
         for (const option of optionArray) {
-            if (!/^--(\w*)$/.test(option.name)) {
+            if (!regexes.optionValidate.test(option.name)) {
                 throw new Error(`Option "${option.name}" has an incorrectly formatted name`);
             }
 
             if (!option.alias) continue;
-            for (const alias of option.alias) {
-                if (!/^-(\w)$/.test(alias)) {
-                    throw new Error(`Alias "${alias}" for option ${option.name} is formatted incorrectly`);
-                }
+            if (!regexes.aliasValidate.test(option.alias)) {
+                throw new Error(`Alias "${option.alias}" for option ${option.name} is formatted incorrectly`);
             }
         }
     };
@@ -137,15 +128,13 @@ export default function application(): Application {
      */
     const run = (input: string[] = process.argv): void => {
         const options = _parseOptions(input);
+        //const args = _parseArguments(input);
         console.log(options);
     };
 
     // -------------- Return Object -------------- //
 
     return deepFreeze({
-        _options,
-        _commands,
-        _parseOptions,
         command,
         globalOptions,
         run
