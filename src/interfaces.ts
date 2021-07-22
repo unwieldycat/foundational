@@ -7,7 +7,6 @@ export interface Application {
 }
 
 export interface ApplicationSpec {
-    name: string;
     defaultHelpCommand?: boolean;
 }
 
@@ -19,8 +18,8 @@ export interface Command {
 }
 
 export interface CommandActionContext {
-    options: Map<string, unknown>;
-    arguments: string[];
+    options: Record<string, string | boolean>;
+    arguments: Record<string, string>;
 }
 
 export interface Option {
