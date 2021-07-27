@@ -1,6 +1,6 @@
 // ================= Imports ================= //
 
-import { Application, ApplicationSpec, Command, Option } from './interfaces';
+import { Application, Command, Option } from './interfaces';
 import { deepFreeze, define, matchAll } from './utilities';
 import regexes from './regexes';
 
@@ -8,10 +8,9 @@ import regexes from './regexes';
 
 /**
  * Application constructor
- * @param {ApplicationSpec} config App configuration 
  * @returns {Application} Application object
  */
-export default function application(config: ApplicationSpec): Application {
+export default function application(): Application {
     // ------------ Private Properties ------------ //
 
     const _commands: Command[] = [];
@@ -101,8 +100,8 @@ export default function application(config: ApplicationSpec): Application {
 
     /**
      * Register a command
-     * @param { Command } command Command configuration
-     * @returns { void } void
+     * @param {Command} command Command configuration
+     * @returns {void} void
      */
     const command = (command: Command): void => {
         _validateCommand(command);
@@ -111,8 +110,8 @@ export default function application(config: ApplicationSpec): Application {
 
     /**
      * Specify global options
-     * @param { Option[] } options Command options/configuration
-     * @returns { void } void
+     * @param {Option[]} options Command options/configuration
+     * @returns {void} void
      */
     const globalOptions = (...options: Option[]): void => {
         _validateOptions(options);
@@ -121,7 +120,7 @@ export default function application(config: ApplicationSpec): Application {
 
     /**
      * Parse console input & run
-     * @param { string[] } [input=process.argv.splice(2)] User input
+     * @param {string[]} [input=process.argv.splice(2)] User input
      */
     const run = (input: string[] = process.argv.splice(2)): void => {
         const command = _commands.find((c) => c.name === input[0]);
