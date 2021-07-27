@@ -19,15 +19,16 @@ export function define<T>(target: T, key: string, value: unknown): void {
 }
 
 export function matchAll(pattern: RegExp, string: string): Array<string[]> {
-    if (!pattern.global) pattern = new RegExp(pattern, 'g');
+    if (!pattern.global) pattern = new RegExp(pattern, ['g', pattern.flags].join(''));
 
     const matches: Array<string[]> = [];
     let match;
 
-    while (match) {
+    do {
         match = pattern.exec(string);
+        console.log(match);
         if (match) matches.push([...match]);
-    }
+    } while (match);
 
     return matches;
 }
