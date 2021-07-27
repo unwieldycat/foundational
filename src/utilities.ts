@@ -18,16 +18,16 @@ export function define<T>(target: T, key: string, value: unknown): void {
     });
 }
 
-export function matchAll(pattern: RegExp, string: string): Array<string>[] {
+export function matchAll(pattern: RegExp, string: string): Array<string[]> {
     if (!pattern.global) pattern = new RegExp(pattern, 'g');
 
-    const matches = [];
+    const matches: Array<string[]> = [];
     let match;
 
-    do {
+    while (match) {
         match = pattern.exec(string);
-        if (match) matches.push(match);
-    } while (match);
+        if (match) matches.push([...match]);
+    }
 
     return matches;
 }
