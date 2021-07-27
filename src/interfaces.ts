@@ -3,11 +3,7 @@
 export interface Application {
     command: (command: Command) => void;
     globalOptions: (...options: Option[]) => void;
-    run: (input: string[]) => void;
-}
-
-export interface ApplicationSpec {
-    defaultHelpCommand?: boolean;
+    run: (input?: string[]) => void;
 }
 
 export interface Command {
