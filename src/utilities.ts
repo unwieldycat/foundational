@@ -10,6 +10,7 @@ export function deepFreeze<T>(object: T): Readonly<T> {
 }
 
 export function define<T>(target: T, key: string, value: unknown): void {
+    if (key === '__proto__') return;
     Object.defineProperty(target, key, {
         value: value,
         enumerable: true,
