@@ -25,19 +25,24 @@ export default function application(): Application {
         if (!keys) return args;
 
         for (const match of keys) {
-            const requiredKeys = match[1].trim().split(' ');
-            const optionalKey = match[2];
+            const required = match[1].trim().replace(/[<>]/g, '').split(' ');
+            const optional = match[2].replace(/[[\].]/g, '');
+            const variadic = match[2].includes('...');
 
-            requiredKeys.forEach((key, index) => {
+            required.forEach((key, index) => {
                 if (!providedArgs[index]) throw new Error(`Missing argument: ${key}`);
                 define(args, key, providedArgs[index]);
             });
 
-            // requiredKeys.length is passed in because
+            // required.length is passed in because
             // it's the last index of the array + 1
             // (due to arrays starting at 0)
-            if (optionalKey && providedArgs[requiredKeys.length]) {
-                define(args, optionalKey, providedArgs[requiredKeys.length]);
+            if (optional && providedArgs[required.length]) {
+                define(
+                    args,
+                    optional,
+                    variadic ? providedArgs.slice(required.length).join(' ') : providedArgs[required.length]
+                );
             }
         }
 
