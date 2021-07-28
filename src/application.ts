@@ -56,7 +56,7 @@ export default function application(): Application {
                 return e.name === optionKey || e.alias === optionKey;
             });
 
-            if (optionMeta) define(options, optionKey, optionValue);
+            if (optionMeta) define(options, optionKey, optionValue || optionMeta.default);
         }
 
         return options;
@@ -78,8 +78,14 @@ export default function application(): Application {
             });
         }
 
-        if (command.arguments && !regexes.argValidate.test(command.arguments)) {
-            throw new Error(`Arguments for command ${command.name} are formatted incorrectly`);
+        if (command.arguments) {
+            if (!regexes.argValidate.test(command.arguments)) {
+                throw new Error(`Arguments for command ${command.name} are formatted incorrectly`);
+            }
+
+            if (command.arguments.includes('__proto__')) {
+                throw new Error(`Arguments cannot be named "__proto__"`);
+            }
         }
     };
 
@@ -90,8 +96,13 @@ export default function application(): Application {
             }
 
             if (!option.alias) continue;
+
             if (!regexes.aliasValidate.test(option.alias)) {
                 throw new Error(`Alias "${option.alias}" for option ${option.name} is formatted incorrectly`);
+            }
+
+            if (option.name === '__proto__') {
+                throw new Error(`Option "${option.name}" has illegal name`);
             }
         }
     };
