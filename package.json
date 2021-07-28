@@ -6,7 +6,8 @@
   "scripts": {
     "clean": "rimraf dist",
     "build": "tsc",
-    "format": "prettier --write src/*.ts"
+    "format": "prettier --write src/*.ts",
+    "lint": "eslint src/**"
   },
   "author": "unwieldycat",
   "license": "WTFPL",
