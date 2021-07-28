@@ -26,7 +26,6 @@ export function matchAll(pattern: RegExp, string: string): Array<string[]> {
 
     do {
         match = pattern.exec(string);
-        console.log(match);
         if (match) matches.push([...match]);
     } while (match);
 
