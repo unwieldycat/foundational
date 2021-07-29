@@ -1,5 +1,5 @@
 {
-  "name": "biscut",
+  "name": "beryllium",
   "version": "1.0.0",
   "description": "A simple CLI framework.",
   "main": "dist/application.js",
@@ -12,10 +12,13 @@
   "author": "unwieldycat",
   "license": "WTFPL",
   "devDependencies": {
+    "@types/jest": "^26.0.24",
     "@types/node": "^16.3.1",
     "@typescript-eslint/eslint-plugin": "^4.28.2",
     "@typescript-eslint/parser": "^4.28.2",
     "eslint": "^7.30.0",
-    "prettier": "^2.3.2"
+    "jest": "^27.0.6",
+    "prettier": "^2.3.2",
+    "ts-jest": "^27.0.4"
   }
 }
