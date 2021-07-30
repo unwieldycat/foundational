@@ -56,7 +56,8 @@ export default function application(): Application {
 
         for (const match of regexMatch) {
             const optionKey = match[1];
-            const optionValue = match[2];
+            const optionValue = match[2].replace(/(^")|("$)/g, '');
+
             const optionMeta = _options.find((e) => {
                 return e.name === optionKey || e.alias === optionKey;
             });
