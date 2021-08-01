@@ -21,7 +21,7 @@ export interface CommandActionContext {
 export interface Option {
     name: string;
     alias?: string;
-    flag: boolean;
+    flag?: boolean;
     description: string;
     default?: string | boolean;
 }
