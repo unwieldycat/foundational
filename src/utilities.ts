@@ -21,6 +21,7 @@ export function define<T>(target: T, key: string, value: unknown): void {
 
 export function matchAll(pattern: RegExp, string: string): Array<string[]> {
     if (!pattern.global) pattern = new RegExp(pattern, ['g', pattern.flags].join(''));
+    if (string.length <= 0) return [];
 
     const matches: Array<string[]> = [];
     let match;
