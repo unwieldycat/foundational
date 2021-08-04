@@ -6,6 +6,11 @@ export interface Application {
     run: (input?: string[]) => void;
 }
 
+export interface ApplicationSpec {
+    name: string;
+    helpOption?: boolean;
+}
+
 export interface Command {
     name: string;
     arguments?: string;
