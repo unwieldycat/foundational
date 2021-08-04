@@ -3,7 +3,7 @@
 // ================= Regexes ================= //
 
 const regexes = {
-    optionParse: /(?<=\s|^)(--?\w[\w-]*)(?:[= ]?)(\w+|"[^"]+")?(?<! )/gm,
+    optionParse: /(?<=\s|^)(--\w[\w-]*|-\w)(?:[= ]+(\w+|"[^"]+"))?(?<! )/gm,
     optionValidate: /^--(\w+)$/,
     aliasValidate: /^-(\w)$/,
     argumentParse: /^((?:<\w*> ?)*)(\[\w*(?:\.\.\.)?\])?$/gm
