@@ -48,7 +48,7 @@ export function longestString(array: string[]): string {
     return array[index];
 }
 
-export function padTo(length: number, string: string, left?: boolean): string {
+export function padStringTo(string: string, length: number, left?: boolean): string {
     const whitespace = Array(length - string.length).join(' ');
     const padded = (left) ? whitespace + string : string + whitespace;
 
