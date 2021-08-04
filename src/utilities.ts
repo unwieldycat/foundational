@@ -33,3 +33,24 @@ export function matchAll(pattern: RegExp, string: string): Array<string[]> {
 
     return matches;
 }
+
+export function longestString(array: string[]): string {
+    let maxLength = 0;
+    let index = 0;
+
+    array.forEach((s, i) => {
+        if (s.length > maxLength) {
+            index = i;
+            maxLength = s.length;
+        }
+    });
+
+    return array[index];
+}
+
+export function padTo(length: number, string: string, left?: boolean): string {
+    const whitespace = Array(length - string.length).join(' ');
+    const padded = (left) ? whitespace + string : string + whitespace;
+
+    return padded;
+}
