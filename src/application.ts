@@ -1,7 +1,7 @@
 // ================= Imports ================= //
 
-import { Application, Command, Option } from './interfaces';
-import { deepFreeze, define, matchAll } from './utilities';
+import { Application, ApplicationSpec, Command, Option } from './interfaces';
+import { deepFreeze, define, maxLength, matchAll, padStringTo, removeFromArray } from './utilities';
 import regexes from './regexes';
 
 // =============== Application =============== //
@@ -10,8 +10,11 @@ import regexes from './regexes';
  * Application constructor
  * @returns {Application} Application object
  */
-export default function application(): Application {
+export default function application(spec: ApplicationSpec): Application {
     // ------------ Private Properties ------------ //
+
+    const _appName = spec.name;
+    const _helpOptionEnabled = spec.helpOption;
 
     const _commands: Command[] = [];
     const _options: Option[] = [];
@@ -21,48 +24,56 @@ export default function application(): Application {
     const _parseArguments = (spec: string, providedArgs: string[]): Record<string, string> => {
         const args = {};
 
-        const keys = matchAll(regexes.argumentParse, spec);
+        // matchAll() doesnt work here for some reason
+        const keys = spec.match(regexes.argumentParse);
         if (!keys) return args;
 
-        for (const match of keys) {
-            const required = match[1].trim().replace(/[<>]/g, '').split(' ');
-            const optional = match[2].replace(/[[\].]/g, '');
-            const variadic = match[2].includes('...');
+        const required = keys[1].trim().replace(/[<>]/g, '').split(' ');
+        const optional = keys[2].replace(/[[\].]/g, '');
+        const variadic = keys[2].includes('...');
 
-            required.forEach((key, index) => {
-                if (!providedArgs[index]) throw new Error(`Missing argument: ${key}`);
-                define(args, key, providedArgs[index]);
-            });
+        required.forEach((key, index) => {
+            if (!providedArgs[index]) throw new Error(`Missing argument: ${key}`);
+            define(args, key, providedArgs[index]);
+        });
 
-            // required.length is passed in because
-            // it's the last index of the array + 1
-            // (due to arrays starting at 0)
-            if (optional && providedArgs[required.length]) {
-                define(
-                    args,
-                    optional,
-                    variadic ? providedArgs.slice(required.length).join(' ') : providedArgs[required.length]
-                );
-            }
+        // required.length is passed in because
+        // it's the last index of the array + 1
+        // (due to arrays starting at 0)
+        if (optional && providedArgs[required.length]) {
+            define(
+                args,
+                optional,
+                variadic ? providedArgs.slice(required.length).join(' ') : providedArgs[required.length]
+            );
         }
 
         return args;
     };
 
-    const _parseOptions = (exec: string[]): Record<string, string> => {
+    const _parseOptions = (exec: string[], command?: Command): Record<string, string | boolean> => {
         const options = {};
         const stringified = exec.join(' ');
         const regexMatch = matchAll(regexes.optionParse, stringified);
 
         for (const match of regexMatch) {
             const optionKey = match[1];
-            const optionValue = match[2].replace(/(^")|("$)/g, '');
 
-            const optionMeta = _options.find((e) => {
+            // this is terrible but it works
+            const optionMeta = [...(command?.options || []), ..._options].find((e) => {
                 return e.name === optionKey || e.alias === optionKey;
             });
 
-            if (optionMeta) define(options, optionKey, optionValue || optionMeta.default);
+            if (!optionMeta) continue;
+
+            const optionValue = optionMeta.flag || (match[2] || '').replace(/(^")|("$)/g, '');
+
+            if (!optionValue) {
+                console.log('Options cannot have empty value');
+                process.exit(0);
+            }
+
+            if (optionMeta) define(options, optionMeta.name, optionValue || optionMeta.default);
         }
 
         return options;
@@ -113,6 +124,66 @@ export default function application(): Application {
         }
     };
 
+    // --------------- Help Option --------------- //
+
+    // this is a headache
+    const _help = (command?: Command) => {
+        const commandsList: string[] = [];
+        const optionsList: string[] = [];
+
+        if (!command) {
+            _commands.forEach((c: Command) => { 
+                commandsList.push(`${_appName} ${c.name} ${c.arguments}`.trim());
+            });
+
+            const commandsPadLength = maxLength(optionsList) + 4;
+
+            commandsList.forEach((s, i) => {
+                const commandName = s.split(' ')[0];
+                const commandMeta = _commands.find((c) => c.name === commandName);
+                commandsList[i] = padStringTo(s, commandsPadLength) + (commandMeta?.description || '');
+            });
+
+            _options.forEach((o: Option) => {
+                optionsList.push(`${o.name} ${o.alias}`);
+            });
+
+            const optionsPadLength = maxLength(optionsList) + 4;
+    
+            optionsList.forEach((s, i) => {
+                const optionName = s.split(' ')[0];
+                const optionMeta = _options.find((o) => o.name === optionName);
+                optionsList[i] = padStringTo(s, optionsPadLength) + (optionMeta?.description || '');
+            });
+        } else if (command) {
+            commandsList.push(`${_appName} ${command.name} ${command.arguments}  ${command.description}`.trim());
+
+            if (command.options) {
+                const commandOptions = command.options; // to avoid a TypeScript error
+
+                commandOptions.forEach((o: Option) => {
+                    optionsList.push(`${o.name} ${o.alias}`);
+                });
+
+                const padLength = maxLength(optionsList) + 4;
+        
+                optionsList.forEach((s, i) => {
+                    const optionName = s.split(' ')[0];
+                    const optionMeta = commandOptions.find((o) => o.name === optionName);
+                    optionsList[i] = padStringTo(s, padLength) + (optionMeta?.description || '');
+                });
+            }
+        }
+
+        console.log('Usage:\n\n' + commandsList.join('\n') + '\n\nOptions:\n\n' + optionsList.join('\n') + '\n');  
+    };
+
+    _options.push({
+        name: '--help',
+        flag: true,
+        description: 'Display help screen.'
+    });
+
     // -------------- Public Methods -------------- //
 
     /**
@@ -141,10 +212,18 @@ export default function application(): Application {
      */
     const run = (input: string[] = process.argv.splice(2)): void => {
         const command = _commands.find((c) => c.name === input[0]);
-        if (!command) throw new Error('Command not found');
+        if (!command) throw new Error('Command not found'); // temp
 
-        const options = _parseOptions(input);
-        const args = _parseArguments(command.arguments || '', input);
+        const options = _parseOptions(input, command);
+        const args = _parseArguments(
+            command.arguments || '',
+            removeFromArray(command ? input.slice(1) : input, regexes.optionParse)
+        );
+
+        if (options['--help'] && _helpOptionEnabled) {
+            _help(command);
+            process.exit(0);
+        }
 
         command.action({ arguments: args, options: options });
     };
