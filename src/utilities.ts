@@ -1,5 +1,7 @@
 // ============ Utility Functions ============ //
 
+import regexes from "./regexes";
+
 export function deepFreeze<T>(object: T): Readonly<T> {
     for (const key in object) {
         if (!object[key] && Object.isFrozen(object[key])) continue;
@@ -34,18 +36,14 @@ export function matchAll(pattern: RegExp, string: string): Array<string[]> {
     return matches;
 }
 
-export function longestString(array: string[]): string {
+export function maxLength(array: string[]): number {
     let maxLength = 0;
-    let index = 0;
 
     array.forEach((s, i) => {
-        if (s.length > maxLength) {
-            index = i;
-            maxLength = s.length;
-        }
+        if (s.length > maxLength) maxLength = s.length;
     });
 
-    return array[index];
+    return maxLength;
 }
 
 export function padStringTo(string: string, length: number, left?: boolean): string {
@@ -53,4 +51,16 @@ export function padStringTo(string: string, length: number, left?: boolean): str
     const padded = (left) ? whitespace + string : string + whitespace;
 
     return padded;
+}
+
+export function removeFromArray(array: string[], searchPattern: RegExp): string[] {
+    const newArray: string[] = [];
+
+    for (const s of array) {
+        // RegExp.test() is broken here for some reason
+        if (s.match(searchPattern)) continue;
+        newArray.push(s);
+    }
+
+    return newArray;
 }
