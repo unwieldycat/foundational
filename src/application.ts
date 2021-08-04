@@ -21,7 +21,7 @@ export default function application(): Application {
     const _parseArguments = (spec: string, providedArgs: string[]): Record<string, string> => {
         const args = {};
 
-        const keys = matchAll(regexes.argParse, spec);
+        const keys = matchAll(regexes.argumentParse, spec);
         if (!keys) return args;
 
         for (const match of keys) {
@@ -85,7 +85,7 @@ export default function application(): Application {
         }
 
         if (command.arguments) {
-            if (!regexes.argValidate.test(command.arguments)) {
+            if (!regexes.argumentParse.test(command.arguments)) {
                 throw new Error(`Arguments for command ${command.name} are formatted incorrectly`);
             }
 
