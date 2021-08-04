@@ -6,14 +6,14 @@ import regexes from '../src/regexes';
 // ============= Test Validators ============= //
 
 describe('test validation regexes', () => {
-    it('should validate proper option aliases', () => {
+    test('option alias validator', () => {
         expect(regexes.aliasValidate.test('-a')).toBe(true);
         expect(regexes.aliasValidate.test('-abc')).toBe(false);
         expect(regexes.aliasValidate.test('--abc')).toBe(false);
         expect(regexes.aliasValidate.test('-')).toBe(false);
     });
 
-    it('should validate proper option names', () => {
+    test('option name validator', () => {
         expect(regexes.optionValidate.test('--abc')).toBe(true);
         expect(regexes.optionValidate.test('-abc')).toBe(false);
         expect(regexes.optionValidate.test('-a')).toBe(false);
@@ -24,10 +24,9 @@ describe('test validation regexes', () => {
 // ============== Test Parsing ============== //
 
 describe('test parsing regexes', () => {
-    it('should parse valid options', () => {
+    test('option parsing', () => {
         const parse = (s: string): string[][] => matchAll(regexes.optionParse, s);
 
-        // im sorry if you're this basic
         expect(parse('-f pizza -f="pizza" --favorite-food pizza --favorite-food="pizza"'))
             .toStrictEqual([
                 ['-f pizza', '-f', 'pizza'],
@@ -35,7 +34,16 @@ describe('test parsing regexes', () => {
                 ['--favorite-food pizza', '--favorite-food', 'pizza'],
                 ['--favorite-food="pizza"', '--favorite-food', '"pizza"']
             ]);
+        
+        expect(parse('--- -- hi')).toStrictEqual([]);
+    });
 
-        expect(parse('---')).toStrictEqual([]);
+    test('the argument parser', () => {
+        const parse = (s: string): string[][] => matchAll(regexes.argumentParse, s);
+
+        expect(parse('<arg1> <arg2> [arg3...]'))
+            .toStrictEqual([
+                ['<arg1> <arg2> [arg3...]', '<arg1> <arg2> ', '[arg3...]']
+            ]);
     });
 });
