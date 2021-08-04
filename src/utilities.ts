@@ -1,7 +1,5 @@
 // ============ Utility Functions ============ //
 
-import regexes from "./regexes";
-
 export function deepFreeze<T>(object: T): Readonly<T> {
     for (const key in object) {
         if (!object[key] && Object.isFrozen(object[key])) continue;
@@ -39,7 +37,7 @@ export function matchAll(pattern: RegExp, string: string): Array<string[]> {
 export function maxLength(array: string[]): number {
     let maxLength = 0;
 
-    array.forEach((s, i) => {
+    array.forEach((s) => {
         if (s.length > maxLength) maxLength = s.length;
     });
 
