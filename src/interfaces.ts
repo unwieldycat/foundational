@@ -13,6 +13,7 @@ export interface ApplicationSpec {
 
 export interface Command {
     name: string;
+    description?: string;
     arguments?: string;
     options?: Array<Option>;
     action: (ctx: CommandActionContext) => unknown;
