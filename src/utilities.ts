@@ -46,7 +46,7 @@ export function maxLength(array: string[]): number {
 
 export function padStringTo(string: string, length: number, left?: boolean): string {
     const whitespace = Array(length - string.length).join(' ');
-    const padded = (left) ? whitespace + string : string + whitespace;
+    const padded = left ? whitespace + string : string + whitespace;
 
     return padded;
 }

@@ -130,7 +130,7 @@ export default function application(spec: ApplicationSpec): Application {
         const commandsList: string[] = [];
         const optionsList: string[] = [];
 
-        ((command) ? [command] : _commands).forEach((c: Command) => { 
+        (command ? [command] : _commands).forEach((c: Command) => {
             commandsList.push(`${_appName} ${c.name} ${c.arguments}`.trim());
         });
 
@@ -142,7 +142,7 @@ export default function application(spec: ApplicationSpec): Application {
             commandsList[i] = padStringTo(s, commandsPadLength) + (commandMeta?.description || '');
         });
 
-        ((command?.options) ? [...command.options, ..._options] : _options).forEach((o: Option) => {
+        (command?.options ? [...command.options, ..._options] : _options).forEach((o: Option) => {
             optionsList.push(`${o.name} ${o.alias}`);
         });
 
@@ -154,14 +154,16 @@ export default function application(spec: ApplicationSpec): Application {
             optionsList[i] = padStringTo(s, optionsPadLength) + (optionMeta?.description || '');
         });
 
-        console.log('Usage:\n\n' + commandsList.join('\n') + '\n\nOptions:\n\n' + optionsList.join('\n') + '\n');  
+        console.log('Usage:\n\n' + commandsList.join('\n') + '\n\nOptions:\n\n' + optionsList.join('\n') + '\n');
     };
-    
-    if (_helpOptionEnabled) _options.push({
-        name: '--help',
-        flag: true,
-        description: 'Display help menu.'
-    });
+
+    if (_helpOptionEnabled) {
+        _options.push({
+            name: '--help',
+            flag: true,
+            description: 'Display help menu.'
+        });
+    }
 
     // -------------- Public Methods -------------- //
 
