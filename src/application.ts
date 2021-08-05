@@ -126,62 +126,41 @@ export default function application(spec: ApplicationSpec): Application {
 
     // --------------- Help Option --------------- //
 
-    // this is a headache
     const _help = (command?: Command) => {
         const commandsList: string[] = [];
         const optionsList: string[] = [];
 
-        if (!command) {
-            _commands.forEach((c: Command) => { 
-                commandsList.push(`${_appName} ${c.name} ${c.arguments}`.trim());
-            });
+        ((command) ? [command] : _commands).forEach((c: Command) => { 
+            commandsList.push(`${_appName} ${c.name} ${c.arguments}`.trim());
+        });
 
-            const commandsPadLength = maxLength(optionsList) + 4;
+        const commandsPadLength = maxLength(optionsList) + 4;
 
-            commandsList.forEach((s, i) => {
-                const commandName = s.split(' ')[0];
-                const commandMeta = _commands.find((c) => c.name === commandName);
-                commandsList[i] = padStringTo(s, commandsPadLength) + (commandMeta?.description || '');
-            });
+        commandsList.forEach((s, i) => {
+            const commandName = s.split(' ')[0];
+            const commandMeta = _commands.find((c) => c.name === commandName);
+            commandsList[i] = padStringTo(s, commandsPadLength) + (commandMeta?.description || '');
+        });
 
-            _options.forEach((o: Option) => {
-                optionsList.push(`${o.name} ${o.alias}`);
-            });
+        ((command?.options) ? [...command.options, ..._options] : _options).forEach((o: Option) => {
+            optionsList.push(`${o.name} ${o.alias}`);
+        });
 
-            const optionsPadLength = maxLength(optionsList) + 4;
-    
-            optionsList.forEach((s, i) => {
-                const optionName = s.split(' ')[0];
-                const optionMeta = _options.find((o) => o.name === optionName);
-                optionsList[i] = padStringTo(s, optionsPadLength) + (optionMeta?.description || '');
-            });
-        } else if (command) {
-            commandsList.push(`${_appName} ${command.name} ${command.arguments}  ${command.description}`.trim());
+        const optionsPadLength = maxLength(optionsList) + 4;
 
-            if (command.options) {
-                const commandOptions = command.options; // to avoid a TypeScript error
-
-                commandOptions.forEach((o: Option) => {
-                    optionsList.push(`${o.name} ${o.alias}`);
-                });
-
-                const padLength = maxLength(optionsList) + 4;
-        
-                optionsList.forEach((s, i) => {
-                    const optionName = s.split(' ')[0];
-                    const optionMeta = commandOptions.find((o) => o.name === optionName);
-                    optionsList[i] = padStringTo(s, padLength) + (optionMeta?.description || '');
-                });
-            }
-        }
+        optionsList.forEach((s, i) => {
+            const optionName = s.split(' ')[0];
+            const optionMeta = _options.find((o) => o.name === optionName);
+            optionsList[i] = padStringTo(s, optionsPadLength) + (optionMeta?.description || '');
+        });
 
         console.log('Usage:\n\n' + commandsList.join('\n') + '\n\nOptions:\n\n' + optionsList.join('\n') + '\n');  
     };
-
-    _options.push({
+    
+    if (_helpOptionEnabled) _options.push({
         name: '--help',
         flag: true,
-        description: 'Display help screen.'
+        description: 'Display help menu.'
     });
 
     // -------------- Public Methods -------------- //
