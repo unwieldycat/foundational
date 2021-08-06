@@ -82,32 +82,25 @@ export default function application(spec: ApplicationSpec): Application {
     // ---------------- Validation ---------------- //
 
     const _validateCommand = (command: Command): void => {
-        if (_commands.find((e) => e.name === command.name)) {
-            throw new Error(`Command ${command.name} already exists`);
-        }
-
-        if (command.options) {
-            _validateOptions(command.options);
-            command.options.forEach((o) => {
-                if (_options.find((e) => e.name === o.name)) {
-                    throw new Error(`Option ${o.name} already exists in global options`);
-                }
-            });
-        }
+        if (command.name.length <= 0) throw new Error('Command names must be at least 1 character');
+        if (_commands.find((e) => e.name === command.name)) throw new Error(`Command ${command.name} already exists`);
+        if (command.options) _validateOptions(command.options);
 
         if (command.arguments) {
             if (!regexes.argumentParse.test(command.arguments)) {
                 throw new Error(`Arguments for command ${command.name} are formatted incorrectly`);
             }
 
-            if (command.arguments.includes('__proto__')) {
-                throw new Error(`Arguments cannot be named "__proto__"`);
-            }
+            if (command.arguments.includes('__proto__')) throw new Error(`Arguments cannot be named "__proto__"`);
         }
     };
 
     const _validateOptions = (optionArray: Option[]): void => {
         for (const option of optionArray) {
+            if (_options.find((e) => e.name === option.name)) {
+                throw new Error(`Option ${option.name} already exists in global options`);
+            }
+
             if (!regexes.optionValidate.test(option.name)) {
                 throw new Error(`Option "${option.name}" has an incorrectly formatted name`);
             }
