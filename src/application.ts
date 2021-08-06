@@ -82,8 +82,12 @@ export default function application(spec: ApplicationSpec): Application {
     // ---------------- Validation ---------------- //
 
     const _validateCommand = (command: Command): void => {
+        if (command.name.length === 0 && !command.default) {
+            throw new Error('Command names must have at least 1 character if not set to default');
+        }
+
         if (command.default && _commands.find((c) => c.default)) {
-            throw new Error(`There can only be one default command`);
+            throw new Error('There may only be one default command');
         }
 
         if (_commands.find((e) => e.name === command.name)) {
