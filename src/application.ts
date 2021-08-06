@@ -139,6 +139,7 @@ export default function application(spec: ApplicationSpec): Application {
         const optionsList: string[] = [];
 
         (command ? [command] : _commands).forEach((c: Command) => {
+            if (c.name.length <= 0) return;
             commandsList.push(`${_appName} ${c.name} ${c.arguments}`.trim());
         });
 
