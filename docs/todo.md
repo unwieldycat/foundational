@@ -5,4 +5,4 @@ List of features to have before release:
 - [x] Default option values
 - [x] Prevent prototype from being overwritten
 - [ ] Jest tests
-- [ ] Help generator / option
+- [x] Help generator / option
