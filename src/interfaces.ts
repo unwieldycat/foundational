@@ -14,7 +14,6 @@ export interface ApplicationSpec {
 export interface Command {
     name: string;
     description?: string;
-    default?: boolean;
     arguments?: string;
     options?: Array<Option>;
     action: (ctx: CommandActionContext) => unknown;
