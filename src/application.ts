@@ -186,7 +186,10 @@ export default function application(spec: ApplicationSpec): Application {
      */
     const run = (input: string[] = process.argv.splice(2)): void => {
         const command = _commands.find((c) => c.name === input[0]);
-        if (!command) return _help();
+        if (!command) {
+            if (_helpOptionEnabled) _help();
+            return;
+        }
 
         const options = _parseOptions(input, command);
         const args = _parseArguments(
