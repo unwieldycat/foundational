@@ -82,6 +82,10 @@ export default function application(spec: ApplicationSpec): Application {
     // ---------------- Validation ---------------- //
 
     const _validateCommand = (command: Command): void => {
+        if (command.default && _commands.find((c) => c.default)) {
+            throw new Error(`There can only be one default command`);
+        }
+
         if (_commands.find((e) => e.name === command.name)) {
             throw new Error(`Command ${command.name} already exists`);
         }
@@ -192,8 +196,8 @@ export default function application(spec: ApplicationSpec): Application {
      * @param {string[]} [input=process.argv.splice(2)] User input
      */
     const run = (input: string[] = process.argv.splice(2)): void => {
-        const command = _commands.find((c) => c.name === input[0]);
-        if (!command) throw new Error('Command not found'); // temp
+        const command = _commands.find((c) => c.name === input[0]) || _commands.find((c) => c.default);
+        if (!command) return _help();
 
         const options = _parseOptions(input, command);
         const args = _parseArguments(
