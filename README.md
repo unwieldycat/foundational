@@ -32,7 +32,7 @@ app.globalOptions(
         flag: true,
         description: 'Says yes to everything'
     }
-)
+);
 
 // Create a command
 app.command({
@@ -48,12 +48,7 @@ app.command({
     action: (ctx) => {
         // todo
     }
-})
+});
 
-// Run application with arguments passed in via
-// process.argv
-app.run(process.argv)
+app.run();
 ```
-
----
-[docs](docs/docs.md) | [contributing](docs/contributing.md) | [code of conduct](docs/code_of_conduct.md)
