@@ -2,13 +2,9 @@
 
 // ================= Regexes ================= //
 
-const regexes = {
+export default {
     optionParse: /(?<=\s|^)(--\w[\w-]*|-\w)(?:[= ]+(\w+|"[^"]+"))?(?<! )/gm,
     optionValidate: /^--(\w+)$/,
     aliasValidate: /^-(\w)$/,
     argumentParse: /^((?:<\w*> ?)+)(\[\w*(?:\.\.\.)?\])?$/m
 };
-
-// ================= Export ================= //
-
-export default regexes;
