@@ -45,5 +45,8 @@ describe('test parsing regexes', () => {
             .toStrictEqual([
                 ['<arg1> <arg2> [arg3...]', '<arg1> <arg2> ', '[arg3...]']
             ]);
+
+        expect(parse('<arg1> [arg2] <arg3>')).toStrictEqual([]);
+        expect(parse('<<>> [...hi...]')).toStrictEqual([]);
     });
 });
