@@ -1,6 +1,6 @@
 // ================= Import ================= //
 
-import { deepFreeze, define } from '../src/utilities';
+import { deepFreeze, define, matchAll } from '../src/utilities';
 
 // ============= Test deepFreeze ============= //
 
@@ -31,5 +31,18 @@ describe('test define function', () => {
         const testObj = {};
         define(testObj, '__proto__', {});
         expect(testObj).toStrictEqual({});
+    });
+});
+
+// ============== Test matchAll ============== //
+
+describe('test matchAll function', () => {
+    it('should return all matches and groups', () => {
+        expect(matchAll(/(a)(b)/g, 'abcabcabc')).toStrictEqual([['ab', 'a', 'b'], ['ab', 'a', 'b'], ['ab', 'a', 'b']]);
+    });
+
+    it('should avoid memory leaks', () => {
+        expect(matchAll(/(a)(b)/g, '')).toStrictEqual([]);
+        expect(matchAll(/(a)(b)/, 'abcabcabc')).toStrictEqual([['ab', 'a', 'b'], ['ab', 'a', 'b'], ['ab', 'a', 'b']]);
     });
 });
