@@ -8,10 +8,11 @@ import regexes from './regexes';
 
 /**
  * Application constructor
- * @returns {Application} Application object
+ * @param spec Application configuration
+ * @returns Application object
  */
 export default function application(spec: ApplicationSpec): Application {
-    // ------------ Private Properties ------------ //
+    // ------------ Private Variables ------------ //
 
     const _appName = spec.name;
     const _helpOptionEnabled = spec.helpOption;
@@ -158,12 +159,12 @@ export default function application(spec: ApplicationSpec): Application {
         });
     }
 
-    // -------------- Public Methods -------------- //
+    // ------------- Public Functions ------------- //
 
     /**
      * Register a command
-     * @param {Command} command Command configuration
-     * @returns {void} void
+     * @param command Command configuration
+     * @returns void
      */
     const command = (command: Command): void => {
         _validateCommand(command);
@@ -171,9 +172,9 @@ export default function application(spec: ApplicationSpec): Application {
     };
 
     /**
-     * Specify global options
-     * @param {Option[]} options Command options/configuration
-     * @returns {void} void
+     * Specify global options to be used for all commands
+     * @param options Command options
+     * @returns void
      */
     const globalOptions = (...options: Option[]): void => {
         _validateOptions(options);
@@ -182,7 +183,8 @@ export default function application(spec: ApplicationSpec): Application {
 
     /**
      * Parse console input & run
-     * @param {string[]} [input=process.argv.splice(2)] User input
+     * @param input User input
+     * @returns void
      */
     const run = (input: string[] = process.argv.splice(2)): void => {
         const command = _commands.find((c) => c.name === input[0]);
