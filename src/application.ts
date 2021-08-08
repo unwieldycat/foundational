@@ -52,7 +52,7 @@ export default function application(spec: ApplicationSpec): Application {
         return args;
     };
 
-    const _parseOptions = (exec: string[], command?: Command): Record<string, string | boolean> => {
+    const _parseOptions = (exec: string[], commandOptions?: Option[]): Record<string, string | boolean> => {
         const options = {};
         const stringified = exec.join(' ');
         const regexMatch = matchAll(regexes.optionParse, stringified);
@@ -61,7 +61,7 @@ export default function application(spec: ApplicationSpec): Application {
             const optionKey = match[1];
 
             // this is terrible but it works
-            const optionMeta = [...(command?.options || []), ..._options].find((e) => {
+            const optionMeta = [...(commandOptions || []), ..._options].find((e) => {
                 return e.name === optionKey || e.alias === optionKey;
             });
 
@@ -193,7 +193,7 @@ export default function application(spec: ApplicationSpec): Application {
             return;
         }
 
-        const options = _parseOptions(input, command);
+        const options = _parseOptions(input, command.options);
         const args = _parseArguments(
             command.arguments || '',
             removeFromArray(command ? input.slice(1) : input, regexes.optionParse)
