@@ -46,3 +46,5 @@ describe('test matchAll function', () => {
         expect(matchAll(/(a)(b)/, 'abcabcabc')).toStrictEqual([['ab', 'a', 'b'], ['ab', 'a', 'b'], ['ab', 'a', 'b']]);
     });
 });
+
+/** @todo Add more test coverage */
