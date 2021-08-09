@@ -14,7 +14,6 @@ import regexes from './regexes';
 export default function application(spec: ApplicationSpec): Application {
     // ------------ Private Variables ------------ //
 
-    const _appName = spec.name;
     const _helpOptionEnabled = spec.helpOption;
 
     const _commands: Command[] = [];
@@ -125,7 +124,7 @@ export default function application(spec: ApplicationSpec): Application {
         const optionsList: string[] = [];
 
         (command ? [command] : _commands).forEach((c: Command) => {
-            commandsList.push(`${_appName} ${c.name} ${c.arguments}`.trim());
+            commandsList.push(`${c.name} ${c.arguments}`.trim());
         });
 
         const commandsPadLength = maxLength(optionsList) + 4;

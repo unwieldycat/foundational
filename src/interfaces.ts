@@ -7,7 +7,6 @@ export interface Application {
 }
 
 export interface ApplicationSpec {
-    name: string;
     helpOption?: boolean;
 }
 
