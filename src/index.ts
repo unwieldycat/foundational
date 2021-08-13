@@ -124,7 +124,7 @@ export default function application(spec: ApplicationSpec): Application {
         const optionsList: string[] = [];
 
         (command ? [command] : _commands).forEach((c: Command) => {
-            commandsList.push(`${c.name} ${c.arguments}`.trim());
+            commandsList.push(`${c.name} ${c.arguments || ''}`.trim());
         });
 
         const commandsPadLength = maxLength(optionsList) + 4;
@@ -136,7 +136,7 @@ export default function application(spec: ApplicationSpec): Application {
         });
 
         (command?.options ? [...command.options, ..._options] : _options).forEach((o: Option) => {
-            optionsList.push(`${o.name} ${o.alias}`);
+            optionsList.push(`${o.name} ${o.alias || ''}`.trim());
         });
 
         const optionsPadLength = maxLength(optionsList) + 4;
