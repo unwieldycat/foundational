@@ -2,7 +2,7 @@
   "name": "beryllium",
   "version": "1.0.0-dev",
   "description": "A simple CLI framework.",
-  "main": "dist/application.js",
+  "main": "dist/index.js",
   "scripts": {
     "clean": "rimraf dist",
     "build": "npm run clean && npm run lint && npm test && tsc || echo \"Build halted: Tests or lint failed\"",
