@@ -65,7 +65,7 @@ describe('padStringTo function', () => {
 
 describe('removeFromArray function', () => {
     it('should remove all instances of a string from an array', () => {
-        expect(removeFromArray(['STEVE', 'STEVE', 'STEVE!!!!'], /STEVE/)).toBe([]);
-        expect(removeFromArray(['123', '456', '789'], /1/)).toBe(['456', '789']);
+        expect(removeFromArray(['STEVE', 'STEVE', 'STEVE!!!!'], /STEVE/)).toStrictEqual([]);
+        expect(removeFromArray(['123', '456', '789'], /1/)).toStrictEqual(['456', '789']);
     });
 });
