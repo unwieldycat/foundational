@@ -5,9 +5,9 @@
   "main": "dist/application.js",
   "scripts": {
     "clean": "rimraf dist",
-    "build": "npm run clean && npm test && tsc || echo \"Did not build: One or more tests did not pass\"",
+    "build": "npm run clean && npm run lint && npm test && tsc || echo \"Build halted: Tests or lint failed\"",
     "format": "prettier --write src/*.ts",
-    "lint": "eslint src/**",
+    "lint": "eslint src/** tests/**",
     "test": "jest"
   },
   "author": "unwieldycat",
