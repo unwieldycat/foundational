@@ -1,6 +1,6 @@
 // ================= Import ================= //
 
-import { deepFreeze, define, matchAll, maxLength } from '../src/utilities';
+import { deepFreeze, define, matchAll, maxLength, padStringTo } from '../src/utilities';
 
 // ============= Test deepFreeze ============= //
 
@@ -53,5 +53,20 @@ describe('test maxLength function', () => {
     it('should return the length of the longest string', () => {
         expect(maxLength(['123', '12345'])).toBe(5);
         expect(maxLength([''])).toBe(0);
+    });
+});
+
+// ============ Test padStringTo ============ //
+
+describe('test padStringTo function', () => {
+    it('should pad a string to a desired length', () => {
+        expect(padStringTo('hi', 3)).toStrictEqual('hi ');
+        expect(padStringTo('hi', 3, true)).toStrictEqual(' hi');
+    });
+
+    it('should silently reject numbers lower than string length', () => {
+        expect(padStringTo('hi', 0)).toStrictEqual('hi');
+        expect(padStringTo('hi', 1)).toStrictEqual('hi');
+        expect(padStringTo('hi', 2)).toStrictEqual('hi');
     });
 });
