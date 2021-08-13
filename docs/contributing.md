@@ -77,3 +77,8 @@ The following guidelines should be met when writing code for this project:
 - Keep large or frequently used regexes in `regexes.ts`
 - Avoid `let` variables if you're not going to change it's value
 - Don't add production dependencies
+
+## Questions
+If you have a question or would like to discuss something about the project, visit the discussions tab!
+
+We kindly ask you follow our [Code of Conduct](./CODE_OF_CONDUCT.md) when partaking in discussions.
