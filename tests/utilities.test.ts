@@ -4,7 +4,7 @@ import { deepFreeze, define, matchAll, maxLength, padStringTo, removeFromArray }
 
 // ========= Test Utility Functions ========= //
 
-describe('test deepFreeze function', () => {
+describe('deepFreeze function', () => {
     it('should freeze nested arrays', () => {
         const testObj = deepFreeze({ a: [1, 2, 3, [4, 5]] });
         expect(Object.isFrozen(testObj)).toBe(true);
@@ -18,7 +18,7 @@ describe('test deepFreeze function', () => {
     });
 });
 
-describe('test define function', () => {
+describe('define function', () => {
     it('should add properties to an object', () => {
         const testObj = {};
         define(testObj, 'a', true);
@@ -32,7 +32,7 @@ describe('test define function', () => {
     });
 });
 
-describe('test matchAll function', () => {
+describe('matchAll function', () => {
     it('should return all matches and groups', () => {
         expect(matchAll(/(a)(b)/g, 'abcabcabc')).toStrictEqual([['ab', 'a', 'b'], ['ab', 'a', 'b'], ['ab', 'a', 'b']]);
     });
@@ -43,14 +43,14 @@ describe('test matchAll function', () => {
     });
 });
 
-describe('test maxLength function', () => {
+describe('maxLength function', () => {
     it('should return the length of the longest string', () => {
         expect(maxLength(['123', '12345'])).toBe(5);
         expect(maxLength([''])).toBe(0);
     });
 });
 
-describe('test padStringTo function', () => {
+describe('padStringTo function', () => {
     it('should pad a string to a desired length', () => {
         expect(padStringTo('hi', 3)).toStrictEqual('hi ');
         expect(padStringTo('hi', 3, true)).toStrictEqual(' hi');
@@ -63,7 +63,7 @@ describe('test padStringTo function', () => {
     });
 });
 
-describe('test removeFromArray function', () => {
+describe('removeFromArray function', () => {
     it('should remove all instances of a string from an array', () => {
         expect(removeFromArray(['STEVE', 'STEVE', 'STEVE!!!!'], /STEVE/)).toBe([]);
         expect(removeFromArray(['123', '456', '789'], /1/)).toBe(['456', '789']);
