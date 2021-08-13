@@ -127,7 +127,7 @@ export default function application(spec: ApplicationSpec): Application {
             commandsList.push(`${c.name} ${c.arguments || ''}`.trim());
         });
 
-        const commandsPadLength = maxLength(optionsList) + 4;
+        const commandsPadLength = maxLength(commandsList) + 2;
 
         commandsList.forEach((s, i) => {
             const commandName = s.split(' ')[0];
@@ -139,7 +139,7 @@ export default function application(spec: ApplicationSpec): Application {
             optionsList.push(`${o.name} ${o.alias || ''}`.trim());
         });
 
-        const optionsPadLength = maxLength(optionsList) + 4;
+        const optionsPadLength = maxLength(optionsList) + 2;
 
         optionsList.forEach((s, i) => {
             const optionName = s.split(' ')[0];
