@@ -1,5 +1,5 @@
 # Contributing
-Hello! Thanks for wanting to contribute. The following document will describe how to contribute, and what guidelines must be followed.
+Hello! Thanks a lot for wanting to contribute. The following document will describe how to contribute, and what guidelines must be followed.
 
 ## Table Of Contents
 [Issues](#issues)
