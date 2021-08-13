@@ -49,7 +49,7 @@ export function padStringTo(string: string, length: number, left?: boolean): str
 
     const whitespace = Array(length - string.length)
         .fill(' ')
-        .join();
+        .join('');
     const padded = left ? whitespace + string : string + whitespace;
 
     return padded;
