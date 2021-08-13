@@ -1,6 +1,6 @@
 // ================= Import ================= //
 
-import { deepFreeze, define, matchAll } from '../src/utilities';
+import { deepFreeze, define, matchAll, maxLength } from '../src/utilities';
 
 // ============= Test deepFreeze ============= //
 
@@ -47,4 +47,11 @@ describe('test matchAll function', () => {
     });
 });
 
-/** @todo Add more test coverage */
+// ============= Test maxLength ============= //
+
+describe('test maxLength function', () => {
+    it('should return the length of the longest string', () => {
+        expect(maxLength(['123', '12345'])).toBe(5);
+        expect(maxLength([''])).toBe(0);
+    });
+});
