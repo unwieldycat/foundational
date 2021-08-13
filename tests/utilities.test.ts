@@ -1,6 +1,6 @@
 // ================= Import ================= //
 
-import { deepFreeze, define, matchAll, maxLength, padStringTo } from '../src/utilities';
+import { deepFreeze, define, matchAll, maxLength, padStringTo, removeFromArray } from '../src/utilities';
 
 // ========= Test Utility Functions ========= //
 
@@ -60,5 +60,12 @@ describe('test padStringTo function', () => {
         expect(padStringTo('hi', 0)).toStrictEqual('hi');
         expect(padStringTo('hi', 1)).toStrictEqual('hi');
         expect(padStringTo('hi', 2)).toStrictEqual('hi');
+    });
+});
+
+describe('test removeFromArray function', () => {
+    it('should remove all instances of a string from an array', () => {
+        expect(removeFromArray(['STEVE', 'STEVE', 'STEVE!!!!'], /STEVE/)).toBe([]);
+        expect(removeFromArray(['123', '456', '789'], /1/)).toBe(['456', '789']);
     });
 });
