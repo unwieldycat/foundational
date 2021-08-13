@@ -147,7 +147,9 @@ export default function application(spec: ApplicationSpec): Application {
             optionsList[i] = padStringTo(s, optionsPadLength) + (optionMeta?.description || '');
         });
 
-        console.log(`Usage:\n\n    ${commandsList.join('\n    ')}\n\nOptions:\n\n    ${optionsList.join('\n    ')}\n`);
+        console.log(
+            `Commands:\n\n    ${commandsList.join('\n    ')}\n\nOptions:\n\n    ${optionsList.join('\n    ')}\n`
+        );
     };
 
     if (_helpOptionEnabled) {
