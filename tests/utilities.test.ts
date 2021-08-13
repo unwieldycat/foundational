@@ -2,7 +2,7 @@
 
 import { deepFreeze, define, matchAll, maxLength, padStringTo } from '../src/utilities';
 
-// ============= Test deepFreeze ============= //
+// ========= Test Utility Functions ========= //
 
 describe('test deepFreeze function', () => {
     it('should freeze nested arrays', () => {
@@ -18,8 +18,6 @@ describe('test deepFreeze function', () => {
     });
 });
 
-// =============== Test define =============== //
-
 describe('test define function', () => {
     it('should add properties to an object', () => {
         const testObj = {};
@@ -34,8 +32,6 @@ describe('test define function', () => {
     });
 });
 
-// ============== Test matchAll ============== //
-
 describe('test matchAll function', () => {
     it('should return all matches and groups', () => {
         expect(matchAll(/(a)(b)/g, 'abcabcabc')).toStrictEqual([['ab', 'a', 'b'], ['ab', 'a', 'b'], ['ab', 'a', 'b']]);
@@ -47,16 +43,12 @@ describe('test matchAll function', () => {
     });
 });
 
-// ============= Test maxLength ============= //
-
 describe('test maxLength function', () => {
     it('should return the length of the longest string', () => {
         expect(maxLength(['123', '12345'])).toBe(5);
         expect(maxLength([''])).toBe(0);
     });
 });
-
-// ============ Test padStringTo ============ //
 
 describe('test padStringTo function', () => {
     it('should pad a string to a desired length', () => {

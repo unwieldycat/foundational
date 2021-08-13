@@ -3,7 +3,7 @@
 import { matchAll } from '../src/utilities';
 import regexes from '../src/regexes';
 
-// ============= Test Validators ============= //
+// ============== Test Regexes ============== //
 
 describe('test validation regexes', () => {
     test('option alias validator', () => {
@@ -20,8 +20,6 @@ describe('test validation regexes', () => {
         expect(regexes.optionValidate.test('--')).toBe(false);
     });
 });
-
-// ============== Test Parsing ============== //
 
 describe('test parsing regexes', () => {
     test('option parsing', () => {
