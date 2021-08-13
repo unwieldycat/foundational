@@ -2,14 +2,13 @@
 Hello! Thanks a lot for wanting to contribute. The following document will describe how to contribute, and what guidelines must be followed.
 
 ## Table Of Contents
-[Issues](#issues)
-- [Bug Reports](#bug-reports)
-- [Feature Suggestions](#feature-suggestions)
-
-[Pull Requests](#pull-requests)
-- [Code Style & Guidelines](#code-guidelines)
-
-[Questions](#questions)
+- [Issues](#issues)
+  - [Bug Reports](#bug-reports)
+  - [Feature Suggestions](#feature-suggestions)
+- [Pull Requests](#pull-requests)
+  - [Format](#format)
+  - [Code Style & Guidelines](#code-guidelines)
+- [Questions](#questions)
 
 ## Issues
 Issues must be descriptive and must thoroughly outline the problem/idea being presented.
@@ -23,11 +22,13 @@ Bug reports must follow the following format:
 
 <!-- Additional details here (Optional) -->
 
-### Description
-<!-- A thorough description of the bug -->
+### Details
+**Severity:** <!-- Low, Medium, or High -->
+**Description:** 
+<!-- A thorough description of the bug or vunerability -->
 
 ### Steps to reproduce
-<!-- A list or code example on how to reproduce the bug -->
+<!-- A list and/or code example on how to reproduce the bug -->
 ```
 In the steps-to-reproduce field, please try to include a code example as well as the inputs necessary to recreate the bug.
 
