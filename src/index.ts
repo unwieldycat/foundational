@@ -25,7 +25,6 @@ export default function application(spec: ApplicationSpec): Application {
     const _parseArguments = (spec: string, providedArgs: string[]): Record<string, string> => {
         const args = {};
 
-        // matchAll() doesnt work here for some reason
         const keys = spec.match(regexes.argumentParse);
         if (!keys) return args;
 
