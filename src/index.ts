@@ -68,18 +68,15 @@ export default function application(spec: ApplicationSpec): Application {
                 ...(commandOptions.flags || []),
                 ..._options,
                 ..._flags
-            ].find(
-                (e) => {
-                    return e.name === optionKey || e.alias === optionKey;
-                }
-            );
+            ].find((e) => {
+                return e.name === optionKey || e.alias === optionKey;
+            });
 
             if (!optionMeta) continue;
             const isFlag = Object.hasOwnProperty.call(optionMeta, 'default');
 
             /* @ts-ignore - tsc is stupid */
             const defaultValue = isFlag ? false : optionMeta.default;
-
             const optionValue = isFlag || (match[2] || '').replace(/(^")|("$)/g, '');
 
             define(options, optionMeta.name, optionValue || defaultValue);
