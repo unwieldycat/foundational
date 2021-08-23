@@ -15,6 +15,7 @@ export interface Command {
     description?: string;
     arguments?: string;
     options?: Array<Option>;
+    flags?: Array<Flag>;
     action: (ctx: CommandActionContext) => unknown;
 }
 
@@ -26,7 +27,12 @@ export interface CommandActionContext {
 export interface Option {
     name: string;
     alias?: string;
-    flag?: boolean;
     description: string;
     default?: string | boolean;
+}
+
+export interface Flag {
+    name: string;
+    alias?: string;
+    description?: string;
 }
