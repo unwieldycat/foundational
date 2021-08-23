@@ -83,11 +83,6 @@ export default function application(spec: ApplicationSpec): Application {
 
             const optionValue = isFlag || (match[2] || '').replace(/(^")|("$)/g, '');
 
-            if (!optionValue) {
-                console.log('Options cannot have an empty value');
-                process.exit(0);
-            }
-
             define(options, optionMeta.name, optionValue || defaultValue);
         }
 
