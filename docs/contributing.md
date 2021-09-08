@@ -1,84 +1,22 @@
 # Contributing
 Hello! Thanks a lot for wanting to contribute. The following document will describe how to contribute, and what guidelines must be followed.
 
-## Table Of Contents
-- [Issues](#issues)
-  - [Bug Reports](#bug-reports)
-  - [Feature Suggestions](#feature-suggestions)
-- [Pull Requests](#pull-requests)
-  - [Format](#format)
-  - [Code Style & Guidelines](#code-guidelines)
-- [Questions](#questions)
-
 ## Issues
-Issues must be descriptive and must thoroughly outline the problem/idea being presented.
+**Before creating an issue, check to see if a similar issue has already been submitted.** If a duplicate issue is created then it will be marked as duplicate and closed. When creating an issue, thoroughly describe the problem or idea being presented for clarity.
 
-### Bug Reports
-Bug reports must follow the following format:
-```markdown
-### Environment Details
-**Node:** <!-- Node Version -->
-**OS:** <!-- OS name/version -->
-
-<!-- Additional details here (Optional) -->
-
-### Details
-**Severity:** <!-- Low, Medium, or High -->
-**Description:** 
-<!-- A thorough description of the bug or vunerability -->
-
-### Steps to reproduce
-<!-- A list and/or code example on how to reproduce the bug -->
-```
-In the steps-to-reproduce field, please try to include a code example as well as the inputs necessary to recreate the bug.
-
-### Feature Suggestions
-A feature suggestion, as the name describes, suggests the addition of a new feature, or adding to an existing feature.
-
-Feature suggestions must follow the format:
-```markdown
-### Problem
-<!-- Describe the problem the feature solves -->
-
-### Description
-<!-- A thorough description of the proposed feature and it's functionality -->
-
-### Use Case
-<!-- A use case for the proposed feature -->
-```
-Please try to be as detailed as possible in your feature suggestion so it's understood properly.
-
-### Enhancement Suggestions
-An enhancement suggestion proposes the modification of an existing feature, system, or document. Enhancement suggestions, unlike feature suggestions, don't propose a new feature (or an extension to a feature).
-
-Enhancement suggestions must follow the format:
-```markdown
-### Description
-<!-- A description of the proposed enhancement, and why it's beneficial -->
-```
+Issue templates may be found when creating an issue. If you have any questions then feel free to submit a question issue!
 
 ## Pull Requests
 todo
 
-### Format
-```markdown
-### Description
-<!-- A description of what the PR changes -->
-```
-
 ### Code Guidelines
 The following guidelines should be met when writing code for this project:
 
-- Variables must have clear names
-- Use tabs, not spaces
+- Variables must have clear and understandable names
+- Use tabs for indenting
 - Avoid using legacy features such as the `var` keyword
 - Follow [Crockford Classless](https://gist.github.com/mpj/17d8d73275bca303e8d2)
 - Don't modify prototypes
 - Keep large or frequently used regexes in `regexes.ts`
 - Avoid `let` variables if you're not going to change it's value
-- Don't add production dependencies
-
-## Questions
-If you have a question or would like to discuss something about the project, visit the discussions tab!
-
-We kindly ask you follow our [Code of Conduct](./CODE_OF_CONDUCT.md) when partaking in discussions.
+- Don't add production dependencies, this is a 0 dependency project
