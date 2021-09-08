@@ -3,6 +3,8 @@
 import { deepFreeze, define, maxLength, matchAll, padStringTo, removeFromArray } from './utilities';
 import { Application, ApplicationSpec, Command, Flag, Option } from './interfaces';
 import regexes from './regexes';
+import path from 'path';
+import fs from 'fs';
 
 // =============== Application =============== //
 
@@ -184,6 +186,22 @@ export default function application(spec: ApplicationSpec): Application {
     };
 
     /**
+     * Register a directory of command files
+     * @param dirPath Directory path
+     * @returns void
+     */
+    const commandDir = (dirPath: string) => {
+        const files = fs.readdirSync(path.resolve(dirPath), { encoding: 'utf8', withFileTypes: true });
+        files.forEach(async (entity) => {
+            if (!entity.isFile()) return;
+            const filePath = path.resolve(dirPath, entity.name);
+            const fileExport = await import(filePath);
+            // TODO: Check if default export is a command object
+            command(fileExport);
+        });
+    };
+
+    /**
      * Specify global options to be used for all commands
      * @param options Command options
      * @returns void
@@ -237,6 +255,7 @@ export default function application(spec: ApplicationSpec): Application {
 
     return deepFreeze({
         command,
+        commandDir,
         globalOptions,
         globalFlags,
         run
