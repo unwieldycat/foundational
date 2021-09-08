@@ -213,7 +213,7 @@ export default function application(spec: ApplicationSpec): Application {
 
     /**
      * Specify global flags to be used for all commands
-     * @param options Command options
+     * @param flags Command flags
      * @returns void
      */
     const globalFlags = (...flags: Flag[]): void => {
