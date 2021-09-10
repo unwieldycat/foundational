@@ -2,7 +2,9 @@
 
 export interface Application {
     command: (command: Command) => void;
+    commandDir: (dirPath: string) => void;
     globalOptions: (...options: Option[]) => void;
+    globalFlags: (...flags: Flag[]) => void;
     run: (input?: string[]) => void;
 }
 
