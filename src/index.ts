@@ -117,7 +117,9 @@ export default function application(spec: ApplicationSpec): Application {
             if (!option.alias) continue;
 
             if (_options.find((e) => e.alias === option.alias) || _flags.find((e) => e.alias === option.alias)) {
-                throw new Error(`Option ${option.name} already exists in global options`);
+                throw new Error(
+                    `Option ${option.name} already exists in global options, or it's alias is already in use`
+                );
             }
 
             if (!regexes.aliasValidate.test(option.alias)) {
