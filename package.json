@@ -1,5 +1,5 @@
 {
-  "name": "beryllium",
+  "name": "foundational",
   "version": "1.0.0-dev",
   "description": "A simple CLI framework.",
   "main": "dist/index.js",
