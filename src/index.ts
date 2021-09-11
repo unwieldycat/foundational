@@ -13,7 +13,7 @@ import fs from 'fs';
  * @param spec Application configuration
  * @returns Application object
  */
-export default function application(spec: ApplicationSpec): Application {
+export function application(spec: ApplicationSpec): Application {
     // ------------ Private Variables ------------ //
 
     const _helpOptionEnabled = spec.helpOption;
