@@ -1,13 +1,6 @@
 # foundational
-Foundational is a simple CLI app framework for node that aims to be simple, readable, and lightweight.
+Foundational is a simple CLI app framework for Node that aims to be simple, readable, and lightweight. Currently it only supports multi-command CLIs like Git.
 
-## Example
-```javascript
-import { application } from 'foundational';
-
-const app = application();
-```
-<!-- TODO: Example -->
-
-## Usage
-<!-- TODO: Documentation -->
+**[[docs]]('./docs/USAGE.md')**
+**[[contributing]]('./docs/DOCS.md')**
+**[[licence]]('./LICENCE')**
