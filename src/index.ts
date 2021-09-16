@@ -53,7 +53,10 @@ export function application(spec: ApplicationSpec): Application {
         return args;
     };
 
-    const _parseOptions = (exec: string[], commandOptions: Array<Option | Flag>): Record<string, string | boolean> => {
+    const _parseOptions = (
+        exec: string[],
+        commandOptions: { flags?: Flag[]; options?: Option[] }
+    ): Record<string, string | boolean> => {
         const options = {};
         const stringified = exec.join(' ');
         const regexMatch = matchAll(regexes.optionParse, stringified);
@@ -61,12 +64,17 @@ export function application(spec: ApplicationSpec): Application {
         for (const match of regexMatch) {
             const optionKey = match[1];
 
-            const optionMeta = [...commandOptions, ..._options, ..._flags].find((e) => {
+            const optionMeta = [
+                ...(commandOptions.flags || []),
+                ...(commandOptions.options || []),
+                ..._options,
+                ..._flags
+            ].find((e) => {
                 return e.name === optionKey || e.alias === optionKey;
             });
 
             if (!optionMeta) continue;
-            const isFlag = !Object.hasOwnProperty.call(optionMeta, 'default');
+            const isFlag = commandOptions.flags?.includes(optionMeta);
 
             /* @ts-ignore - tsc is stupid */
             const defaultValue = isFlag ? false : optionMeta.default;
@@ -226,7 +234,10 @@ export function application(spec: ApplicationSpec): Application {
             return;
         }
 
-        const options = _parseOptions(input, [...(command.options || []), ...(command.flags || [])]);
+        const options = _parseOptions(input, {
+            options: command.options,
+            flags: command.flags
+        });
 
         const args = _parseArguments(
             command.arguments || '',
