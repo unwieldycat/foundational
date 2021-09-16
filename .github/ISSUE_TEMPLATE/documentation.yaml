@@ -1,0 +1,17 @@
+name: Documentation
+description: Suggest a change in the documentation.
+assignees: 
+  - unweildycat
+labels: docs
+title: '[Docs]:'
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: Reason for the change to be made.
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: Description of what to change.
