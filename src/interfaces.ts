@@ -9,7 +9,7 @@ export interface Application {
 }
 
 export interface ApplicationSpec {
-    helpOption?: boolean;
+    disableHelpOption?: boolean;
 }
 
 export interface Command {

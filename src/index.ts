@@ -16,7 +16,7 @@ import fs from 'fs';
 export function application(spec: ApplicationSpec): Application {
     // ------------ Private Variables ------------ //
 
-    const _helpOptionEnabled = spec.helpOption;
+    const _helpOptionEnabled = !spec.disableHelpOption;
 
     const _commands: Command[] = [];
     const _options: Option[] = [];
