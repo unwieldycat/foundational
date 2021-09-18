@@ -176,21 +176,11 @@ export function application(spec: ApplicationSpec): Application {
 
     // ------------- Public Functions ------------- //
 
-    /**
-     * Register a command
-     * @param command Command configuration
-     * @returns void
-     */
     const command = (command: Command): void => {
         _validateCommand(command);
         _commands.push(command);
     };
 
-    /**
-     * Register a directory of command files
-     * @param dirPath Directory path
-     * @returns void
-     */
     const commandDir = (dirPath: string) => {
         const files = fs.readdirSync(path.resolve(dirPath), { encoding: 'utf8', withFileTypes: true });
         files.forEach(async (entity) => {
@@ -202,31 +192,16 @@ export function application(spec: ApplicationSpec): Application {
         });
     };
 
-    /**
-     * Specify global options to be used for all commands
-     * @param options Command options
-     * @returns void
-     */
     const globalOptions = (...options: Option[]): void => {
         _validateOptions(options);
         options.forEach((e) => _options.push(e));
     };
 
-    /**
-     * Specify global flags to be used for all commands
-     * @param flags Command flags
-     * @returns void
-     */
     const globalFlags = (...flags: Flag[]): void => {
         _validateOptions(flags);
         flags.forEach((e) => _flags.push(e));
     };
 
-    /**
-     * Parse console input & run
-     * @param input User input
-     * @returns void
-     */
     const run = (input: string[] = process.argv.splice(2)): void => {
         const command = _commands.find((c) => c.name === input[0]);
         if (!command) {

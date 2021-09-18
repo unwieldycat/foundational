@@ -1,10 +1,39 @@
 // =============== Interfaces =============== //
 
 export interface Application {
+    /**
+     * Register a command
+     * @param command Command configuration
+     * @returns void
+     */
     command: (command: Command) => void;
+
+    /**
+     * Register a directory of command files
+     * @param dirPath Directory path
+     * @returns void
+     */
     commandDir: (dirPath: string) => void;
+
+    /**
+     * Specify global options to be used for all commands
+     * @param options Command options
+     * @returns void
+     */
     globalOptions: (...options: Option[]) => void;
+
+    /**
+     * Specify global flags to be used for all commands
+     * @param flags Command flags
+     * @returns void
+     */
     globalFlags: (...flags: Flag[]) => void;
+
+    /**
+     * Parse console input & run
+     * @param input User input
+     * @returns void
+     */
     run: (input?: string[]) => void;
 }
 
