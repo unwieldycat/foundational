@@ -181,17 +181,6 @@ export function application(spec: ApplicationSpec): Application {
         _commands.push(command);
     };
 
-    const commandDir = (dirPath: string) => {
-        const files = fs.readdirSync(path.resolve(dirPath), { encoding: 'utf8', withFileTypes: true });
-        files.forEach(async (entity) => {
-            if (!entity.isFile()) return;
-            const filePath = path.resolve(dirPath, entity.name);
-            const fileExport = await import(filePath);
-            // TODO: Check if default export is a command object
-            command(fileExport);
-        });
-    };
-
     const globalOptions = (...options: Option[]): void => {
         _validateOptions(options);
         options.forEach((e) => _options.push(e));
@@ -231,7 +220,6 @@ export function application(spec: ApplicationSpec): Application {
 
     return deepFreeze({
         command,
-        commandDir,
         globalOptions,
         globalFlags,
         run

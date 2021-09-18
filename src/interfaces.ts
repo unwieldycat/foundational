@@ -9,13 +9,6 @@ export interface Application {
     command: (command: Command) => void;
 
     /**
-     * Register a directory of command files
-     * @param dirPath Directory path
-     * @returns void
-     */
-    commandDir: (dirPath: string) => void;
-
-    /**
      * Specify global options to be used for all commands
      * @param options Command options
      * @returns void
