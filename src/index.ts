@@ -11,7 +11,7 @@ import regexes from './regexes';
  * @param spec Application configuration
  * @returns Application object
  */
-export function application(spec: ApplicationSpec): Application {
+export function application(spec?: ApplicationSpec): Application {
     // ------------ Private Variables ------------ //
 
     const _helpOptionEnabled = !spec?.disableHelpOption;
