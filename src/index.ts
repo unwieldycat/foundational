@@ -1,7 +1,7 @@
 // ================= Imports ================= //
 
 import { deepFreeze, define, maxLength, matchAll, padStringTo, removeFromArray } from './utilities';
-import { Application, ApplicationSpec, Command, Flag, Option } from './interfaces';
+import { Application, ApplicationSpec, Command, Flag, Option } from './types';
 import regexes from './regexes';
 
 // =============== Application =============== //
