@@ -9,6 +9,13 @@ export interface Application {
     command: (command: Command) => void;
 
     /**
+     * Register multiple commands
+     * @param commands Commands to register
+     * @returns void
+     */
+    commands: (...commands: Command[]) => void;
+
+    /**
      * Specify global options to be used for all commands
      * @param options Command options
      * @returns void
@@ -87,7 +94,7 @@ export interface Flag {
 
     /** Alias of option in proper format (i.e. -f) */
     alias?: string;
-    
+
     /** Description that shows up in help menu */
     description?: string;
 }

@@ -179,6 +179,12 @@ export function application(spec?: ApplicationSpec): Application {
         _commands.push(command);
     };
 
+    const commands = (...commands: Command[]): void => {
+        commands.forEach((c) => {
+            command(c);
+        });
+    };
+
     const globalOptions = (...options: Option[]): void => {
         _validateOptions(options);
         options.forEach((e) => _options.push(e));
@@ -218,6 +224,7 @@ export function application(spec?: ApplicationSpec): Application {
 
     return deepFreeze({
         command,
+        commands,
         globalOptions,
         globalFlags,
         run
