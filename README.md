@@ -66,12 +66,22 @@ app.run();
 <!-- WIP -->
 
 ## Application Object
-The `application()` constructor function returns the application object. The application object exposes the functions necessary to build a CLI application. Due to not being written with classes, none of the internal functions or variables are exposed.
+The `application()` constructor function returns the application object. The application object exposes the functions necessary to build a CLI application.
 
 <!-- WIP -->
 
 ## Commands
-Commands may be declared with the `Application.command()` function, 
+Commands may be declared one at a time with the `Application.command()` function, or all at once with the `Application.commands()` function.
+
+### Arguments
+Command arguments are one way for users to provide input specific to a command. Command arguments in foundational must be specified in a string inside of the command object. 
+
+Arguments must be declared in a string like so:
+```
+<argument1> <argument2> [argument3...]
+```
+
+Argument names wrapped in pointy brackets are required, whereas square bracketed argument names make an argument optional. Additionally, adding three dots in the end of the last argument makes it variadic.
 
 ## Options & Flags
 Options are ways a user can provide additional optional input to alter the behavior of a CLI app. Options have a specified value, whereas a flag has a boolean value. 
