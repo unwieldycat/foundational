@@ -66,12 +66,69 @@ app.run();
 <!-- WIP -->
 
 ## Application Object
-The `application()` constructor function returns the application object. The application object exposes a few functions to add commands and options.
+The `application()` constructor function returns the application object. The application object exposes the functions necessary to build a CLI application. Due to not being written with classes, none of the internal functions or variables are exposed.
 
 <!-- WIP -->
 
-## Options
-<!-- WIP -->
+## Commands
+Commands may be declared with the `Application.command()` function, 
 
-## API Reference
-<!-- WIP -->
+## Options & Flags
+Options are ways a user can provide additional optional input to alter the behavior of a CLI app. Options have a specified value, whereas a flag has a boolean value. 
+
+In runtime, options can be written in various ways. For example, the following are all valid ways for a user to specify an option: `--option="Option Value"`, `--option value`, `-o=value`, `-o value`, etc.
+
+
+Flags, on the other hand, are written without a specified value, like so: `--flag` (or `-f` if the alias exists)
+
+### Creating an Option
+To create an option, specify it in the command object or in the `Application.globalOptions()` function. The names and aliases must be formatted as if it were being used in the CLI.
+
+**Specifying a global option & flag**
+
+```javascript
+// Assuming app is the result of application()
+
+app.globalOptions(
+    {
+        name: '--cool-option',
+        alias: '-c',
+        description: 'A very cool global option'
+    }
+);
+
+app.globalFlags(
+    {
+        name: '--cool-flag',
+        alias: '-f',
+        description: 'A very cool global flag'
+    }
+)
+```
+
+**Specifying a command option & flag**
+
+```javascript
+// Assuming app is the result of application()
+
+app.command({
+    name: 'example',
+    options: [
+        {
+            name: '--cool-option',
+            alias: '-c',
+            description: 'A very cool command option'
+        }
+    ],
+    flags: [
+        {
+            name: '--cool-flag',
+            alias: '-f',
+            description: 'A very cool global flag'
+        }
+    ],
+    action: (ctx) => {
+        // ...
+    }
+})
+```
