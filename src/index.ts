@@ -28,8 +28,13 @@ export function application(spec?: ApplicationSpec): Application {
         const keys = spec.match(regexes.argumentParse);
         if (!keys) return args;
 
-        const required = keys[1].trim().replace(/[<>]/g, '').split(' ');
-        const lastIsOptional = keys[2].match(/[[\]]/g);
+        const required = (() => {
+            const s = keys[1].trim().replace(/[<>]/g, '');
+            const a = (s.length > 0) ? s.split(' '): [];
+            return a;
+        })();
+
+        const lastIsOptional = /[[\]]/g.test(keys[2]);
         const last = keys[2].replace(/[[\]<>.]/g, '');
         const variadic = keys[2].includes('...');
 
@@ -38,9 +43,9 @@ export function application(spec?: ApplicationSpec): Application {
             define(args, key, providedArgs[index]);
         });
 
-        // required.length is passed in because
-        // it's the last index of the array + 1
-        // (due to arrays starting at 0)
+        // required.length is passed in down here 
+        // because it's the last index of the 
+        // array + 1
 
         if (last) {
             if (providedArgs[required.length]) {
