@@ -81,7 +81,7 @@ Arguments must be declared in a string like so:
 <argument1> <argument2> [argument3...]
 ```
 
-Argument names wrapped in pointy brackets are required, whereas square bracketed argument names make an argument optional. Additionally, adding three dots in the end of the last argument makes it variadic.
+Argument names wrapped in pointy brackets are required, whereas square bracketed argument names make an argument optional. Additionally, adding three dots in the end of the last argument makes it variadic. Only the last argument may be variadic and/or optional.
 
 ## Options & Flags
 Options are ways a user can provide additional optional input to alter the behavior of a CLI app. Options have a specified value, whereas a flag has a boolean value. 
