@@ -6,5 +6,5 @@ export default {
     optionParse: /(?<=\s|^)(--\w[\w-]*|-\w)(?:[= ]+(\w+|"[^"]+"))?(?<! )/gm,
     optionValidate: /^--(\w[\w-]+)$/,
     aliasValidate: /^-(\w)$/,
-    argumentParse: /^((?:<\w+> ?)+)(?:(\[\w+(?:\.\.\.)?\])|(<\w+(?:\.\.\.)?>))?$/
+    argumentParse: /^((?:<\w+> ?)+)((?:\[\w+(?:\.\.\.)?\])|(?:<\w+(?:\.\.\.)?>))?$/
 };
