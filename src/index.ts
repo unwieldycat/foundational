@@ -29,7 +29,8 @@ export function application(spec?: ApplicationSpec): Application {
         if (!keys) return args;
 
         const required = keys[1].trim().replace(/[<>]/g, '').split(' ');
-        const optional = keys[2].replace(/[[\].]/g, '');
+        const lastIsOptional = keys[2].match(/[[\]]/g);
+        const last = keys[2].replace(/[[\]<>.]/g, '');
         const variadic = keys[2].includes('...');
 
         required.forEach((key, index) => {
@@ -40,12 +41,17 @@ export function application(spec?: ApplicationSpec): Application {
         // required.length is passed in because
         // it's the last index of the array + 1
         // (due to arrays starting at 0)
-        if (optional && providedArgs[required.length]) {
-            define(
-                args,
-                optional,
-                variadic ? providedArgs.slice(required.length).join(' ') : providedArgs[required.length]
-            );
+
+        if (last) {
+            if (providedArgs[required.length]) {
+                define(
+                    args,
+                    last,
+                    variadic ? providedArgs.slice(required.length).join(' ') : providedArgs[required.length]
+                );
+            } else if (!lastIsOptional) {
+                throw new Error(`Missing argument: ${last}`);
+            }
         }
 
         return args;
