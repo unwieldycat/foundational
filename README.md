@@ -134,7 +134,7 @@ app.command({
         {
             name: '--cool-flag',
             alias: '-f',
-            description: 'A very cool global flag'
+            description: 'A very cool command flag'
         }
     ],
     action: (ctx) => {
