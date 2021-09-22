@@ -97,7 +97,7 @@ To create an option, specify it in the command object or in the `Application.glo
 **Specifying a global option & flag**
 
 ```javascript
-// Assuming app is the result of application()
+const app = application();
 
 app.globalOptions(
     {
@@ -119,7 +119,7 @@ app.globalFlags(
 **Specifying a command option & flag**
 
 ```javascript
-// Assuming app is the result of application()
+const app = application();
 
 app.command({
     name: 'example',
