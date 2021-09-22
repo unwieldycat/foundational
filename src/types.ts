@@ -1,47 +1,50 @@
 // =============== Interfaces =============== //
 
+/** Object of functions used to build the CLI */
 export interface Application {
     /**
      * Register a command
-     * @param command Command configuration
+     * @param command - Command configuration
      * @returns void
      */
     command: (command: Command) => void;
 
     /**
      * Register multiple commands
-     * @param commands Commands to register
+     * @param commands - Commands to register
      * @returns void
      */
     commands: (...commands: Command[]) => void;
 
     /**
      * Specify global options to be used for all commands
-     * @param options Command options
+     * @param options - Command options
      * @returns void
      */
     globalOptions: (...options: Option[]) => void;
 
     /**
      * Specify global flags to be used for all commands
-     * @param flags Command flags
+     * @param flags - Command flags
      * @returns void
      */
     globalFlags: (...flags: Flag[]) => void;
 
     /**
      * Parse console input & run
-     * @param input User input
+     * @param input - User input
      * @returns void
      */
     run: (input?: string[]) => void;
 }
 
+/** Application configuration */
 export interface ApplicationSpec {
     /** Disable the help option */
     disableHelpOption?: boolean;
 }
 
+/** Command object */
 export interface Command {
     /** Name of command */
     name: string;
@@ -60,12 +63,13 @@ export interface Command {
 
     /**
      * The command's functionality
-     * @param ctx Object of command arguments and options specified by the user
+     * @param ctx - Object of command arguments and options specified by the user
      * @returns unknown
      */
     action: (ctx: CommandActionContext) => unknown;
 }
 
+/** Arguments & options from the CLI input */
 export interface CommandActionContext {
     /** Options and flags specified by the user */
     options: Record<string, string | boolean>;
@@ -74,11 +78,12 @@ export interface CommandActionContext {
     arguments: Record<string, string>;
 }
 
+/** Option object */
 export interface Option {
-    /** Name of option in proper format (i.e. --option-name) */
+    /** Name of option in proper format (ex: --option-name) */
     name: string;
 
-    /** Alias of option in proper format (i.e. -o) */
+    /** Alias of option in proper format (ex: -o) */
     alias?: string;
 
     /** Description that appears in help menu */
@@ -88,11 +93,12 @@ export interface Option {
     default?: string | boolean;
 }
 
+/** Flag object */
 export interface Flag {
-    /** Name of flag in proper format (i.e. --flag-name) */
+    /** Name of flag in proper format (ex: --flag-name) */
     name: string;
 
-    /** Alias of option in proper format (i.e. -f) */
+    /** Alias of option in proper format (ex: -f) */
     alias?: string;
 
     /** Description that shows up in help menu */
