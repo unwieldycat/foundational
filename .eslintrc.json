@@ -13,9 +13,11 @@
         "sourceType": "module"
     },
     "plugins": [
-        "@typescript-eslint"
+        "@typescript-eslint",
+        "eslint-plugin-tsdoc"
     ],
     "rules": {
+        "tsdoc/syntax": "warn",
         "semi":"warn",
         "@typescript-eslint/member-delimiter-style": ["warn", {
             "multiline": {
