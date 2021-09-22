@@ -25,7 +25,7 @@ app.globalOptions(
         description: 'Specify a resolution for the image (format: 1920x1080, 1024x768, etc.)',
         alias: '-r'
     }
-)
+);
 
 app.command({
     name: 'dog-picture',
@@ -113,7 +113,7 @@ app.globalFlags(
         alias: '-f',
         description: 'A very cool global flag'
     }
-)
+);
 ```
 
 **Specifying a command option & flag**
@@ -140,5 +140,5 @@ app.command({
     action: (ctx) => {
         // ...
     }
-})
+});
 ```
