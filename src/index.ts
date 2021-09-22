@@ -8,7 +8,7 @@ import regexes from './regexes';
 
 /**
  * Application constructor
- * @param spec Application configuration
+ * @param spec - Application configuration
  * @returns Application object
  */
 export function application(spec?: ApplicationSpec): Application {
