@@ -4,10 +4,12 @@
   "description": "A simple CLI framework.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist/**"],
+  "files": [
+    "dist/**"
+  ],
   "scripts": {
     "clean": "rimraf dist",
-    "build": "npm run clean && npm run lint && npm test && tsc || echo \"Build halted: Tests or lint failed\"",
+    "build": "npm run clean && npm run lint && npm test && tsc && typedoc || echo \"Build halted: Tests or lint failed\"",
     "format": "prettier --write src/*.ts",
     "lint": "eslint src/** tests/**",
     "test": "jest"
