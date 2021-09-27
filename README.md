@@ -30,11 +30,12 @@ app.globalOptions(
 app.command({
     name: 'dog-picture',
     description: 'Fetch a picture of a dog',
-    flags: [
+    options: [
         {
             name: '--puppy',
             description: 'Find a picture of a puppy',
-            alias: '-p'
+            alias: '-p',
+            flag: true
         }
     ],
     action: (ctx) => {
@@ -47,11 +48,12 @@ app.command({
 app.command({
     name: 'cat-picture',
     description: 'Fetch a picture of a cat',
-    flags: [
+    options: [
         {
             name: '--kitten',
             description: 'Find a picture of a kitten',
-            alias: '-k'
+            alias: '-k',
+            flag: true
         }
     ],
     action: (ctx) => {
@@ -104,14 +106,12 @@ app.globalOptions(
         name: '--cool-option',
         alias: '-c',
         description: 'A very cool global option'
-    }
-);
-
-app.globalFlags(
+    },
     {
         name: '--cool-flag',
         alias: '-f',
-        description: 'A very cool global flag'
+        description: 'A very cool global flag',
+        flag: true
     }
 );
 ```
@@ -128,13 +128,12 @@ app.command({
             name: '--cool-option',
             alias: '-c',
             description: 'A very cool command option'
-        }
-    ],
-    flags: [
+        },
         {
             name: '--cool-flag',
             alias: '-f',
-            description: 'A very cool command flag'
+            description: 'A very cool command flag',
+            flag: true
         }
     ],
     action: (ctx) => {
