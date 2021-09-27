@@ -1,7 +1,7 @@
 // ================= Imports ================= //
 
 import { deepFreeze, define, maxLength, matchAll, padStringTo, removeFromArray } from './utilities';
-import { Application, ApplicationSpec, Command, Flag, Option } from './types';
+import { Application, ApplicationSpec, Command, Option } from './types';
 import regexes from './regexes';
 
 // =============== Application =============== //
@@ -18,7 +18,6 @@ export function application(spec?: ApplicationSpec): Application {
 
     const _commands: Command[] = [];
     const _options: Option[] = [];
-    const _flags: Flag[] = [];
 
     // -------------- Input Parsing -------------- //
 
@@ -64,7 +63,7 @@ export function application(spec?: ApplicationSpec): Application {
 
     const _parseOptions = (
         exec: string[],
-        commandOptions: { flags?: Flag[]; options?: Option[] }
+        commandOptions: Option[]
     ): Record<string, string | boolean> => {
         const options = {};
         const stringified = exec.join(' ');
@@ -73,21 +72,15 @@ export function application(spec?: ApplicationSpec): Application {
         for (const match of regexMatch) {
             const optionKey = match[1];
 
-            const optionMeta = [
-                ...(commandOptions.flags || []),
-                ...(commandOptions.options || []),
-                ..._options,
-                ..._flags
-            ].find((e) => {
-                return e.name === optionKey || e.alias === optionKey;
-            });
+            const optionMeta = [...(commandOptions || []), ..._options]
+                .find((e) => {
+                    return e.name === optionKey || e.alias === optionKey;
+                });
 
             if (!optionMeta) continue;
-            const isFlag = commandOptions.flags?.includes(optionMeta);
 
-            /* @ts-ignore - tsc is stupid */
-            const defaultValue = isFlag ? false : optionMeta.default;
-            const optionValue = isFlag || (match[2] || '').replace(/(^")|("$)/g, '');
+            const defaultValue = optionMeta.flag ? false : optionMeta.default;
+            const optionValue = optionMeta.flag || (match[2] || '').replace(/(^")|("$)/g, '');
 
             define(options, optionMeta.name, optionValue || defaultValue);
         }
@@ -101,7 +94,6 @@ export function application(spec?: ApplicationSpec): Application {
         if (command.name.length <= 0) throw new Error('Command names must be at least 1 character');
         if (_commands.find((e) => e.name === command.name)) throw new Error(`Command ${command.name} already exists`);
         if (command.options) _validateOptions(command.options);
-        if (command.flags) _validateOptions(command.flags);
 
         if (command.arguments) {
             if (!regexes.argumentParse.test(command.arguments)) {
@@ -112,9 +104,9 @@ export function application(spec?: ApplicationSpec): Application {
         }
     };
 
-    const _validateOptions = (optionArray: Option[] | Flag[]): void => {
+    const _validateOptions = (optionArray: Option[]): void => {
         for (const option of optionArray) {
-            if (_options.find((e) => e.name === option.name) || _flags.find((e) => e.name === option.name)) {
+            if (_options.find((e) => e.name === option.name)) {
                 throw new Error(`Option ${option.name} already exists in global options`);
             }
 
@@ -124,7 +116,7 @@ export function application(spec?: ApplicationSpec): Application {
 
             if (!option.alias) continue;
 
-            if (_options.find((e) => e.alias === option.alias) || _flags.find((e) => e.alias === option.alias)) {
+            if (_options.find((e) => e.alias === option.alias)) {
                 throw new Error(
                     `Option ${option.name} already exists in global options, or it's alias is already in use`
                 );
@@ -145,7 +137,6 @@ export function application(spec?: ApplicationSpec): Application {
     const _help = (command?: Command) => {
         const commandsList: string[] = [];
         const optionsList: string[] = [];
-        const commandOptions = [...(command?.options || []), ...(command?.flags || [])];
 
         (command ? [command] : _commands).forEach((c: Command) => {
             commandsList.push(`${c.name} ${c.arguments || ''}`.trim());
@@ -159,7 +150,7 @@ export function application(spec?: ApplicationSpec): Application {
             commandsList[i] = padStringTo(s, commandsPadLength) + (commandMeta?.description || '');
         });
 
-        [...commandOptions, ..._options, ..._flags].forEach((o: Option | Flag) => {
+        [...command?.options || [], ..._options].forEach((o: Option) => {
             optionsList.push(`${o.name} ${o.alias || ''}`.trim());
         });
 
@@ -167,7 +158,7 @@ export function application(spec?: ApplicationSpec): Application {
 
         optionsList.forEach((s, i) => {
             const optionName = s.split(' ')[0];
-            const optionMeta = [...commandOptions, ..._options, ..._flags].find((o) => o.name === optionName);
+            const optionMeta = [...command?.options || [], ..._options].find((o) => o.name === optionName);
             optionsList[i] = padStringTo(s, optionsPadLength) + (optionMeta?.description || '');
         });
 
@@ -177,9 +168,10 @@ export function application(spec?: ApplicationSpec): Application {
     };
 
     if (_helpOptionEnabled) {
-        _flags.push({
+        _options.push({
             name: '--help',
-            description: 'Display help menu.'
+            description: 'Display help menu.',
+            flag: true
         });
     }
 
@@ -201,11 +193,6 @@ export function application(spec?: ApplicationSpec): Application {
         options.forEach((e) => _options.push(e));
     };
 
-    const globalFlags = (...flags: Flag[]): void => {
-        _validateOptions(flags);
-        flags.forEach((e) => _flags.push(e));
-    };
-
     const run = (input: string[] = process.argv.splice(2)): void => {
         const command = _commands.find((c) => c.name === input[0]);
         if (!command) {
@@ -213,10 +200,7 @@ export function application(spec?: ApplicationSpec): Application {
             return;
         }
 
-        const options = _parseOptions(input, {
-            options: command.options,
-            flags: command.flags
-        });
+        const options = _parseOptions(input, command.options || []);
 
         const args = _parseArguments(
             command.arguments || '',
@@ -237,7 +221,6 @@ export function application(spec?: ApplicationSpec): Application {
         command,
         commands,
         globalOptions,
-        globalFlags,
         run
     });
 }

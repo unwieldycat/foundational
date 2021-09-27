@@ -24,13 +24,6 @@ export interface Application {
     globalOptions: (...options: Option[]) => void;
 
     /**
-     * Specify global flags to be used for all commands
-     * @param flags - Command flags
-     * @returns void
-     */
-    globalFlags: (...flags: Flag[]) => void;
-
-    /**
      * Parse console input & run
      * @param input - User input
      * @returns void
@@ -58,9 +51,6 @@ export interface Command {
     /** Command-specific options */
     options?: Array<Option>;
 
-    /** Command-specific flags */
-    flags?: Array<Flag>;
-
     /**
      * The command's functionality
      * @param ctx - Object of command arguments and options specified by the user
@@ -83,6 +73,9 @@ export interface Option {
     /** Name of option in proper format (ex: --option-name) */
     name: string;
 
+    /** True if option has a boolean value */
+    flag?: boolean;
+
     /** Alias of option in proper format (ex: -o) */
     alias?: string;
 
@@ -91,16 +84,4 @@ export interface Option {
 
     /** Default value if not specified by user */
     default?: string | boolean;
-}
-
-/** Flag object */
-export interface Flag {
-    /** Name of flag in proper format (ex: --flag-name) */
-    name: string;
-
-    /** Alias of option in proper format (ex: -f) */
-    alias?: string;
-
-    /** Description that shows up in help menu */
-    description?: string;
 }
