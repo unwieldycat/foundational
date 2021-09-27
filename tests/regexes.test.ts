@@ -27,9 +27,9 @@ describe('test parsing regexes', () => {
 
         expect(parse('-f pizza -f="pizza" --favorite-food pizza --favorite-food="pizza"'))
             .toStrictEqual([
-                ['-f pizza', '-f', 'pizza'],
-                ['-f="pizza"', '-f', '"pizza"'],
-                ['--favorite-food pizza', '--favorite-food', 'pizza'],
+                ['-f pizza ', '-f', 'pizza'],
+                ['-f="pizza" ', '-f', '"pizza"'],
+                ['--favorite-food pizza ', '--favorite-food', 'pizza'],
                 ['--favorite-food="pizza"', '--favorite-food', '"pizza"']
             ]);
         
