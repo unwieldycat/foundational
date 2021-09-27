@@ -1,6 +1,6 @@
 // ================= Imports ================= //
 
-import { deepFreeze, define, maxLength, matchAll, padStringTo, removeFromArray } from './utilities';
+import { deepFreeze, define, maxLength, matchAll, padStringTo } from './utilities';
 import { Application, ApplicationSpec, Command, Option } from './types';
 import regexes from './regexes';
 
@@ -204,7 +204,12 @@ export function application(spec?: ApplicationSpec): Application {
 
         const args = _parseArguments(
             command.arguments || '',
-            removeFromArray(command ? input.slice(1) : input, regexes.optionParse)
+            // A hack to remove all options from input, due to a
+            // limitation with iterating over the array instead
+            (command ? input.slice(1) : input)
+                .join(' ')
+                .replace(regexes.optionParse, '')
+                .split(' ')
         );
 
         if (options['--help'] && _helpOptionEnabled) {
