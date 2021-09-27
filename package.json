@@ -10,7 +10,8 @@
   ],
   "scripts": {
     "clean": "rimraf dist",
-    "build": "npm run clean && npm run lint && npm test && tsc && typedoc || echo \"Build halted: Tests or lint failed\"",
+    "regen-docs": "typedoc",
+    "build": "npm run clean && npm run lint && npm test && tsc && npm run regen-docs || echo \"Build halted: Tests or lint failed\"",
     "format": "prettier --write src/*.ts",
     "lint": "eslint src/** tests/**",
     "test": "jest"
