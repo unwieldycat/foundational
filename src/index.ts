@@ -51,7 +51,9 @@ export function application(spec?: ApplicationSpec): Application {
                 define(
                     args,
                     last,
-                    variadic ? providedArgs.slice(required.length).join(' ') : providedArgs[required.length]
+                    variadic 
+                    ? providedArgs.slice(required.length).join(' ').trimEnd()
+                    : providedArgs[required.length]
                 );
             } else if (!lastIsOptional) {
                 throw new Error(`Missing argument: ${last}`);
