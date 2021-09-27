@@ -87,7 +87,7 @@ export interface Option {
     alias?: string;
 
     /** Description that appears in help menu */
-    description: string;
+    description?: string;
 
     /** Default value if not specified by user */
     default?: string | boolean;
