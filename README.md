@@ -2,7 +2,7 @@
 Foundational is a simple CLI app framework for Node that aims to be ultra-simple, readable, and lightweight.
 
 ## Installing
-To use foundational, simply install it via npm (recommended) or build it from source. Be sure to install it as a production dependency if you're using npm.
+To use foundational, simply install it via the npm registry (recommended) or build it from source.
 
 ### Building (Optional)
 1. Clone the respository
@@ -17,7 +17,7 @@ The following is an example application written with foundational:
 
 ```javascript
 const { application } = require('foundational');
-const app = application();
+const app = application({ version: '1.0.0' });
 
 app.globalOptions(
     {
@@ -88,13 +88,12 @@ Argument names wrapped in pointy brackets are required, whereas square bracketed
 ## Options & Flags
 Options are ways a user can provide additional optional input to alter the behavior of a CLI app. Options have a specified value, whereas a flag has a boolean value. 
 
-In runtime, options can be written in various ways. For example, the following are all valid ways for a user to specify an option: `--option="Option Value"`, `--option value`, `-o=value`, `-o value`, etc.
+Options can be written in various ways. For example, the following are all valid ways for a user to specify an option: `--option="Option Value"`, `--option value`, `-o=value`, `-o value`, etc.
 
-
-Flags, on the other hand, are written without a specified value, like so: `--flag` (or `-f` if the alias exists)
+Flags are written without a specified value like so: `--flag` (or `-f` if the alias exists)
 
 ### Creating an Option
-To create an option, specify it in the command object or in the `Application.globalOptions()` function. The names and aliases must be formatted as if it were being used in the CLI.
+To create an option, specify it in the command object or globally with `Application.globalOptions()`. The names and aliases must be formatted as if it were being used in the CLI.
 
 **Specifying a global option & flag**
 
@@ -141,3 +140,8 @@ app.command({
     }
 });
 ```
+
+### Naming
+Option names may include dashes and dots in their name, however, they must include at least one letter prior. The following are both examples of valid option names: `--example.with.dots`, `--example-with-dashes`
+
+Aliases may only include 1 or 2 letters.
