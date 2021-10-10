@@ -11,10 +11,10 @@ import regexes from './regexes';
  * @param spec - Application configuration
  * @returns Application object
  */
-export function application(spec?: ApplicationSpec): Application {
+export function application(spec: ApplicationSpec): Application {
     // ------------ Private Variables ------------ //
 
-    const _helpOptionEnabled = !spec?.disableHelpOption;
+    const _helpOptionEnabled = !spec.disableHelpOption;
 
     const _commands: Command[] = [];
     const _options: Option[] = [];
@@ -134,6 +134,17 @@ export function application(spec?: ApplicationSpec): Application {
         }
     };
 
+    // -------------- Version Option -------------- //
+
+    const _version = () => console.log(spec.version);
+
+    _options.push({
+        name: '--version',
+        alias: '-v',
+        description: 'Display the app version',
+        flag: true
+    });
+
     // --------------- Help Option --------------- //
 
     const _help = (command?: Command) => {
@@ -172,7 +183,8 @@ export function application(spec?: ApplicationSpec): Application {
     if (_helpOptionEnabled) {
         _options.push({
             name: '--help',
-            description: 'Display help menu.',
+            alias: '-h',
+            description: 'Display help menu',
             flag: true
         });
     }
@@ -204,6 +216,16 @@ export function application(spec?: ApplicationSpec): Application {
 
         const options = _parseOptions(input, command.options || []);
 
+        if (options['--version']) { 
+            _version();
+            process.exit(0);
+        }
+
+        if (options['--help'] && _helpOptionEnabled) {
+            _help(command);
+            process.exit(0);
+        }
+
         const args = _parseArguments(
             command.arguments || '',
             // A hack to remove all options from input, due to a
@@ -213,11 +235,6 @@ export function application(spec?: ApplicationSpec): Application {
                 .replace(regexes.optionParse, '')
                 .split(' ')
         );
-
-        if (options['--help'] && _helpOptionEnabled) {
-            _help(command);
-            process.exit(0);
-        }
 
         command.action({ arguments: args, options: options });
     };
