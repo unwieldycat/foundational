@@ -33,29 +33,26 @@ export function application(spec: ApplicationSpec): Application {
             return a;
         })();
 
-        const lastIsOptional = /[[\]]/g.test(keys[2]);
-        const last = keys[2].replace(/[[\]<>.]/g, '');
-        const variadic = keys[2].includes('...');
+        const last = keys[2]?.replace(/[[\]<>.]/g, '');
 
         required.forEach((key, index) => {
             if (!providedArgs[index]) throw new Error(`Missing argument: ${key}`);
             define(args, key, providedArgs[index]);
         });
 
-        // required.length is passed in down here 
-        // because it's the last index of the 
-        // array + 1
-
         if (last) {
+            // required.length is passed in down here 
+            // because it's the last index of the 
+            // array + 1
             if (providedArgs[required.length]) {
                 define(
                     args,
                     last,
-                    variadic 
+                    keys[2]?.includes('...') // Checks if last is variadic
                     ? providedArgs.slice(required.length).join(' ').trimEnd()
                     : providedArgs[required.length]
                 );
-            } else if (!lastIsOptional) {
+            } else if (!/[[\]]/g.test(keys[2])) { // Checks if last is not optional
                 throw new Error(`Missing argument: ${last}`);
             }
         }
