@@ -25,12 +25,12 @@ test('option name validator', () => {
 test('option parsing', () => {
     const parse = (s: string): string[][] => matchAll(regexes.optionParse, s);
 
-    expect(parse('-f pizza -f="pizza" --favorite-food pizza --favorite-food="pizza"'))
+    expect(parse('-f pizza -f="pizza" --favorite-food pizza --favorite.food pizza --favorite-food="pizza"'))
         .toStrictEqual([
             ['-f pizza', '-f', 'pizza'],
             ['-f="pizza"', '-f', '"pizza"'],
             ['--favorite-food pizza', '--favorite-food', 'pizza'],
-            ['--favorite.food "pizza"', '--favorite.food', '"pizza"'],
+            ['--favorite.food pizza', '--favorite.food', 'pizza'],
             ['--favorite-food="pizza"', '--favorite-food', '"pizza"']
         ]);
     
