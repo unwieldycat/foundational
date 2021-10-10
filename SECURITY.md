@@ -5,4 +5,4 @@ If a vunerability is found, file a bug report. Depending on severity, however, y
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 1.0.0   | :white_check_mark: |
+| 1.0.X   | :white_check_mark: |
