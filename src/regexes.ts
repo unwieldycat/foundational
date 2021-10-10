@@ -3,8 +3,8 @@
 // ================= Regexes ================= //
 
 export default {
-    optionParse: /(?<=\s|^)(--\w[\w-]*|-\w)(?:[= ]+(\w+|"[^"]+"))? ?/gm,
-    optionValidate: /^--(\w[\w-]+)$/,
-    aliasValidate: /^-(\w)$/,
+    optionParse: /(?<=\s|^)(--\w[\w\-.]*|-\w{1,2})(?:[= ]+(\w+|"[^"]+"))?(?=\s|$)/gm,
+    optionValidate: /^--(\w[\w\-.]+)$/,
+    aliasValidate: /^-(\w${1,2})$/,
     argumentParse: /^((?:<\w+> ?)*)((?:\[\w+(?:\.\.\.)?\])|(?:<\w+(?:\.\.\.)?>))?$/
 };
