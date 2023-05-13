@@ -226,12 +226,12 @@ export function application(spec: ApplicationSpec): Application {
 
 		if (options['--version']) {
 			_version();
-			process.exit(0);
+			return;
 		}
 
 		if (options['--help'] && _helpOptionEnabled) {
 			_help(command);
-			process.exit(0);
+			return;
 		}
 
 		const args = _parseArguments(
