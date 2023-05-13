@@ -6,6 +6,23 @@ export interface Application {
      * Register a command
      * @param command - Command configuration
      * @returns void
+     * @example
+     * ```ts
+     * app.command({
+     *     name: 'my-command',
+     *     description: 'Command example',
+     *     options: [
+     *         {
+     *             name: '--my-option',
+     *             description: 'Option example',
+     *             alias: '-o'
+     *         }
+     *     ],
+     *     action: (ctx) => {
+     *         // ...
+     *     }
+     * });
+     * ```
      */
     command: (command: Command) => void;
 
@@ -20,6 +37,17 @@ export interface Application {
      * Specify global options to be used for all commands
      * @param options - Command options
      * @returns void
+     * @example
+     * ```ts
+     * app.globalOptions(
+     *     {
+     *         name: '--verbose',
+     *         description: 'Verbose application output',
+     *         alias: '-r',
+     *         flag: true
+     *     }
+     * );
+     * ```
      */
     globalOptions: (...options: Option[]) => void;
 
