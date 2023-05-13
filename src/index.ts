@@ -203,12 +203,12 @@ export function application(spec: ApplicationSpec): Application {
 
 	const run = (input: string[] = process.argv.splice(2)): void => {
 		const command = _commands.find((c) => c.name === input[0]);
+		const options = _parseOptions(input, command?.options || []);
+
 		if (!command) {
 			if (_helpOptionEnabled) _help();
 			return;
 		}
-
-		const options = _parseOptions(input, command.options || []);
 
 		if (options['--version']) {
 			_version();
