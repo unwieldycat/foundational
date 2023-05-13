@@ -183,7 +183,7 @@ export function application(spec: ApplicationSpec): Application {
 			});
 
 			console.log(
-				`Commands:\n\n    ${commandsList.join('\n    ')}\n\nOptions:\n\n    ${optionsList.join('\n    ')}\n`
+				`Commands:\n    ${commandsList.join('\n    ')}\n\nOptions:\n    ${optionsList.join('\n    ')}\n`
 			);
 		}
 	};
