@@ -1,8 +1,8 @@
-// ================= Import ================= //
+// ================================= Import ================================= //
 
 import { deepFreeze, define, matchAll, maxLength, padStringTo, removeFromArray } from '../src/utilities';
 
-// ========= Test Utility Functions ========= //
+// ========================= Test Utility Functions ========================= //
 
 describe('deepFreeze function', () => {
     it('should freeze nested arrays', () => {
@@ -12,7 +12,7 @@ describe('deepFreeze function', () => {
     });
 
     it('should freeze nested objects', () => {
-        const testObj = deepFreeze({ a: { a: 1, b: { a: 2 }}});
+        const testObj = deepFreeze({ a: { a: 1, b: { a: 2 } } });
         expect(Object.isFrozen(testObj)).toBe(true);
         expect(Object.isFrozen(testObj.a.b)).toBe(true);
     });
@@ -25,7 +25,7 @@ describe('define function', () => {
         expect(testObj).toStrictEqual({ a: true });
     });
 
-    it('shouldn\'t allow adding __proto__ as a key', () => {
+    it("shouldn't allow adding __proto__ as a key", () => {
         const testObj = {};
         define(testObj, '__proto__', {});
         expect(testObj).toStrictEqual({});
@@ -34,12 +34,20 @@ describe('define function', () => {
 
 describe('matchAll function', () => {
     it('should return all matches and groups', () => {
-        expect(matchAll(/(a)(b)/g, 'abcabcabc')).toStrictEqual([['ab', 'a', 'b'], ['ab', 'a', 'b'], ['ab', 'a', 'b']]);
+        expect(matchAll(/(a)(b)/g, 'abcabcabc')).toStrictEqual([
+            ['ab', 'a', 'b'],
+            ['ab', 'a', 'b'],
+            ['ab', 'a', 'b']
+        ]);
     });
 
     it('should avoid memory leaks', () => {
         expect(matchAll(/(a)(b)/g, '')).toStrictEqual([]);
-        expect(matchAll(/(a)(b)/, 'abcabcabc')).toStrictEqual([['ab', 'a', 'b'], ['ab', 'a', 'b'], ['ab', 'a', 'b']]);
+        expect(matchAll(/(a)(b)/, 'abcabcabc')).toStrictEqual([
+            ['ab', 'a', 'b'],
+            ['ab', 'a', 'b'],
+            ['ab', 'a', 'b']
+        ]);
     });
 });
 
