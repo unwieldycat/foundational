@@ -9,7 +9,7 @@ body:
       attributes:
           label: Environment Details
           description: Details about your environment such as package version and node version.
-          placeholder: 'Example: Node 18, macOS 13, v1.0.0'
+          placeholder: 'v1.0.0, Node X.X, macOS 13'
     - type: textarea
       id: bug-details
       attributes:
