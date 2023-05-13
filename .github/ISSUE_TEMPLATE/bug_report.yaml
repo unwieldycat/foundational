@@ -1,23 +1,22 @@
 name: Bug Report
 description: Report unexpected behavior
-assignees: 
-  - unweildycat
+assignees:
+    - unweildycat
 labels: bug
-title: "[Bug]:"
 body:
-  - type: input
-    id: environment-details
-    attributes:
-      label: Environment Details
-      descriptions: Details about your environment such as package version and node version. You may provide more detail if relevant.
-      placeholder: "Example: Node 16, Ubuntu 20.04, v1.0.0"
-  - type: textarea
-    id: bug-details
-    attributes:
-      label: Bug Details
-      description: What should have happened, and what happened instead?
-  - type: textarea
-    id: steps-to-reproduce
-    attributes:
-      label: Steps to Reproduce
-      description: A list of steps to reproduce the bug, and/or a code example.
+    - type: input
+      id: environment-details
+      attributes:
+          label: Environment Details
+          descriptio: Details about your environment such as package version and node version.
+          placeholder: 'Example: Node 18, macOS 13, v1.0.0'
+    - type: textarea
+      id: bug-details
+      attributes:
+          label: Bug Details
+          description: What was the expected result? What was the actual result?
+    - type: textarea
+      id: steps-to-reproduce
+      attributes:
+          label: Steps to Reproduce
+          description: A list of steps to reproduce the bug, and/or a code example.

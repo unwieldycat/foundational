@@ -1,12 +1,11 @@
 name: Question
 description: A question about anything pertaining to the package
-assignees: 
-  - unweildycat
+assignees:
+    - unweildycat
 labels: question
-title: '[Question]:'
 body:
-  - type: textarea
-    id: question
-    attributes:
-      label: Question
-      description: Please be sure to look through current or past issues to make sure your question is not a duplicate.
+    - type: textarea
+      id: question
+      attributes:
+          label: Question
+          description: Please be sure to look through current or past issues to make sure your question is not a duplicate.
