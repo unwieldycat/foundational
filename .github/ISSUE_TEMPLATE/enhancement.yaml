@@ -1,17 +1,16 @@
 name: Enhancement
 description: Suggest a change or an improvement
-assignees: 
-  - unweildycat
+assignees:
+    - unwieldycat
 labels: enhancement
-title: '[Enhancement]:'
 body:
-  - type: textarea
-    id: problem
-    attributes:
-      label: Problem
-      description: The problem(s) the proposed feature or enhancement addresses.
-  - type: textarea
-    id: proposal
-    attributes:
-      label: Proposal
-      description: A description of the feature or enhancement to be added.
+    - type: textarea
+      id: problem
+      attributes:
+          label: Problem
+          description: The problem(s) the proposed enhancement addresses.
+    - type: textarea
+      id: proposal
+      attributes:
+          label: Proposal
+          description: A description of the feature or enhancement to be added.

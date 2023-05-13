@@ -1,10 +1,10 @@
 // Any important, complex, or frequently used regex goes in here
 
-// ================= Regexes ================= //
+// ================================ Regexes ================================ //
 
 export default {
-    optionParse: /(?<=\s|^)(--\w[\w\-.]*|-\w{1,2})(?:[= ]+(\w+|"[^"]+"))?(?=\s|$)/gm,
-    optionValidate: /^--(\w[\w\-.]+)$/,
-    aliasValidate: /^-(\w{1,2})$/,
-    argumentParse: /^((?:<\w+> ?)*)((?:\[\w+(?:\.{3})?\])|(?:<\w+(?:\.{3})?>))?$/
+	optionParse: /(?<=\s|^)(--\w[\w\-.]*|-\w{1,2})(?:[= ]+(\w+|"[^"]+"))?(?=\s|$)/gm,
+	optionValidate: /^--(\w[\w\-.]+)$/,
+	aliasValidate: /^-(\w{1,2})$/,
+	argumentParse: /^((?:<\w+> ?)*)((?:\[\w+(?:\.{3})?\])|(?:<\w+(?:\.{3})?>))?$/
 };
