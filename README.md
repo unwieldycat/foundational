@@ -1,6 +1,6 @@
 # foundational
 
-Foundational is a simple CLI app framework for Node that aims to be ultra-simple, readable, and lightweight.
+Foundational is a simple multi-command CLI app framework for Node that aims to be ultra-simple, readable, and lightweight.
 
 ## Installing
 
