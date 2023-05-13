@@ -39,7 +39,7 @@ export interface Application {
      * @returns void
      * @example
      * ```ts
-     * app.globalOptions(
+     * app.options(
      *     {
      *         name: '--verbose',
      *         description: 'Verbose application output',
@@ -49,7 +49,7 @@ export interface Application {
      * );
      * ```
      */
-    globalOptions: (...options: Option[]) => void;
+    options: (...options: Option[]) => void;
 
     /**
      * Parse console input & run

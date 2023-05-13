@@ -196,7 +196,7 @@ export function application(spec: ApplicationSpec): Application {
         });
     };
 
-    const globalOptions = (...options: Option[]): void => {
+    const options = (...options: Option[]): void => {
         _validateOptions(options);
         options.forEach((e) => _options.push(e));
     };
@@ -235,7 +235,7 @@ export function application(spec: ApplicationSpec): Application {
     return deepFreeze({
         command,
         commands,
-        globalOptions,
+        options,
         run
     });
 }
