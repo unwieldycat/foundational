@@ -8,7 +8,7 @@ body:
       id: environment-details
       attributes:
           label: Environment Details
-          descriptio: Details about your environment such as package version and node version.
+          description: Details about your environment such as package version and node version.
           placeholder: 'Example: Node 18, macOS 13, v1.0.0'
     - type: textarea
       id: bug-details
