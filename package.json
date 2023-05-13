@@ -4,6 +4,9 @@
   "description": "A simple CLI framework.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "keywords": [
+    "cli"
+  ],
   "files": [
     "dist/**",
     "LICENCE"
@@ -15,6 +18,10 @@
     "format": "prettier --write src/*.ts",
     "lint": "eslint src/** tests/**",
     "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/unwieldycat/foundational.git"
   },
   "author": "unwieldycat",
   "license": "MIT",
