@@ -1,10 +1,10 @@
-// ================= Imports ================= //
+// ================================ Imports ================================ //
 
 import { deepFreeze, define, maxLength, matchAll, padStringTo } from './utilities';
 import { Application, ApplicationSpec, Command, Option } from './types';
 import regexes from './regexes';
 
-// =============== Application =============== //
+// ============================== Application ============================== //
 
 /**
  * Application constructor
@@ -12,14 +12,14 @@ import regexes from './regexes';
  * @returns Application object
  */
 export function application(spec: ApplicationSpec): Application {
-    // ------------ Private Variables ------------ //
+    // Private variables
 
     const _helpOptionEnabled = !spec.disableHelpOption;
 
     const _commands: Command[] = [];
     const _options: Option[] = [];
 
-    // -------------- Input Parsing -------------- //
+    // Input parsing
 
     const _parseArguments = (spec: string, providedArgs: string[]): Record<string, string> => {
         const args = {};
@@ -84,7 +84,7 @@ export function application(spec: ApplicationSpec): Application {
         return options;
     };
 
-    // ---------------- Validation ---------------- //
+    // Validation
 
     const _validateCommand = (command: Command): void => {
         if (command.name.length <= 0) throw new Error('Command names must be at least 1 character');
@@ -128,7 +128,7 @@ export function application(spec: ApplicationSpec): Application {
         }
     };
 
-    // -------------- Version Option -------------- //
+    // Version option
 
     const _version = () => console.log(spec.version);
 
@@ -139,7 +139,7 @@ export function application(spec: ApplicationSpec): Application {
         flag: true
     });
 
-    // --------------- Help Option --------------- //
+    // Help option
 
     const _help = (command?: Command) => {
         const commandsList: string[] = [];
@@ -183,7 +183,7 @@ export function application(spec: ApplicationSpec): Application {
         });
     }
 
-    // ------------- Public Functions ------------- //
+    // Public options
 
     const command = (command: Command): void => {
         _validateCommand(command);
@@ -230,7 +230,7 @@ export function application(spec: ApplicationSpec): Application {
         command.action({ arguments: args, options: options });
     };
 
-    // -------------- Return Object -------------- //
+    // Return object
 
     return deepFreeze({
         command,

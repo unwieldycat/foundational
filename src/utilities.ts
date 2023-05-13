@@ -1,4 +1,4 @@
-// ============ Utility Functions ============ //
+// =========================== Utility Functions =========================== //
 
 export function deepFreeze<T>(object: T): Readonly<T> {
     for (const key in object) {

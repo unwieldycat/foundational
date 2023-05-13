@@ -1,6 +1,6 @@
 // Any important, complex, or frequently used regex goes in here
 
-// ================= Regexes ================= //
+// ================================ Regexes ================================ //
 
 export default {
     optionParse: /(?<=\s|^)(--\w[\w\-.]*|-\w{1,2})(?:[= ]+(\w+|"[^"]+"))?(?=\s|$)/gm,

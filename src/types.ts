@@ -1,4 +1,4 @@
-// =============== Interfaces =============== //
+// =============================== Interfaces =============================== //
 
 /** Object of functions used to build the CLI */
 export interface Application {
