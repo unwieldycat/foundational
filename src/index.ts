@@ -142,20 +142,7 @@ export function application(spec: ApplicationSpec): Application {
 	// Help option
 
 	const _help = (command?: Command) => {
-		const commandsList: string[] = [];
 		const optionsList: string[] = [];
-
-		(command ? [command] : _commands).forEach((c: Command) => {
-			commandsList.push(`${c.name} ${c.arguments || ''}`.trim());
-		});
-
-		const commandsPadLength = maxLength(commandsList) + 2;
-
-		commandsList.forEach((s, i) => {
-			const commandName = s.split(' ')[0];
-			const commandMeta = _commands.find((c) => c.name === commandName);
-			commandsList[i] = padStringTo(s, commandsPadLength) + (commandMeta?.description || '');
-		});
 
 		[...(command?.options || []), ..._options].forEach((o: Option) => {
 			optionsList.push(`${o.name} ${o.alias || ''}`.trim());
@@ -169,9 +156,36 @@ export function application(spec: ApplicationSpec): Application {
 			optionsList[i] = padStringTo(s, optionsPadLength) + (optionMeta?.description || '');
 		});
 
-		console.log(
-			`Commands:\n\n    ${commandsList.join('\n    ')}\n\nOptions:\n\n    ${optionsList.join('\n    ')}\n`
-		);
+		if (command) {
+			const usage: string[] = [];
+
+			usage.push(command.name);
+			if (command.arguments) usage.push(command.arguments);
+
+			console.log(
+				`Usage: ${usage.join(' ')}\n\n` +
+					`    ${command.description}\n\n` +
+					`Options:\n    ${optionsList.join('\n    ')}\n`
+			);
+		} else {
+			const commandsList: string[] = [];
+
+			_commands.forEach((c: Command) => {
+				commandsList.push(`${c.name} ${c.arguments || ''}`.trim());
+			});
+
+			const commandsPadLength = maxLength(commandsList) + 2;
+
+			commandsList.forEach((s, i) => {
+				const commandName = s.split(' ')[0];
+				const commandMeta = _commands.find((c) => c.name === commandName);
+				commandsList[i] = padStringTo(s, commandsPadLength) + (commandMeta?.description || '');
+			});
+
+			console.log(
+				`Commands:\n\n    ${commandsList.join('\n    ')}\n\nOptions:\n\n    ${optionsList.join('\n    ')}\n`
+			);
+		}
 	};
 
 	if (_helpOptionEnabled) {
