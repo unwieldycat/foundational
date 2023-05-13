@@ -14,7 +14,7 @@ import regexes from './regexes';
 export function application(spec: ApplicationSpec): Application {
     // ------------ Private Variables ------------ //
 
-    const _helpOptionEnabled = !(spec.disableHelpOption);
+    const _helpOptionEnabled = !spec.disableHelpOption;
 
     const _commands: Command[] = [];
     const _options: Option[] = [];
@@ -29,7 +29,7 @@ export function application(spec: ApplicationSpec): Application {
 
         const required = (() => {
             const s = keys[1].trim().replace(/[<>]/g, '');
-            const a = (s.length > 0) ? s.split(' '): [];
+            const a = s.length > 0 ? s.split(' ') : [];
             return a;
         })();
 
@@ -41,18 +41,19 @@ export function application(spec: ApplicationSpec): Application {
         });
 
         if (last) {
-            // required.length is passed in down here 
-            // because it's the last index of the 
+            // required.length is passed in down here
+            // because it's the last index of the
             // array + 1
             if (providedArgs[required.length]) {
                 define(
                     args,
                     last,
                     keys[2]?.includes('...') // Checks if last is variadic
-                    ? providedArgs.slice(required.length).join(' ').trimEnd()
-                    : providedArgs[required.length]
+                        ? providedArgs.slice(required.length).join(' ').trimEnd()
+                        : providedArgs[required.length]
                 );
-            } else if (!/[[\]]/g.test(keys[2])) { // Checks if last is not optional
+            } else if (!/[[\]]/g.test(keys[2])) {
+                // Checks if last is not optional
                 throw new Error(`Missing argument: ${last}`);
             }
         }
@@ -60,10 +61,7 @@ export function application(spec: ApplicationSpec): Application {
         return args;
     };
 
-    const _parseOptions = (
-        exec: string[],
-        commandOptions: Option[]
-    ): Record<string, string | boolean> => {
+    const _parseOptions = (exec: string[], commandOptions: Option[]): Record<string, string | boolean> => {
         const options = {};
         const stringified = exec.join(' ');
         const regexMatch = matchAll(regexes.optionParse, stringified);
@@ -71,10 +69,9 @@ export function application(spec: ApplicationSpec): Application {
         for (const match of regexMatch) {
             const optionKey = match[1];
 
-            const optionMeta = [...(commandOptions || []), ..._options]
-                .find((e) => {
-                    return e.name === optionKey || e.alias === optionKey;
-                });
+            const optionMeta = [...(commandOptions || []), ..._options].find((e) => {
+                return e.name === optionKey || e.alias === optionKey;
+            });
 
             if (!optionMeta) continue;
 
@@ -160,7 +157,7 @@ export function application(spec: ApplicationSpec): Application {
             commandsList[i] = padStringTo(s, commandsPadLength) + (commandMeta?.description || '');
         });
 
-        [...command?.options || [], ..._options].forEach((o: Option) => {
+        [...(command?.options || []), ..._options].forEach((o: Option) => {
             optionsList.push(`${o.name} ${o.alias || ''}`.trim());
         });
 
@@ -168,7 +165,7 @@ export function application(spec: ApplicationSpec): Application {
 
         optionsList.forEach((s, i) => {
             const optionName = s.split(' ')[0];
-            const optionMeta = [...command?.options || [], ..._options].find((o) => o.name === optionName);
+            const optionMeta = [...(command?.options || []), ..._options].find((o) => o.name === optionName);
             optionsList[i] = padStringTo(s, optionsPadLength) + (optionMeta?.description || '');
         });
 
@@ -213,7 +210,7 @@ export function application(spec: ApplicationSpec): Application {
 
         const options = _parseOptions(input, command.options || []);
 
-        if (options['--version']) { 
+        if (options['--version']) {
             _version();
             process.exit(0);
         }
@@ -227,10 +224,7 @@ export function application(spec: ApplicationSpec): Application {
             command.arguments || '',
             // A hack to remove all options from input, due to a
             // limitation with iterating over the array instead
-            (command ? input.slice(1) : input)
-                .join(' ')
-                .replace(regexes.optionParse, '')
-                .split(' ')
+            (command ? input.slice(1) : input).join(' ').replace(regexes.optionParse, '').split(' ')
         );
 
         command.action({ arguments: args, options: options });
