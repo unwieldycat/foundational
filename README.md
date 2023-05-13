@@ -68,13 +68,9 @@ app.command({
 app.run();
 ```
 
-<!-- WIP -->
-
 ## Application Object
 
 The `application()` constructor function returns the application object. The application object exposes the functions necessary to build a CLI application.
-
-<!-- WIP -->
 
 ## Commands
 
