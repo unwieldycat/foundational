@@ -24,45 +24,45 @@ const { application } = require('foundational');
 const app = application({ version: '1.0.0' });
 
 app.options({
-    name: '--resolution',
-    description: 'Specify a resolution for the image (format: 1920x1080, 1024x768, etc.)',
-    alias: '-r'
+	name: '--resolution',
+	description: 'Specify a resolution for the image (format: 1920x1080, 1024x768, etc.)',
+	alias: '-r'
 });
 
 app.command({
-    name: 'dog-picture',
-    description: 'Fetch a picture of a dog',
-    options: [
-        {
-            name: '--puppy',
-            description: 'Find a picture of a puppy',
-            alias: '-p',
-            flag: true
-        }
-    ],
-    action: (ctx) => {
-        const puppy = ctx.options['--puppy'];
-        const resolution = ctx.options['--resolution'] || 'featured';
-        console.log(`https://source.unsplash.com/${resolution}/?${puppy ? 'puppy' : 'dog'}`);
-    }
+	name: 'dog-picture',
+	description: 'Fetch a picture of a dog',
+	options: [
+		{
+			name: '--puppy',
+			description: 'Find a picture of a puppy',
+			alias: '-p',
+			flag: true
+		}
+	],
+	action: (ctx) => {
+		const puppy = ctx.options['--puppy'];
+		const resolution = ctx.options['--resolution'] || 'featured';
+		console.log(`https://source.unsplash.com/${resolution}/?${puppy ? 'puppy' : 'dog'}`);
+	}
 });
 
 app.command({
-    name: 'cat-picture',
-    description: 'Fetch a picture of a cat',
-    options: [
-        {
-            name: '--kitten',
-            description: 'Find a picture of a kitten',
-            alias: '-k',
-            flag: true
-        }
-    ],
-    action: (ctx) => {
-        const kitten = ctx.options['--kitten'];
-        const resolution = ctx.options['--resolution'] || 'featured';
-        console.log(`https://source.unsplash.com/${resolution}/?${kitten ? 'kitten' : 'cat'}`);
-    }
+	name: 'cat-picture',
+	description: 'Fetch a picture of a cat',
+	options: [
+		{
+			name: '--kitten',
+			description: 'Find a picture of a kitten',
+			alias: '-k',
+			flag: true
+		}
+	],
+	action: (ctx) => {
+		const kitten = ctx.options['--kitten'];
+		const resolution = ctx.options['--resolution'] || 'featured';
+		console.log(`https://source.unsplash.com/${resolution}/?${kitten ? 'kitten' : 'cat'}`);
+	}
 });
 
 app.run();
@@ -110,17 +110,17 @@ To create an option, specify it in the command object or globally with `Applicat
 const app = application();
 
 app.options(
-    {
-        name: '--cool-option',
-        alias: '-c',
-        description: 'A very cool global option'
-    },
-    {
-        name: '--cool-flag',
-        alias: '-f',
-        description: 'A very cool global flag',
-        flag: true
-    }
+	{
+		name: '--cool-option',
+		alias: '-c',
+		description: 'A very cool global option'
+	},
+	{
+		name: '--cool-flag',
+		alias: '-f',
+		description: 'A very cool global flag',
+		flag: true
+	}
 );
 ```
 
@@ -130,23 +130,23 @@ app.options(
 const app = application();
 
 app.command({
-    name: 'example',
-    options: [
-        {
-            name: '--cool-option',
-            alias: '-c',
-            description: 'A very cool command option'
-        },
-        {
-            name: '--cool-flag',
-            alias: '-f',
-            description: 'A very cool command flag',
-            flag: true
-        }
-    ],
-    action: (ctx) => {
-        // ...
-    }
+	name: 'example',
+	options: [
+		{
+			name: '--cool-option',
+			alias: '-c',
+			description: 'A very cool command option'
+		},
+		{
+			name: '--cool-flag',
+			alias: '-f',
+			description: 'A very cool command flag',
+			flag: true
+		}
+	],
+	action: (ctx) => {
+		// ...
+	}
 });
 ```
 
