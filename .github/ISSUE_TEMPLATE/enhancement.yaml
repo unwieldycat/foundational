@@ -1,7 +1,7 @@
 name: Enhancement
 description: Suggest a change or an improvement
 assignees:
-    - unweildycat
+    - unwieldycat
 labels: enhancement
 body:
     - type: textarea
