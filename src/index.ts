@@ -1,8 +1,8 @@
 // ================================ Imports ================================ //
 
-import { deepFreeze, define, maxLength, matchAll, padStringTo } from './utilities';
-import { Application, ApplicationSpec, Command, Option } from './types';
-import regexes from './regexes';
+import { deepFreeze, define, maxLength, matchAll, padStringTo } from './utilities.ts';
+import { Application, ApplicationSpec, Command, Option } from './types.ts';
+import regexes from './regexes.ts';
 
 // ============================== Application ============================== //
 
@@ -215,7 +215,7 @@ export function application(spec: ApplicationSpec): Application {
 		options.forEach((e) => _options.push(e));
 	};
 
-	const run = (input: string[] = process.argv.splice(2)): void => {
+	const run = (input: string[] = Deno.args): void => {
 		const command = _commands.find((c) => c.name === input[0]);
 		const options = _parseOptions(input, command?.options || []);
 
@@ -255,4 +255,4 @@ export function application(spec: ApplicationSpec): Application {
 }
 
 // Re-export types for TSDoc and accessibility
-export * from './types';
+export * from './types.ts';
