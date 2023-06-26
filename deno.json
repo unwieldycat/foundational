@@ -1,0 +1,20 @@
+{
+    "fmt": {
+        "useTabs": true,
+        "semiColons": true,
+        "singleQuote": false,
+        "lineWidth": 100,
+        "include": [
+            "src/",
+            "tests/",
+            "scripts/"
+        ]
+    },
+    "compilerOptions": {
+        "strict": true
+    },
+    "tasks": {
+        "build-npm": "deno scripts/build_npm.ts",
+        "regen-docs": "typedoc"
+    }
+}
