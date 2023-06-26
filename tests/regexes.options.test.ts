@@ -1,41 +1,43 @@
 // ================================= Import ================================= //
 
-import { assertEquals, assertStrictEquals } from "https://deno.land/std@0.192.0/testing/asserts.ts"
-import { matchAll } from '../src/utilities.ts';
-import regexes from '../src/regexes.ts';
+import { assertEquals, assertStrictEquals } from "https://deno.land/std@0.192.0/testing/asserts.ts";
+import { matchAll } from "../src/utilities.ts";
+import regexes from "../src/regexes.ts";
 
 // =========================== Test Option Regexp =========================== //
 
-Deno. test('option alias validator', () => {
-	assertEquals(regexes.aliasValidate.test('-a'), true);
-	assertEquals(regexes.aliasValidate.test('-ab'), true);
-	assertEquals(regexes.aliasValidate.test('-abc'), false);
-	assertEquals(regexes.aliasValidate.test('--abc'), false);
-	assertEquals(regexes.aliasValidate.test('-'), false);
+Deno.test("option alias validator", () => {
+	assertEquals(regexes.aliasValidate.test("-a"), true);
+	assertEquals(regexes.aliasValidate.test("-ab"), true);
+	assertEquals(regexes.aliasValidate.test("-abc"), false);
+	assertEquals(regexes.aliasValidate.test("--abc"), false);
+	assertEquals(regexes.aliasValidate.test("-"), false);
 });
 
-Deno.test('option name validator', () => {
-	assertEquals(regexes.optionValidate.test('--abc'), true);
-	assertEquals(regexes.optionValidate.test('--abc-d'), true);
-	assertEquals(regexes.optionValidate.test('--abc.d'), true);
-	assertEquals(regexes.optionValidate.test('-abc'), false);
-	assertEquals(regexes.optionValidate.test('-a'), false);
-	assertEquals(regexes.optionValidate.test('--'), false);
+Deno.test("option name validator", () => {
+	assertEquals(regexes.optionValidate.test("--abc"), true);
+	assertEquals(regexes.optionValidate.test("--abc-d"), true);
+	assertEquals(regexes.optionValidate.test("--abc.d"), true);
+	assertEquals(regexes.optionValidate.test("-abc"), false);
+	assertEquals(regexes.optionValidate.test("-a"), false);
+	assertEquals(regexes.optionValidate.test("--"), false);
 });
 
-Deno.test('option parsing', () => {
+Deno.test("option parsing", () => {
 	const parse = (s: string): string[][] => matchAll(regexes.optionParse, s);
 
 	assertStrictEquals(
-		parse('-f pizza -f="pizza" --favorite-food pizza --favorite.food pizza --favorite-food="pizza"'), 
+		parse(
+			'-f pizza -f="pizza" --favorite-food pizza --favorite.food pizza --favorite-food="pizza"',
+		),
 		[
-			['-f pizza', '-f', 'pizza'],
-			['-f="pizza"', '-f', '"pizza"'],
-			['--favorite-food pizza', '--favorite-food', 'pizza'],
-			['--favorite.food pizza', '--favorite.food', 'pizza'],
-			['--favorite-food="pizza"', '--favorite-food', '"pizza"']
-		]
+			["-f pizza", "-f", "pizza"],
+			['-f="pizza"', "-f", '"pizza"'],
+			["--favorite-food pizza", "--favorite-food", "pizza"],
+			["--favorite.food pizza", "--favorite.food", "pizza"],
+			['--favorite-food="pizza"', "--favorite-food", '"pizza"'],
+		],
 	);
 
-	assertStrictEquals(parse('--- -- hi'), []);
+	assertStrictEquals(parse("--- -- hi"), []);
 });
