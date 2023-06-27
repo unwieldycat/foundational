@@ -266,6 +266,3 @@ export function application(spec: ApplicationSpec): Application {
 		run,
 	});
 }
-
-// Re-export types for TSDoc and accessibility
-export * from "./types.ts";
