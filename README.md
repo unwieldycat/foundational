@@ -151,6 +151,6 @@ app.command({
 
 ### Naming
 
-Option names may include dashes and dots in their name, however, they must include at least one letter prior. The following are both examples of valid option names: `--example.with.dots`, `--example-with-dashes`
+Option names may include dashes and dots in their name, and they may have uppercase and lowercase characters. The following are examples of valid option names: `--example.with.dots`, `--example-with-dashes`, `--exampleWithCamels`, `--exAmpLe.fRoM-HELL`
 
 Aliases may only include 1 or 2 letters.
