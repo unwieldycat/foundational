@@ -2,6 +2,11 @@ import { build, emptyDir } from "dnt";
 
 await emptyDir("./dist");
 
+const version = Deno.args.at(0);
+if (!version) {
+	throw new Error("Please supply version");
+}
+
 await build({
 	entryPoints: ["./mod.ts"],
 	outDir: "./dist",
@@ -14,12 +19,17 @@ await build({
 		lib: ["ES2022"],
 	},
 	shims: {
-		// TODO: DIY shims to reduce package size
-		deno: true,
+		deno: "dev",
+		custom: [
+			{
+				module: "scripts/shims/args.ts",
+				globalNames: ["Deno"],
+			},
+		],
 	},
 	package: {
 		name: "foundational",
-		version: "1.0.0",
+		version: version,
 		description: "A simple CLI framework.",
 		keywords: [
 			"cli",
