@@ -164,7 +164,7 @@ export function application(spec?: ApplicationSpec): Application {
 		const command = _commands.find((c) => c.name === input[0]);
 		const options = parseOptions(input, [..._options, ...(command?.options || [])]);
 
-		if (options["--version"] && _version) {
+		if (options.version && _version) {
 			console.log(_version);
 			return;
 		}
@@ -175,7 +175,7 @@ export function application(spec?: ApplicationSpec): Application {
 			return;
 		}
 
-		if (options["--help"] && _helpOptionEnabled) {
+		if (options.help && _helpOptionEnabled) {
 			_help(command);
 			return;
 		}
