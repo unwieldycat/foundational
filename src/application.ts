@@ -1,6 +1,7 @@
 // ================================ Imports ================================ //
 
-import { deepFreeze, define, matchAll, maxLength, padStringTo } from "./utilities.ts";
+import { parseArguments, parseOptions } from "./parse.ts";
+import { deepFreeze, maxLength, padStringTo } from "./utilities.ts";
 import { Application, ApplicationSpec, Command, Option } from "./types.ts";
 import regexes from "./regexes.ts";
 
@@ -12,82 +13,12 @@ import regexes from "./regexes.ts";
  * @returns Application object
  */
 export function application(spec: ApplicationSpec): Application {
-	// Private variables
-
 	const _helpOptionEnabled = !spec.disableHelpOption;
 
 	const _commands: Command[] = [];
 	const _options: Option[] = [];
 
-	// Input parsing
-
-	const _parseArguments = (spec: string, providedArgs: string[]): Record<string, string> => {
-		const args = {};
-
-		const keys = spec.match(regexes.argumentParse);
-		if (!keys) return args;
-
-		const required = (() => {
-			const s = keys[1].trim().replace(/[<>]/g, "");
-			const a = s.length > 0 ? s.split(" ") : [];
-			return a;
-		})();
-
-		const last = keys[2]?.replace(/[[\]<>.]/g, "");
-
-		required.forEach((key, index) => {
-			if (!providedArgs[index]) throw new Error(`Missing argument: ${key}`);
-			define(args, key, providedArgs[index]);
-		});
-
-		if (last) {
-			// required.length is passed in down here
-			// because it's the last index of the
-			// array + 1
-			if (providedArgs[required.length]) {
-				define(
-					args,
-					last,
-					keys[2]?.includes("...") // Checks if last is variadic
-						? providedArgs.slice(required.length).join(" ").trimEnd()
-						: providedArgs[required.length],
-				);
-			} else if (!/[[\]]/g.test(keys[2])) {
-				// Checks if last is not optional
-				throw new Error(`Missing argument: ${last}`);
-			}
-		}
-
-		return args;
-	};
-
-	const _parseOptions = (
-		exec: string[],
-		commandOptions: Option[],
-	): Record<string, string | boolean> => {
-		const options = {};
-		const stringified = exec.join(" ");
-		const regexMatch = matchAll(regexes.optionParse, stringified);
-
-		for (const match of regexMatch) {
-			const optionKey = match[1];
-
-			const optionMeta = [...(commandOptions || []), ..._options].find((e) => {
-				return e.name === optionKey || e.alias === optionKey;
-			});
-
-			if (!optionMeta) continue;
-
-			const defaultValue = optionMeta.flag ? false : optionMeta.default;
-			const optionValue = optionMeta.flag || (match[2] || "").replace(/(^")|("$)/g, "");
-
-			define(options, optionMeta.name, optionValue || defaultValue);
-		}
-
-		return options;
-	};
-
-	// Validation
+	// -------------------- Option & Command Validation -------------------- //
 
 	const _validateCommand = (command: Command): void => {
 		if (command.name.length <= 0) throw new Error("Command names must be at least 1 character");
@@ -137,7 +68,7 @@ export function application(spec: ApplicationSpec): Application {
 		}
 	};
 
-	// Version option
+	// --------------------------- Version Option --------------------------- //
 
 	const _version = () => console.log(spec.version);
 
@@ -148,7 +79,7 @@ export function application(spec: ApplicationSpec): Application {
 		flag: true,
 	});
 
-	// Help option
+	// --------------------------- Help Rendering --------------------------- //
 
 	const _help = (command?: Command) => {
 		const optionsList: string[] = [];
@@ -210,7 +141,7 @@ export function application(spec: ApplicationSpec): Application {
 		});
 	}
 
-	// Public options
+	// --------------------------- Public Methods --------------------------- //
 
 	const command = (command: Command): void => {
 		_validateCommand(command);
@@ -230,7 +161,7 @@ export function application(spec: ApplicationSpec): Application {
 
 	const run = (input: string[] = Deno.args): void => {
 		const command = _commands.find((c) => c.name === input[0]);
-		const options = _parseOptions(input, command?.options || []);
+		const options = parseOptions(input, [..._options, ...(command?.options || [])]);
 
 		if (!command) {
 			if (_helpOptionEnabled) _help();
@@ -247,7 +178,7 @@ export function application(spec: ApplicationSpec): Application {
 			return;
 		}
 
-		const args = _parseArguments(
+		const args = parseArguments(
 			command.arguments || "",
 			// A hack to remove all options from input, due to a
 			// limitation with iterating over the array instead
@@ -257,7 +188,7 @@ export function application(spec: ApplicationSpec): Application {
 		command.action({ arguments: args, options: options });
 	};
 
-	// Return object
+	// ------------------------ Return frozen object ------------------------ //
 
 	return deepFreeze({
 		command,
