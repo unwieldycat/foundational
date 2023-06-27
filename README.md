@@ -1,19 +1,22 @@
 # foundational
 
-Foundational is a simple multi-command CLI app framework for Node that aims to be ultra-simple, readable, and lightweight.
+Foundational is a simple multi-command CLI app framework for Deno and Node that aims to be ultra-simple, readable, and lightweight.
 
 ## Installing
 
-To use foundational, install it via the npm registry (recommended) or build it from source.
+### Deno
+Include and cache
+ `https://deno.land/x/foundational@v2.0.0/mod.ts`
 
-### Building (Optional)
+> 💡 **Tip:** For simpler dependency managment, [use an import map instead of a deps.ts file](https://deno.com/manual@v1.34.3/basics/import_maps)
 
-1. Clone the respository
-2. Navigate to the project directory
-3. Install the dependencies with `npm install`
-4. Run `npm run build` to build the project
 
-The production files will then be available in the `dist` folder.
+### Node
+Install via the npm registry
+
+**npm:** `npm install foundational`
+
+**yarn:** `yarn add foundational`
 
 ## Example
 
