@@ -1,8 +1,8 @@
 // ================================ Imports ================================ //
 
-import { deepFreeze, define, maxLength, matchAll, padStringTo } from './utilities';
-import { Application, ApplicationSpec, Command, Option } from './types';
-import regexes from './regexes';
+import { deepFreeze, define, matchAll, maxLength, padStringTo } from "./utilities.ts";
+import { Application, ApplicationSpec, Command, Option } from "./types.ts";
+import regexes from "./regexes.ts";
 
 // ============================== Application ============================== //
 
@@ -28,12 +28,12 @@ export function application(spec: ApplicationSpec): Application {
 		if (!keys) return args;
 
 		const required = (() => {
-			const s = keys[1].trim().replace(/[<>]/g, '');
-			const a = s.length > 0 ? s.split(' ') : [];
+			const s = keys[1].trim().replace(/[<>]/g, "");
+			const a = s.length > 0 ? s.split(" ") : [];
 			return a;
 		})();
 
-		const last = keys[2]?.replace(/[[\]<>.]/g, '');
+		const last = keys[2]?.replace(/[[\]<>.]/g, "");
 
 		required.forEach((key, index) => {
 			if (!providedArgs[index]) throw new Error(`Missing argument: ${key}`);
@@ -48,9 +48,9 @@ export function application(spec: ApplicationSpec): Application {
 				define(
 					args,
 					last,
-					keys[2]?.includes('...') // Checks if last is variadic
-						? providedArgs.slice(required.length).join(' ').trimEnd()
-						: providedArgs[required.length]
+					keys[2]?.includes("...") // Checks if last is variadic
+						? providedArgs.slice(required.length).join(" ").trimEnd()
+						: providedArgs[required.length],
 				);
 			} else if (!/[[\]]/g.test(keys[2])) {
 				// Checks if last is not optional
@@ -61,9 +61,12 @@ export function application(spec: ApplicationSpec): Application {
 		return args;
 	};
 
-	const _parseOptions = (exec: string[], commandOptions: Option[]): Record<string, string | boolean> => {
+	const _parseOptions = (
+		exec: string[],
+		commandOptions: Option[],
+	): Record<string, string | boolean> => {
 		const options = {};
-		const stringified = exec.join(' ');
+		const stringified = exec.join(" ");
 		const regexMatch = matchAll(regexes.optionParse, stringified);
 
 		for (const match of regexMatch) {
@@ -76,7 +79,7 @@ export function application(spec: ApplicationSpec): Application {
 			if (!optionMeta) continue;
 
 			const defaultValue = optionMeta.flag ? false : optionMeta.default;
-			const optionValue = optionMeta.flag || (match[2] || '').replace(/(^")|("$)/g, '');
+			const optionValue = optionMeta.flag || (match[2] || "").replace(/(^")|("$)/g, "");
 
 			define(options, optionMeta.name, optionValue || defaultValue);
 		}
@@ -87,8 +90,10 @@ export function application(spec: ApplicationSpec): Application {
 	// Validation
 
 	const _validateCommand = (command: Command): void => {
-		if (command.name.length <= 0) throw new Error('Command names must be at least 1 character');
-		if (_commands.find((e) => e.name === command.name)) throw new Error(`Command ${command.name} already exists`);
+		if (command.name.length <= 0) throw new Error("Command names must be at least 1 character");
+		if (_commands.find((e) => e.name === command.name)) {
+			throw new Error(`Command ${command.name} already exists`);
+		}
 		if (command.options) _validateOptions(command.options);
 
 		if (command.arguments) {
@@ -96,7 +101,9 @@ export function application(spec: ApplicationSpec): Application {
 				throw new Error(`Arguments for command ${command.name} are formatted incorrectly`);
 			}
 
-			if (command.arguments.includes('__proto__')) throw new Error(`Arguments cannot be named "__proto__"`);
+			if (command.arguments.includes("__proto__")) {
+				throw new Error(`Arguments cannot be named "__proto__"`);
+			}
 		}
 	};
 
@@ -114,15 +121,17 @@ export function application(spec: ApplicationSpec): Application {
 
 			if (_options.find((e) => e.alias === option.alias)) {
 				throw new Error(
-					`Option ${option.name} already exists in global options, or it's alias is already in use`
+					`Option ${option.name} already exists in global options, or it's alias is already in use`,
 				);
 			}
 
 			if (!regexes.aliasValidate.test(option.alias)) {
-				throw new Error(`Alias "${option.alias}" for option ${option.name} is formatted incorrectly`);
+				throw new Error(
+					`Alias "${option.alias}" for option ${option.name} is formatted incorrectly`,
+				);
 			}
 
-			if (option.name === '__proto__') {
+			if (option.name === "__proto__") {
 				throw new Error(`Option "${option.name}" has illegal name`);
 			}
 		}
@@ -133,10 +142,10 @@ export function application(spec: ApplicationSpec): Application {
 	const _version = () => console.log(spec.version);
 
 	_options.push({
-		name: '--version',
-		alias: '-v',
-		description: 'Display the app version',
-		flag: true
+		name: "--version",
+		alias: "-v",
+		description: "Display the app version",
+		flag: true,
 	});
 
 	// Help option
@@ -145,15 +154,17 @@ export function application(spec: ApplicationSpec): Application {
 		const optionsList: string[] = [];
 
 		[...(command?.options || []), ..._options].forEach((o: Option) => {
-			optionsList.push(`${o.name} ${o.alias || ''}`.trim());
+			optionsList.push(`${o.name} ${o.alias || ""}`.trim());
 		});
 
 		const optionsPadLength = maxLength(optionsList) + 2;
 
 		optionsList.forEach((s, i) => {
-			const optionName = s.split(' ')[0];
-			const optionMeta = [...(command?.options || []), ..._options].find((o) => o.name === optionName);
-			optionsList[i] = padStringTo(s, optionsPadLength) + (optionMeta?.description || '');
+			const optionName = s.split(" ")[0];
+			const optionMeta = [...(command?.options || []), ..._options].find((o) =>
+				o.name === optionName
+			);
+			optionsList[i] = padStringTo(s, optionsPadLength) + (optionMeta?.description || "");
 		});
 
 		if (command) {
@@ -163,37 +174,39 @@ export function application(spec: ApplicationSpec): Application {
 			if (command.arguments) usage.push(command.arguments);
 
 			console.log(
-				`Usage: ${usage.join(' ')}\n\n` +
+				`Usage: ${usage.join(" ")}\n\n` +
 					`    ${command.description}\n\n` +
-					`Options:\n    ${optionsList.join('\n    ')}\n`
+					`Options:\n    ${optionsList.join("\n    ")}\n`,
 			);
 		} else {
 			const commandsList: string[] = [];
 
 			_commands.forEach((c: Command) => {
-				commandsList.push(`${c.name} ${c.arguments || ''}`.trim());
+				commandsList.push(`${c.name} ${c.arguments || ""}`.trim());
 			});
 
 			const commandsPadLength = maxLength(commandsList) + 2;
 
 			commandsList.forEach((s, i) => {
-				const commandName = s.split(' ')[0];
+				const commandName = s.split(" ")[0];
 				const commandMeta = _commands.find((c) => c.name === commandName);
-				commandsList[i] = padStringTo(s, commandsPadLength) + (commandMeta?.description || '');
+				commandsList[i] = padStringTo(s, commandsPadLength) + (commandMeta?.description || "");
 			});
 
 			console.log(
-				`Commands:\n    ${commandsList.join('\n    ')}\n\nOptions:\n    ${optionsList.join('\n    ')}\n`
+				`Commands:\n    ${commandsList.join("\n    ")}\n\nOptions:\n    ${
+					optionsList.join("\n    ")
+				}\n`,
 			);
 		}
 	};
 
 	if (_helpOptionEnabled) {
 		_options.push({
-			name: '--help',
-			alias: '-h',
-			description: 'Display help menu',
-			flag: true
+			name: "--help",
+			alias: "-h",
+			description: "Display help menu",
+			flag: true,
 		});
 	}
 
@@ -215,7 +228,7 @@ export function application(spec: ApplicationSpec): Application {
 		options.forEach((e) => _options.push(e));
 	};
 
-	const run = (input: string[] = process.argv.splice(2)): void => {
+	const run = (input: string[] = Deno.args): void => {
 		const command = _commands.find((c) => c.name === input[0]);
 		const options = _parseOptions(input, command?.options || []);
 
@@ -224,21 +237,21 @@ export function application(spec: ApplicationSpec): Application {
 			return;
 		}
 
-		if (options['--version']) {
+		if (options["--version"]) {
 			_version();
 			return;
 		}
 
-		if (options['--help'] && _helpOptionEnabled) {
+		if (options["--help"] && _helpOptionEnabled) {
 			_help(command);
 			return;
 		}
 
 		const args = _parseArguments(
-			command.arguments || '',
+			command.arguments || "",
 			// A hack to remove all options from input, due to a
 			// limitation with iterating over the array instead
-			(command ? input.slice(1) : input).join(' ').replace(regexes.optionParse, '').split(' ')
+			(command ? input.slice(1) : input).join(" ").replace(regexes.optionParse, "").split(" "),
 		);
 
 		command.action({ arguments: args, options: options });
@@ -250,9 +263,6 @@ export function application(spec: ApplicationSpec): Application {
 		command,
 		commands,
 		options,
-		run
+		run,
 	});
 }
-
-// Re-export types for TSDoc and accessibility
-export * from './types';

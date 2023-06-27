@@ -1,79 +1,77 @@
 // ================================= Import ================================= //
 
-import { deepFreeze, define, matchAll, maxLength, padStringTo, removeFromArray } from '../src/utilities';
+import { assertEquals, assertStrictEquals } from "testing";
+import {
+	deepFreeze,
+	define,
+	matchAll,
+	maxLength,
+	padStringTo,
+	removeFromArray,
+} from "../src/utilities.ts";
 
 // ========================= Test Utility Functions ========================= //
 
-describe('deepFreeze function', () => {
-	it('should freeze nested arrays', () => {
-		const testObj = deepFreeze({ a: [1, 2, 3, [4, 5]] });
-		expect(Object.isFrozen(testObj)).toBe(true);
-		expect(Object.isFrozen(testObj.a)).toBe(true);
-	});
+Deno.test("deepFreeze function", () => {
+	const testObj = deepFreeze({ a: [1, 2, 3, [4, 5]], b: { a: 1, b: { a: 2 } } });
 
-	it('should freeze nested objects', () => {
-		const testObj = deepFreeze({ a: { a: 1, b: { a: 2 } } });
-		expect(Object.isFrozen(testObj)).toBe(true);
-		expect(Object.isFrozen(testObj.a.b)).toBe(true);
-	});
+	// it should freeze nested arrays
+	assertEquals(Object.isFrozen(testObj), true);
+	assertEquals(Object.isFrozen(testObj.a), true);
+
+	// It should freeze nested objects
+	assertEquals(Object.isFrozen(testObj), true);
+	assertEquals(Object.isFrozen(testObj.b.b), true);
 });
 
-describe('define function', () => {
-	it('should add properties to an object', () => {
-		const testObj = {};
-		define(testObj, 'a', true);
-		expect(testObj).toStrictEqual({ a: true });
-	});
+Deno.test("define function", () => {
+	const testObj = {};
 
-	it("shouldn't allow adding __proto__ as a key", () => {
-		const testObj = {};
-		define(testObj, '__proto__', {});
-		expect(testObj).toStrictEqual({});
-	});
+	// It should add properties to an object
+	define(testObj, "a", true);
+	assertStrictEquals(testObj, { a: true });
+
+	// It shouldn't allow adding __proto__ as a key
+	define(testObj, "__proto__", {});
+	assertStrictEquals(testObj, { a: true });
 });
 
-describe('matchAll function', () => {
-	it('should return all matches and groups', () => {
-		expect(matchAll(/(a)(b)/g, 'abcabcabc')).toStrictEqual([
-			['ab', 'a', 'b'],
-			['ab', 'a', 'b'],
-			['ab', 'a', 'b']
-		]);
-	});
+Deno.test("matchAll function", () => {
+	// It should return all matches and groups
+	assertStrictEquals(matchAll(/(a)(b)/g, "abcabcabc"), [
+		["ab", "a", "b"],
+		["ab", "a", "b"],
+		["ab", "a", "b"],
+	]);
 
-	it('should avoid memory leaks', () => {
-		expect(matchAll(/(a)(b)/g, '')).toStrictEqual([]);
-		expect(matchAll(/(a)(b)/, 'abcabcabc')).toStrictEqual([
-			['ab', 'a', 'b'],
-			['ab', 'a', 'b'],
-			['ab', 'a', 'b']
-		]);
-	});
+	// It should avoid memory leaks
+	assertStrictEquals(matchAll(/(a)(b)/g, ""), []);
+	assertStrictEquals(matchAll(/(a)(b)/, "abcabcabc"), [
+		["ab", "a", "b"],
+		["ab", "a", "b"],
+		["ab", "a", "b"],
+	]);
 });
 
-describe('maxLength function', () => {
-	it('should return the length of the longest string', () => {
-		expect(maxLength(['123', '12345'])).toBe(5);
-		expect(maxLength([''])).toBe(0);
-	});
+Deno.test("maxLength function", () => {
+	// It should return the length of the longest string\
+	assertEquals(maxLength(["123", "12345"]), 5);
+	assertEquals(maxLength([""]), 0);
 });
 
-describe('padStringTo function', () => {
-	it('should pad a string to a desired length', () => {
-		expect(padStringTo('hi', 3)).toStrictEqual('hi ');
-		expect(padStringTo('hi', 3, true)).toStrictEqual(' hi');
-	});
+Deno.test("padStringTo function", () => {
+	// It should pad a string to a desired length
+	assertStrictEquals(padStringTo("hi", 3), "hi ");
+	assertStrictEquals(padStringTo("hi", 3, true), " hi");
 
-	it('should silently reject numbers lower than string length', () => {
-		expect(padStringTo('hi', 0)).toStrictEqual('hi');
-		expect(padStringTo('hi', 1)).toStrictEqual('hi');
-		expect(padStringTo('hi', 2)).toStrictEqual('hi');
-	});
+	// It should silently reject numbers lower than string length
+	assertStrictEquals(padStringTo("hi", 0), "hi");
+	assertStrictEquals(padStringTo("hi", 1), "hi");
+	assertStrictEquals(padStringTo("hi", 2), "hi");
 });
 
-describe('removeFromArray function', () => {
-	it('should remove all instances of a string from an array', () => {
-		expect(removeFromArray(['STEVE', 'STEVE', 'STEVE!!!!'], /STEVE/)).toStrictEqual([]);
-		expect(removeFromArray(['123', '456', '789'], /1/)).toStrictEqual(['456', '789']);
-	});
+Deno.test("removeFromArray function", () => {
+	// It should remove all instances of a string from an array
+	assertStrictEquals(removeFromArray(["STEVE", "STEVE", "STEVE!!!!"], /STEVE/), []);
+	assertStrictEquals(removeFromArray(["123", "456", "789"], /1/), ["456", "789"]);
 });
