@@ -1,1 +1,1 @@
-export * as default from "./src/application.ts"
+export * from "./src/application.ts"
