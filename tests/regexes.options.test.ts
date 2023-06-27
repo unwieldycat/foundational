@@ -1,6 +1,6 @@
 // ================================= Import ================================= //
 
-import { assertEquals, assertStrictEquals } from "https://deno.land/std@0.192.0/testing/asserts.ts";
+import { assertEquals, assertStrictEquals } from "testing";
 import { matchAll } from "../src/utilities.ts";
 import regexes from "../src/regexes.ts";
 
