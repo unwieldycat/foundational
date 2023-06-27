@@ -1,6 +1,6 @@
-# foundational
+# foundational <br> [![licence](https://img.shields.io/badge/Licence-MIT-green)](./LICENCE) [![npm package](https://img.shields.io/npm/v/foundational?color=red)](https://npmjs.com/foundational) [![deno module](https://shield.deno.dev/x/foundational)](https://deno.land/x/foundational)
 
-Foundational is a simple multi-command CLI app framework for Deno and Node that aims to be ultra-simple, readable, and lightweight.
+Foundational is a multi-command CLI library for Deno and Node that aims to be simple, readable, and lightweight.
 
 ## Installing
 
