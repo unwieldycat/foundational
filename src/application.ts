@@ -12,8 +12,9 @@ import regexes from "./regexes.ts";
  * @param spec - Application configuration
  * @returns Application object
  */
-export function application(spec: ApplicationSpec): Application {
-	const _helpOptionEnabled = !spec.disableHelpOption;
+export function application(spec?: ApplicationSpec): Application {
+	const _helpOptionEnabled = !spec?.disableHelpOption;
+	const _version = spec?.version;
 
 	const _commands: Command[] = [];
 	const _options: Option[] = [];
@@ -70,14 +71,14 @@ export function application(spec: ApplicationSpec): Application {
 
 	// --------------------------- Version Option --------------------------- //
 
-	const _version = () => console.log(spec.version);
-
-	_options.push({
-		name: "--version",
-		alias: "-v",
-		description: "Display the app version",
-		flag: true,
-	});
+	if (_version) {
+		_options.push({
+			name: "--version",
+			alias: "-v",
+			description: "Display the app version",
+			flag: true,
+		});
+	}
 
 	// --------------------------- Help Rendering --------------------------- //
 
@@ -168,8 +169,8 @@ export function application(spec: ApplicationSpec): Application {
 			return;
 		}
 
-		if (options["--version"]) {
-			_version();
+		if (options["--version"] && _version) {
+			console.log(_version);
 			return;
 		}
 
