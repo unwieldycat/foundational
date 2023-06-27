@@ -66,3 +66,16 @@ export function removeFromArray(array: string[], searchPattern: RegExp): string[
 
 	return newArray;
 }
+
+export function camelCase(words: string[]): string {
+	if (words.length < 1) return "";
+	if (words.length === 1) return words[0];
+
+	for (let i = 1; i < words.length; i++) {
+		const word = words[i];
+		const firstLetter = word.slice(0, 1).toUpperCase();
+		words[i] = `${firstLetter}${word.substring(1)}`;
+	}
+
+	return words.join("");
+}
