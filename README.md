@@ -23,7 +23,7 @@ Install via the npm registry
 The following is an example application written with foundational:
 
 ```javascript
-const { application } = require('foundational');
+import { application } from 'foundational';
 const app = application({ version: '1.0.0' });
 
 app.options({
