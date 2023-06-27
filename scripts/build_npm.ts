@@ -11,7 +11,7 @@ await build({
 	compilerOptions: {
 		target: "ES2022",
 		noImplicitAny: true,
-		lib: ["ES2022"]
+		lib: ["ES2022"],
 	},
 	shims: {
 		// TODO: DIY shims to reduce package size
@@ -34,5 +34,9 @@ await build({
 	postBuild() {
 		Deno.copyFileSync("LICENCE", "dist/LICENCE");
 		Deno.copyFileSync("README.md", "dist/README.md");
+
+		// Add node modules to npmignore
+		const contents = Deno.readTextFileSync("dist/.npmignore");
+		Deno.writeTextFileSync("dist/.npmignore", contents + "node_modules/\n");
 	},
 });
