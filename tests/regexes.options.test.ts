@@ -1,6 +1,6 @@
 // ================================= Import ================================= //
 
-import { assertEquals, assertStrictEquals } from "testing";
+import { assertEquals } from "testing";
 import { matchAll } from "../src/utilities.ts";
 import regexes from "../src/regexes.ts";
 
@@ -26,7 +26,7 @@ Deno.test("option name validator", () => {
 Deno.test("option parsing", () => {
 	const parse = (s: string): string[][] => matchAll(regexes.optionParse, s);
 
-	assertStrictEquals(
+	assertEquals(
 		parse(
 			'-f pizza -f="pizza" --favorite-food pizza --favorite.food pizza --favorite-food="pizza"',
 		),
@@ -39,5 +39,5 @@ Deno.test("option parsing", () => {
 		],
 	);
 
-	assertStrictEquals(parse("--- -- hi"), []);
+	assertEquals(parse("--- -- hi"), []);
 });

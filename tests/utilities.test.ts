@@ -1,6 +1,6 @@
 // ================================= Import ================================= //
 
-import { assertEquals, assertStrictEquals } from "testing";
+import { assertEquals } from "testing";
 import {
 	camelCase,
 	deepFreeze,
@@ -30,24 +30,24 @@ Deno.test("define function", () => {
 
 	// It should add properties to an object
 	define(testObj, "a", true);
-	assertStrictEquals(testObj, { a: true });
+	assertEquals(testObj, { a: true });
 
 	// It shouldn't allow adding __proto__ as a key
 	define(testObj, "__proto__", {});
-	assertStrictEquals(testObj, { a: true });
+	assertEquals(testObj, { a: true });
 });
 
 Deno.test("matchAll function", () => {
 	// It should return all matches and groups
-	assertStrictEquals(matchAll(/(a)(b)/g, "abcabcabc"), [
+	assertEquals(matchAll(/(a)(b)/g, "abcabcabc"), [
 		["ab", "a", "b"],
 		["ab", "a", "b"],
 		["ab", "a", "b"],
 	]);
 
 	// It should avoid memory leaks
-	assertStrictEquals(matchAll(/(a)(b)/g, ""), []);
-	assertStrictEquals(matchAll(/(a)(b)/, "abcabcabc"), [
+	assertEquals(matchAll(/(a)(b)/g, ""), []);
+	assertEquals(matchAll(/(a)(b)/, "abcabcabc"), [
 		["ab", "a", "b"],
 		["ab", "a", "b"],
 		["ab", "a", "b"],
@@ -62,22 +62,22 @@ Deno.test("maxLength function", () => {
 
 Deno.test("padStringTo function", () => {
 	// It should pad a string to a desired length
-	assertStrictEquals(padStringTo("hi", 3), "hi ");
-	assertStrictEquals(padStringTo("hi", 3, true), " hi");
+	assertEquals(padStringTo("hi", 3), "hi ");
+	assertEquals(padStringTo("hi", 3, true), " hi");
 
 	// It should silently reject numbers lower than string length
-	assertStrictEquals(padStringTo("hi", 0), "hi");
-	assertStrictEquals(padStringTo("hi", 1), "hi");
-	assertStrictEquals(padStringTo("hi", 2), "hi");
+	assertEquals(padStringTo("hi", 0), "hi");
+	assertEquals(padStringTo("hi", 1), "hi");
+	assertEquals(padStringTo("hi", 2), "hi");
 });
 
 Deno.test("removeFromArray function", () => {
 	// It should remove all instances of a string from an array
-	assertStrictEquals(removeFromArray(["STEVE", "STEVE", "STEVE!!!!"], /STEVE/), []);
-	assertStrictEquals(removeFromArray(["123", "456", "789"], /1/), ["456", "789"]);
+	assertEquals(removeFromArray(["STEVE", "STEVE", "STEVE!!!!"], /STEVE/), []);
+	assertEquals(removeFromArray(["123", "456", "789"], /1/), ["456", "789"]);
 });
 
 Deno.test("camelCase function", () => {
-	assertStrictEquals(camelCase([]), "");
-	assertStrictEquals(camelCase(["camel", "case", "rocks"]), "camelCaseRocks");
+	assertEquals(camelCase([]), "");
+	assertEquals(camelCase(["camel", "case", "rocks"]), "camelCaseRocks");
 });
