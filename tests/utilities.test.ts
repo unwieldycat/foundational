@@ -2,6 +2,7 @@
 
 import { assertEquals, assertStrictEquals } from "testing";
 import {
+	camelCase,
 	deepFreeze,
 	define,
 	matchAll,
@@ -74,4 +75,9 @@ Deno.test("removeFromArray function", () => {
 	// It should remove all instances of a string from an array
 	assertStrictEquals(removeFromArray(["STEVE", "STEVE", "STEVE!!!!"], /STEVE/), []);
 	assertStrictEquals(removeFromArray(["123", "456", "789"], /1/), ["456", "789"]);
+});
+
+Deno.test("camelCase function", () => {
+	assertStrictEquals(camelCase([]), "");
+	assertStrictEquals(camelCase(["camel", "case", "rocks"]), "camelCaseRocks");
 });
