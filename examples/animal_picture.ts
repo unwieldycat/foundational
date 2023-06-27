@@ -19,8 +19,8 @@ app.command({
 		},
 	],
 	action: (ctx) => {
-		const puppy = ctx.options["--puppy"];
-		const resolution = ctx.options["--resolution"] || "featured";
+		const puppy = ctx.options?.puppy;
+		const resolution = ctx.options?.resolution || "featured";
 		console.log(`https://source.unsplash.com/${resolution}/?${puppy ? "puppy" : "dog"}`);
 	},
 });
