@@ -56,18 +56,20 @@ export function parseOptions(
 
 	for (const match of regexMatch) {
 		const optionKey = match[1];
-		const optionKeyCamel = camelCase(
-			optionKey.substring(2)
-				.replaceAll("-", " ")
-				.trim()
-				.split(" "),
-		);
 
 		const optionMeta = commandOptions.find((e) => {
 			return e.name === optionKey || e.alias === optionKey;
 		});
 
 		if (!optionMeta) continue;
+
+		const optionKeyCamel = camelCase(
+			optionMeta.name.substring(2)
+				.replaceAll(".", " ")
+				.replaceAll("-", " ")
+				.trim()
+				.split(" "),
+		);
 
 		const defaultValue = optionMeta.flag ? false : optionMeta.default;
 		const optionValue = optionMeta.flag || (match[2] || "").replace(/(^")|("$)/g, "");
