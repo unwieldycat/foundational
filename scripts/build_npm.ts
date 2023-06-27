@@ -1,12 +1,19 @@
 import { build, emptyDir } from "dnt";
 
-await emptyDir("./npm");
+await emptyDir("./dist");
 
 await build({
 	entryPoints: ["./mod.ts"],
-	outDir: "./npm",
+	outDir: "./dist",
+	typeCheck: "both",
+	scriptModule: false,
+	test: false,
+	compilerOptions: {
+		target: "ES2022",
+		noImplicitAny: true,
+		lib: ["ES2022"]
+	},
 	shims: {
-		// see JS docs for overview and more options
 		deno: true,
 	},
 	package: {
