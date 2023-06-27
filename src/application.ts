@@ -164,13 +164,14 @@ export function application(spec?: ApplicationSpec): Application {
 		const command = _commands.find((c) => c.name === input[0]);
 		const options = parseOptions(input, [..._options, ...(command?.options || [])]);
 
-		if (!command) {
-			if (_helpOptionEnabled) _help();
+		if (options["--version"] && _version) {
+			console.log(_version);
 			return;
 		}
 
-		if (options["--version"] && _version) {
-			console.log(_version);
+		// This is seperate from option flag because intellisense
+		if (!command) {
+			if (_helpOptionEnabled) _help();
 			return;
 		}
 
