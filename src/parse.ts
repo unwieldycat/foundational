@@ -1,7 +1,7 @@
 // ================================ Imports ================================ //
 
 import regexes from "./regexes.ts";
-import { define, matchAll } from "./utilities.ts";
+import { camelCase, define, matchAll } from "./utilities.ts";
 import { Option } from "./types.ts";
 
 // =========================== Parsing Functions =========================== //
@@ -56,6 +56,12 @@ export function parseOptions(
 
 	for (const match of regexMatch) {
 		const optionKey = match[1];
+		const optionKeyCamel = camelCase(
+			optionKey.substring(2)
+				.replaceAll("-", " ")
+				.trim()
+				.split(" "),
+		);
 
 		const optionMeta = commandOptions.find((e) => {
 			return e.name === optionKey || e.alias === optionKey;
@@ -66,6 +72,7 @@ export function parseOptions(
 		const defaultValue = optionMeta.flag ? false : optionMeta.default;
 		const optionValue = optionMeta.flag || (match[2] || "").replace(/(^")|("$)/g, "");
 
+		define(options, optionKeyCamel, optionValue || defaultValue);
 		define(options, optionMeta.name, optionValue || defaultValue);
 	}
 
