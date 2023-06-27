@@ -6,7 +6,7 @@ await build({
 	entryPoints: ["./mod.ts"],
 	outDir: "./dist",
 	typeCheck: "both",
-	scriptModule: false,
+	scriptModule: "cjs",
 	test: false,
 	compilerOptions: {
 		target: "ES2022",
@@ -14,6 +14,7 @@ await build({
 		lib: ["ES2022"]
 	},
 	shims: {
+		// TODO: DIY shims to reduce package size
 		deno: true,
 	},
 	package: {
