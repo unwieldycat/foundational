@@ -62,7 +62,7 @@ export interface Application {
 /** Application configuration */
 export interface ApplicationSpec {
 	/** App version that shows up in --version */
-	version: string;
+	version?: string;
 
 	/** Disable the help option */
 	disableHelpOption?: boolean;

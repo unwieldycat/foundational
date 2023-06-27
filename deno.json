@@ -1,0 +1,25 @@
+{
+    "fmt": {
+        "useTabs": true,
+        "semiColons": true,
+        "singleQuote": false,
+        "lineWidth": 100,
+        "include": [
+            "src/",
+            "tests/",
+            "scripts/",
+            "examples/"
+        ]
+    },
+    "compilerOptions": {
+        "strict": true
+    },
+    "tasks": {
+        "build-npm": "deno run --allow-read --allow-write --allow-run --allow-env ./scripts/build_npm.ts",
+        "regen-docs": "typedoc"
+    },
+    "imports": {
+        "dnt": "https://deno.land/x/dnt@0.37.0/mod.ts",
+        "testing": "https://deno.land/std@0.192.0/testing/asserts.ts"
+    }
+}

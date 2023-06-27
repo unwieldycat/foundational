@@ -1,19 +1,22 @@
 // ================================= Import ================================= //
 
-import { matchAll } from '../src/utilities';
-import regexes from '../src/regexes';
+import { assertEquals } from "testing";
+import { matchAll } from "../src/utilities.ts";
+import regexes from "../src/regexes.ts";
 
 // ========================= Test Arguments Regexp ========================= //
 
-test('argument parsing', () => {
+Deno.test("argument parsing", () => {
 	const parse = (s: string): string[][] => matchAll(regexes.argumentParse, s);
 
-	expect(parse('<arg1> <arg2> [arg3...]')).toStrictEqual([
-		['<arg1> <arg2> [arg3...]', '<arg1> <arg2> ', '[arg3...]']
-	]);
+	assertEquals(parse("<arg1> <arg2> [arg3...]"), [[
+		"<arg1> <arg2> [arg3...]",
+		"<arg1> <arg2> ",
+		"[arg3...]",
+	]]);
 
-	expect(parse('<arg1> <arg2...>')).toStrictEqual([['<arg1> <arg2...>', '<arg1> ', '<arg2...>']]);
+	assertEquals(parse("<arg1> <arg2...>"), [["<arg1> <arg2...>", "<arg1> ", "<arg2...>"]]);
 
-	expect(parse('<arg1...> [arg2...]')).toStrictEqual([]);
-	expect(parse('<arg1> [arg2] <arg3>')).toStrictEqual([]);
+	assertEquals(parse("<arg1...> [arg2...]"), []);
+	assertEquals(parse("<arg1> [arg2] <arg3>"), []);
 });

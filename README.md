@@ -1,26 +1,29 @@
-# foundational
+# foundational <br> [![licence](https://img.shields.io/badge/Licence-MIT-green)](./LICENCE) [![npm package](https://img.shields.io/npm/v/foundational?color=red)](https://npmjs.com/foundational) [![deno module](https://shield.deno.dev/x/foundational)](https://deno.land/x/foundational)
 
-Foundational is a simple multi-command CLI app framework for Node that aims to be ultra-simple, readable, and lightweight.
+Foundational is a multi-command CLI library for Deno and Node that aims to be simple, readable, and lightweight.
 
 ## Installing
 
-To use foundational, install it via the npm registry (recommended) or build it from source.
+### Deno
+Include and cache
+ `https://deno.land/x/foundational@v2.0.0/mod.ts`
 
-### Building (Optional)
+> 💡 **Tip:** For simpler dependency managment, [use an import map instead of a deps.ts file](https://deno.com/manual@v1.34.3/basics/import_maps)
 
-1. Clone the respository
-2. Navigate to the project directory
-3. Install the dependencies with `npm install`
-4. Run `npm run build` to build the project
 
-The production files will then be available in the `dist` folder.
+### Node
+Install via the npm registry
+
+**npm:** `npm install foundational`
+
+**yarn:** `yarn add foundational`
 
 ## Example
 
 The following is an example application written with foundational:
 
 ```javascript
-const { application } = require('foundational');
+import { application } from 'foundational';
 const app = application({ version: '1.0.0' });
 
 app.options({
@@ -148,6 +151,6 @@ app.command({
 
 ### Naming
 
-Option names may include dashes and dots in their name, however, they must include at least one letter prior. The following are both examples of valid option names: `--example.with.dots`, `--example-with-dashes`
+Option names may include dashes and dots in their name, and they may have uppercase and lowercase characters. The following are examples of valid option names: `--example.with.dots`, `--example-with-dashes`, `--exampleWithCamels`, `--exAmpLe.fRoM-HELL`
 
 Aliases may only include 1 or 2 letters.

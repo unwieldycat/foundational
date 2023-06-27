@@ -1,39 +1,43 @@
 // ================================= Import ================================= //
 
-import { matchAll } from '../src/utilities';
-import regexes from '../src/regexes';
+import { assertEquals } from "testing";
+import { matchAll } from "../src/utilities.ts";
+import regexes from "../src/regexes.ts";
 
 // =========================== Test Option Regexp =========================== //
 
-test('option alias validator', () => {
-	expect(regexes.aliasValidate.test('-a')).toBe(true);
-	expect(regexes.aliasValidate.test('-ab')).toBe(true);
-	expect(regexes.aliasValidate.test('-abc')).toBe(false);
-	expect(regexes.aliasValidate.test('--abc')).toBe(false);
-	expect(regexes.aliasValidate.test('-')).toBe(false);
+Deno.test("option alias validator", () => {
+	assertEquals(regexes.aliasValidate.test("-a"), true);
+	assertEquals(regexes.aliasValidate.test("-ab"), true);
+	assertEquals(regexes.aliasValidate.test("-abc"), false);
+	assertEquals(regexes.aliasValidate.test("--abc"), false);
+	assertEquals(regexes.aliasValidate.test("-"), false);
 });
 
-test('option name validator', () => {
-	expect(regexes.optionValidate.test('--abc')).toBe(true);
-	expect(regexes.optionValidate.test('--abc-d')).toBe(true);
-	expect(regexes.optionValidate.test('--abc.d')).toBe(true);
-	expect(regexes.optionValidate.test('-abc')).toBe(false);
-	expect(regexes.optionValidate.test('-a')).toBe(false);
-	expect(regexes.optionValidate.test('--')).toBe(false);
+Deno.test("option name validator", () => {
+	assertEquals(regexes.optionValidate.test("--abc"), true);
+	assertEquals(regexes.optionValidate.test("--abc-d"), true);
+	assertEquals(regexes.optionValidate.test("--abc.d"), true);
+	assertEquals(regexes.optionValidate.test("-abc"), false);
+	assertEquals(regexes.optionValidate.test("-a"), false);
+	assertEquals(regexes.optionValidate.test("--"), false);
 });
 
-test('option parsing', () => {
+Deno.test("option parsing", () => {
 	const parse = (s: string): string[][] => matchAll(regexes.optionParse, s);
 
-	expect(
-		parse('-f pizza -f="pizza" --favorite-food pizza --favorite.food pizza --favorite-food="pizza"')
-	).toStrictEqual([
-		['-f pizza', '-f', 'pizza'],
-		['-f="pizza"', '-f', '"pizza"'],
-		['--favorite-food pizza', '--favorite-food', 'pizza'],
-		['--favorite.food pizza', '--favorite.food', 'pizza'],
-		['--favorite-food="pizza"', '--favorite-food', '"pizza"']
-	]);
+	assertEquals(
+		parse(
+			'-f pizza -f="pizza" --favorite-food pizza --favorite.food pizza --favorite-food="pizza"',
+		),
+		[
+			["-f pizza", "-f", "pizza"],
+			['-f="pizza"', "-f", '"pizza"'],
+			["--favorite-food pizza", "--favorite-food", "pizza"],
+			["--favorite.food pizza", "--favorite.food", "pizza"],
+			['--favorite-food="pizza"', "--favorite-food", '"pizza"'],
+		],
+	);
 
-	expect(parse('--- -- hi')).toStrictEqual([]);
+	assertEquals(parse("--- -- hi"), []);
 });
