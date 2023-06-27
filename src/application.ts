@@ -1,6 +1,6 @@
 // ================================ Imports ================================ //
 
-import { parseArguments, parseOptions } from "./parse.ts";
+import { parseArguments, parseOptions } from "./parsing.ts";
 import { deepFreeze, maxLength, padStringTo } from "./utilities.ts";
 import { Application, ApplicationSpec, Command, Option } from "./types.ts";
 import regexes from "./regexes.ts";
