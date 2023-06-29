@@ -6,20 +6,6 @@ export type Action = (ctx: CommandActionContext) => unknown;
 /** Object of functions used to build the CLI */
 export interface Application {
 	/**
-	 * Register a default action
-	 * @param act New action
-	 * @returns void
-	 */
-	action: (act: Action) => void;
-
-	/**
-	 * Arguments for default action, ignored if commands are present
-	 * @param args Argument string
-	 * @returns void
-	 */
-	args: (args: string) => void;
-
-	/**
 	 * Register a command
 	 * @param command - Command configuration
 	 * @returns void

@@ -2,7 +2,7 @@
 
 import { parseArguments, parseOptions } from "./parsing.ts";
 import { deepFreeze, maxLength, padStringTo } from "./utilities.ts";
-import { Action, Application, ApplicationSpec, Command, Option } from "./types.ts";
+import { Application, ApplicationSpec, Command, Option } from "./types.ts";
 import regexes from "./regexes.ts";
 
 // ============================== Application ============================== //
@@ -18,9 +18,6 @@ export function application(spec?: ApplicationSpec): Application {
 
 	const _commands: Command[] = [];
 	const _options: Option[] = [];
-
-	let _arguments: string;
-	let _action: Action;
 
 	// -------------------- Option & Command Validation -------------------- //
 
@@ -147,14 +144,6 @@ export function application(spec?: ApplicationSpec): Application {
 
 	// --------------------------- Public Methods --------------------------- //
 
-	const action = (act: Action): void => {
-		_action = act;
-	};
-
-	const args = (argsDefinition: string): void => {
-		_arguments = argsDefinition;
-	};
-
 	const command = (command: Command): void => {
 		_validateCommand(command);
 		_commands.push(command);
@@ -188,13 +177,7 @@ export function application(spec?: ApplicationSpec): Application {
 		).split(" ");
 
 		if (!command) {
-			if (!_action && _helpOptionEnabled) {
-				_help();
-				return;
-			}
-
-			// Run command action if no command has ran
-			_action({ arguments: parseArguments(_arguments || "", providedArgs), options: options });
+			if (_helpOptionEnabled) _help();
 			return;
 		}
 
@@ -214,8 +197,6 @@ export function application(spec?: ApplicationSpec): Application {
 	// ------------------------ Return frozen object ------------------------ //
 
 	return deepFreeze({
-		action,
-		args,
 		command,
 		commands,
 		options,
