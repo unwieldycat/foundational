@@ -1,7 +1,24 @@
 // =============================== Interfaces =============================== //
 
+/** Action function type */
+export type Action = (ctx: CommandActionContext) => unknown;
+
 /** Object of functions used to build the CLI */
 export interface Application {
+	/**
+	 * Register a default action
+	 * @param act New action
+	 * @returns void
+	 */
+	action: (act: Action) => void;
+
+	/**
+	 * Arguments for default action, ignored if commands are present
+	 * @param args Argument string
+	 * @returns void
+	 */
+	args: (args: string) => void;
+
 	/**
 	 * Register a command
 	 * @param command - Command configuration
@@ -87,7 +104,7 @@ export interface Command {
 	 * @param ctx - Object of command arguments and options specified by the user
 	 * @returns unknown
 	 */
-	action: (ctx: CommandActionContext) => unknown;
+	action: Action;
 }
 
 /** Arguments & options from the CLI input */

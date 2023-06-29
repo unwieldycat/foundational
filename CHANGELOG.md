@@ -1,6 +1,13 @@
 # Changelog
 All changes will be recorded in this file
 
+## 2.1.0
+### Added
+- Default application action, runs if no command has been executed.
+
+### Changed
+- Actions now have type "Action"
+
 ## 2.0.0 
 ### Added
 - Example from README in `examples/`
