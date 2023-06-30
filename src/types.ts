@@ -1,7 +1,7 @@
 // =============================== Interfaces =============================== //
 
 /** Action function type */
-export type Action = (ctx: CommandActionContext) => unknown;
+export type Action = (ctx: ActionContext) => unknown;
 
 /** Object of functions used to build the CLI */
 export interface Application {
@@ -94,7 +94,7 @@ export interface Command {
 }
 
 /** Arguments & options from the CLI input */
-export interface CommandActionContext {
+export interface ActionContext {
 	/** Options and flags specified by the user */
 	options: Record<string, string | boolean>;
 

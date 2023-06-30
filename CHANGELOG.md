@@ -5,6 +5,7 @@ All changes will be recorded in this file
 
 ### Changed
 - Actions now have type "Action"
+- CommandActionContext has been renamed to ActionContext
 
 ## 2.0.0 
 ### Added
