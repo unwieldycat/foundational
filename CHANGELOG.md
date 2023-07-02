@@ -2,10 +2,13 @@
 All changes will be recorded in this file
 
 ## 3.0.0
-
 ### Changed
 - Actions now have type "Action"
 - CommandActionContext has been renamed to ActionContext
+
+## 2.0.1
+## Fixed
+- Option parse regex would ignore value if any special characters were included. Made more lenient, only disallows whitespace and dashes.
 
 ## 2.0.0 
 ### Added
