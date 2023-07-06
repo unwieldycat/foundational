@@ -1,10 +1,15 @@
-import { application } from "../mod.ts";
-const app = application({ version: "1.0.0" });
+import { Application } from "../mod.ts";
+import { Group } from "../src/group.ts";
 
-app.options({
-	name: "--resolution",
-	description: "Specify a resolution for the image (format: 1920x1080, 1024x768, etc.)",
-	alias: "-r",
+const app = new Application({
+	version: "1.0.0",
+	options: [
+		{
+			name: "--resolution",
+			description: "Specify a resolution for the image (format: 1920x1080, 1024x768, etc.)",
+			alias: "-r",
+		},
+	],
 });
 
 app.command({
@@ -42,5 +47,19 @@ app.command({
 		console.log(`https://source.unsplash.com/${resolution}/?${kitten ? "kitten" : "cat"}`);
 	},
 });
+
+const fishGroup = new Group();
+
+fishGroup.command({
+	name: "goldfish",
+	description: "Fetch a picture of a goldfish",
+	options: [],
+	action: (ctx) => {
+		const resolution = ctx.options?.resolution || "featured";
+		console.log(`https://source.unsplash.com/${resolution}/?goldfish`);
+	},
+});
+
+app.group("fish", fishGroup);
 
 app.run();
