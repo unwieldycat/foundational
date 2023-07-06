@@ -2,9 +2,17 @@
 All changes will be recorded in this file
 
 ## 3.0.0
+
+### Added
+- Command groups - group similar commands together by using scope
+    - e.g. `app install-package` and `app remove-package` can become `app package install` and `app package remove`
+
+
 ### Changed
 - Actions now have type "Action"
 - CommandActionContext has been renamed to ActionContext
+- Options are now specified in the constructor of Application
+- Everything now uses classes
 
 ## 2.0.1
 ## Fixed
