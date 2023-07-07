@@ -51,6 +51,11 @@ export interface GroupSpec {
 	 * Global options to be used for all commands in groups and subsequent groups
 	 */
 	options?: Option[];
+
+	/**
+	 * Description that shows up in the help menu for this group
+	 */
+	description?: string;
 }
 
 // ============================== Group Class ============================== //
@@ -59,6 +64,7 @@ export class Group implements IGroup {
 	protected _groups: Map<string, Group>;
 	protected _options: Option[];
 	protected _commands: Command[];
+	protected _description: string;
 
 	// ------------------------- Protected Methods ------------------------- //
 
@@ -81,14 +87,15 @@ export class Group implements IGroup {
 
 		if (command) {
 			const usage: string[] = [];
-
 			usage.push(command.name);
 			if (command.arguments) usage.push(command.arguments);
 
+			const description = (command.description) ? `  ${command.description}\n\n` : "";
+
 			console.log(
 				`Usage: ${usage.join(" ")}\n\n` +
-					`    ${command.description}\n\n` +
-					`Options:\n    ${optionsList.join("\n    ")}\n`,
+					description +
+					`Options:\n  ${optionsList.join("\n  ")}\n`,
 			);
 		} else {
 			const commandsList: string[] = [];
@@ -97,7 +104,6 @@ export class Group implements IGroup {
 				commandsList.push(`${c.name} ${c.arguments || ""}`.trim());
 			});
 
-			// FIXME: Allow groups to have descriptions somehow
 			this._groups.forEach((_g, n: string) => {
 				commandsList.push(n);
 			});
@@ -107,13 +113,18 @@ export class Group implements IGroup {
 			commandsList.forEach((s, i) => {
 				const commandName = s.split(" ")[0];
 				const commandMeta = this._commands.find((c) => c.name === commandName);
-				commandsList[i] = padStringTo(s, commandsPadLength) + (commandMeta?.description || "");
+				const groupMeta = this._groups.get(commandName);
+				const description = commandMeta?.description || groupMeta?._description || "";
+
+				commandsList[i] = padStringTo(s, commandsPadLength) + description;
 			});
 
+			const description = (this._description) ? `${this._description}\n\n` : "";
+
 			console.log(
-				`Commands:\n    ${commandsList.join("\n    ")}\n\nOptions:\n    ${
-					optionsList.join("\n    ")
-				}\n`,
+				description +
+					`Options:\n  ${optionsList.join("\n  ")}\n\n` +
+					`Commands:\n  ${commandsList.join("\n  ")}\n`,
 			);
 		}
 	}
@@ -209,6 +220,7 @@ export class Group implements IGroup {
 		this._commands = [];
 		this._options = [];
 		this._groups = new Map();
+		this._description = spec?.description || "";
 
 		if (spec?.options) {
 			this._validateOptions(spec.options);
