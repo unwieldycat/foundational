@@ -28,14 +28,14 @@ export interface IGroup {
 	 * });
 	 * ```
 	 */
-	command: (command: Command) => void;
+	command: (command: Command) => IGroup;
 
 	/**
 	 * Register multiple commands
 	 * @param commands - Commands to register
 	 * @returns void
 	 */
-	commands: (...commands: Command[]) => void;
+	commands: (...commands: Command[]) => IGroup;
 
 	/**
 	 * Add a sub-group
@@ -43,7 +43,7 @@ export interface IGroup {
 	 * @param group Group object
 	 * @returns
 	 */
-	group: (name: string, group: Group) => void;
+	group: (name: string, group: Group) => IGroup;
 }
 
 export interface GroupSpec {
@@ -233,16 +233,22 @@ export class Group implements IGroup {
 	command(command: Command) {
 		this._validateCommand(command);
 		this._commands.push(command);
+
+		return this;
 	}
 
 	commands(...commands: Command[]) {
 		commands.forEach((c) => {
 			this.command(c);
 		});
+
+		return this;
 	}
 
 	group(name: string, group: Group) {
 		group._options.push(...this._options);
 		this._groups.set(name, group);
+
+		return this;
 	}
 }
