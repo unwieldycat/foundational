@@ -1,5 +1,5 @@
 # Changelog
-All changes will be recorded in this file
+All changes will be recorded in this file, formatted loosely around [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), using [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## 3.0.0
 
