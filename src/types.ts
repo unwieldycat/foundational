@@ -27,8 +27,11 @@ export interface Command {
 
 /** Arguments & options from the CLI input */
 export interface ActionContext {
-	/** Options and flags specified by the user */
-	options: Record<string, string | boolean>;
+	/** Options specified by the user */
+	options: Record<string, string>;
+
+	/** Flags specified by the user */
+	flags: Record<string, boolean>;
 
 	/** Arguments specified by the user */
 	arguments: Record<string, string>;

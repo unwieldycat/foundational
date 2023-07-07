@@ -49,8 +49,9 @@ export function parseArguments(spec: string, providedArgs: string[]): Record<str
 export function parseOptions(
 	exec: string[],
 	commandOptions: Option[],
-): Record<string, string | boolean> {
-	const options = {};
+) {
+	const options: Record<string, string> = {};
+	const flags: Record<string, boolean> = {};
 	const stringified = exec.join(" ");
 	const regexMatch = matchAll(regexes.optionParse, stringified);
 
@@ -71,12 +72,19 @@ export function parseOptions(
 				.split(" "),
 		);
 
-		const defaultValue = optionMeta.flag ? false : optionMeta.default;
-		const optionValue = optionMeta.flag || (match[2] || "").replace(/(^")|("$)/g, "");
+		if (optionMeta.flag) {
+			define(flags, optionMeta.name, true);
+			continue;
+		}
 
-		define(options, optionKeyCamel, optionValue || defaultValue);
-		define(options, optionMeta.name, optionValue || defaultValue);
+		const optionValue = (match[2] || "").replace(/(^")|("$)/g, "");
+
+		define(options, optionKeyCamel, optionValue || optionMeta.default);
+		define(options, optionMeta.name, optionValue || optionMeta.default);
 	}
 
-	return options;
+	return {
+		flags: flags,
+		options: options,
+	};
 }

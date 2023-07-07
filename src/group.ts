@@ -144,9 +144,9 @@ export class Group implements IGroup {
 			return;
 		}
 
-		const options = parseOptions(input, [...this._options, ...(command?.options || [])]);
+		const { flags, options } = parseOptions(input, [...this._options, ...(command?.options || [])]);
 
-		if (options.help) {
+		if (flags?.help) {
 			this._help(command);
 			return;
 		}
@@ -163,7 +163,7 @@ export class Group implements IGroup {
 			providedArgs,
 		);
 
-		command.action({ arguments: args, options: options });
+		command.action({ arguments: args, options: options, flags: flags });
 	}
 
 	protected _validateCommand = (command: Command): void => {
