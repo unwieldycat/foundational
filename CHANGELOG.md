@@ -13,6 +13,7 @@ All changes will be recorded in this file, formatted loosely around [Keep a Chan
 - CommandActionContext has been renamed to ActionContext
 - Options are now specified in the constructor of Application
 - Everything now uses classes
+- Public methods (except run) will return `this`
 
 ### Removed
 - Ability to disable help option 
