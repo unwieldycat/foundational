@@ -14,8 +14,11 @@ All changes will be recorded in this file
 - Options are now specified in the constructor of Application
 - Everything now uses classes
 
+### Removed
+- Ability to disable help option 
+
 ## 2.0.1
-## Fixed
+### Fixed
 - Option parse regex would ignore value if any special characters were included. Made more lenient, only disallows whitespace and dashes.
 
 ## 2.0.0 
