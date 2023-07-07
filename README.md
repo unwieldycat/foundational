@@ -18,62 +18,9 @@ Install via the npm registry
 
 **yarn:** `yarn add foundational`
 
-## Example
-
-The following is an example application written with foundational:
-
-```javascript
-import { application } from 'foundational';
-const app = application({ version: '1.0.0' });
-
-app.options({
-	name: '--resolution',
-	description: 'Specify a resolution for the image (format: 1920x1080, 1024x768, etc.)',
-	alias: '-r'
-});
-
-app.command({
-	name: 'dog-picture',
-	description: 'Fetch a picture of a dog',
-	options: [
-		{
-			name: '--puppy',
-			description: 'Find a picture of a puppy',
-			alias: '-p',
-			flag: true
-		}
-	],
-	action: (ctx) => {
-		const puppy = ctx.options['--puppy'];
-		const resolution = ctx.options['--resolution'] || 'featured';
-		console.log(`https://source.unsplash.com/${resolution}/?${puppy ? 'puppy' : 'dog'}`);
-	}
-});
-
-app.command({
-	name: 'cat-picture',
-	description: 'Fetch a picture of a cat',
-	options: [
-		{
-			name: '--kitten',
-			description: 'Find a picture of a kitten',
-			alias: '-k',
-			flag: true
-		}
-	],
-	action: (ctx) => {
-		const kitten = ctx.options['--kitten'];
-		const resolution = ctx.options['--resolution'] || 'featured';
-		console.log(`https://source.unsplash.com/${resolution}/?${kitten ? 'kitten' : 'cat'}`);
-	}
-});
-
-app.run();
-```
-
-## Application Object
-
-The `application()` constructor function returns the application object. The application object exposes the functions necessary to build a CLI application.
+<!-- TODO: ----------------------->
+<!-- TODO: Update readme for v3 -->
+<!-- TODO: ----------------------->
 
 ## Commands
 
@@ -98,56 +45,6 @@ Options are ways a user can provide additional optional input to alter the behav
 Options can be written in various ways. For example, the following are all valid ways for a user to specify an option: `--option="Option Value"`, `--option value`, `-o=value`, `-o value`, etc.
 
 Flags are written without a specified value like so: `--flag` (or `-f` if the alias exists)
-
-### Creating an Option
-
-To create an option, specify it in the command object or globally with `Application.options()`. The names and aliases must be formatted as if it were being used in the CLI.
-
-**Specifying a global option & flag**
-
-```javascript
-const app = application();
-
-app.options(
-	{
-		name: '--cool-option',
-		alias: '-c',
-		description: 'A very cool global option'
-	},
-	{
-		name: '--cool-flag',
-		alias: '-f',
-		description: 'A very cool global flag',
-		flag: true
-	}
-);
-```
-
-**Specifying a command option & flag**
-
-```javascript
-const app = application();
-
-app.command({
-	name: 'example',
-	options: [
-		{
-			name: '--cool-option',
-			alias: '-c',
-			description: 'A very cool command option'
-		},
-		{
-			name: '--cool-flag',
-			alias: '-f',
-			description: 'A very cool command flag',
-			flag: true
-		}
-	],
-	action: (ctx) => {
-		// ...
-	}
-});
-```
 
 ### Naming
 
