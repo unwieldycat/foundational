@@ -7,4 +7,5 @@ export default {
 	optionValidate: /^--(\w[\w\-.]+)$/,
 	aliasValidate: /^-(\w{1,2})$/,
 	argumentParse: /^((?:<\w+> ?)*)((?:\[\w+(?:\.{3})?\])|(?:<\w+(?:\.{3})?>))?$/,
+	commandValidate: /^[\w-]*$/,
 };

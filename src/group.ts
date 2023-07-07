@@ -168,6 +168,9 @@ export class Group implements IGroup {
 
 	protected _validateCommand = (command: Command): void => {
 		if (command.name.length <= 0) throw new Error("Command names must be at least 1 character");
+		if (!regexes.commandValidate.exec(command.name)) {
+			throw new Error("Command name has invalid characters");
+		}
 		if (this._commands.find((e) => e.name === command.name)) {
 			throw new Error(`Command ${command.name} already exists`);
 		}
@@ -246,6 +249,11 @@ export class Group implements IGroup {
 	}
 
 	group(name: string, group: Group) {
+		if (name.length <= 0) throw new Error("Group names must be at least 1 character");
+		if (!regexes.commandValidate.exec(name)) {
+			throw new Error("Group name has invalid characters");
+		}
+
 		group._options.push(...this._options);
 		this._groups.set(name, group);
 
