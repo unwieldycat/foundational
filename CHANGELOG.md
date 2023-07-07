@@ -3,6 +3,11 @@ All changes will be recorded in this file, formatted loosely around [Keep a Chan
 
 ## 3.0.0
 
+### Todo
+- [ ] Middleware system
+- [ ] Figure out --version argument
+- [ ] Write tests
+
 ### Added
 - Command groups - group similar commands together by using scope
     - e.g. `app install-package` and `app remove-package` can become `app package install` and `app package remove`
@@ -17,6 +22,9 @@ All changes will be recorded in this file, formatted loosely around [Keep a Chan
 
 ### Removed
 - Ability to disable help option 
+
+### Fixed
+- Command names being allowed any characters
 
 ## 2.0.1
 ### Fixed
