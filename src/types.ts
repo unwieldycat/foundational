@@ -60,5 +60,5 @@ export interface Option {
 	description?: string;
 
 	/** Default value if not specified by user */
-	default?: string | boolean;
+	default?: string;
 }
