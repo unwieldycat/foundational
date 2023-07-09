@@ -4,14 +4,14 @@ All changes will be recorded in this file, formatted loosely around [Keep a Chan
 ## 3.0.0
 
 ### Todo
-- [ ] Middleware system
-- [ ] Figure out --version argument
+- [x] Middleware system
+- [x] Figure out --version argument
 - [ ] Write tests
 
 ### Added
 - Command groups - group similar commands together by using scope
     - e.g. `app install-package` and `app remove-package` can become `app package install` and `app package remove`
-
+- Middleware - intercept options, run a function before each command, measure how long commands take, and more
 
 ### Changed
 - Actions now have type "Action"
@@ -19,6 +19,7 @@ All changes will be recorded in this file, formatted loosely around [Keep a Chan
 - Options are now specified in the constructor of Application
 - Everything now uses classes
 - Public methods (except run) will return `this`
+- Flags are now seperate from options in ActionContext due to type issues
 
 ### Removed
 - Ability to disable help option 
