@@ -45,12 +45,14 @@ export class Application extends Group implements IApplication {
 			flag: true,
 		});
 
-		this._options.push({
-			name: "--version",
-			alias: "-v",
-			description: "Show the version",
-			flag: true,
-		});
+		if (this._version) {
+			this._options.push({
+				name: "--version",
+				alias: "-v",
+				description: "Show the version",
+				flag: true,
+			});
+		}
 	}
 
 	// --------------------------- Public Methods --------------------------- //
