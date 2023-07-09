@@ -211,6 +211,16 @@ export class Group implements IGroup {
 		}
 	};
 
+	protected _validateGroup = (name: string, group: Group): void => {
+		if (name.length <= 0) throw new Error("Group names must be at least 1 character");
+		if (!regexes.commandValidate.exec(name)) {
+			throw new Error("Group name has invalid characters");
+		}
+		if (group._commands.length <= 0) {
+			throw new Error("Groups must contain at least 1 command");
+		}
+	};
+
 	protected _validateOptions = (optionArray: Option[]): void => {
 		for (const option of optionArray) {
 			if (this._options.find((e) => e.name === option.name)) {
@@ -274,11 +284,7 @@ export class Group implements IGroup {
 	}
 
 	group(name: string, group: Group) {
-		if (name.length <= 0) throw new Error("Group names must be at least 1 character");
-		if (!regexes.commandValidate.exec(name)) {
-			throw new Error("Group name has invalid characters");
-		}
-
+		this._validateGroup(name, group);
 		group._options.push(...this._options);
 		this._groups.set(name, group);
 
