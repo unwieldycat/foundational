@@ -1,5 +1,4 @@
 import { Application } from "../mod.ts";
-import { Group } from "../src/group.ts";
 
 const app = new Application({
 	version: "1.0.0",
@@ -47,19 +46,5 @@ app.command({
 		console.log(`https://source.unsplash.com/${resolution}/?${kitten ? "kitten" : "cat"}`);
 	},
 });
-
-const fishGroup = new Group();
-
-fishGroup.command({
-	name: "goldfish",
-	description: "Fetch a picture of a goldfish",
-	options: [],
-	action: (ctx) => {
-		const resolution = ctx.options?.resolution || "featured";
-		console.log(`https://source.unsplash.com/${resolution}/?goldfish`);
-	},
-});
-
-app.group("fish", fishGroup);
 
 app.run();
