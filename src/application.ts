@@ -32,9 +32,9 @@ export class Application extends Group implements IApplication {
 	 * @param spec - Application configuration
 	 * @returns Application object
 	 */
-	constructor(spec: ApplicationSpec) {
+	constructor(spec?: ApplicationSpec) {
 		super(spec);
-		this._version = spec.version;
+		this._version = spec?.version;
 
 		this.use(this._version_middleware);
 
