@@ -1,7 +1,15 @@
-// =============================== Interfaces =============================== //
+// ================================= Types ================================= //
+
+/** Next function type */
+export type NextFunction = () => unknown;
+
+/** Middleware function type */
+export type Middleware = (ctx: ActionContext, next: NextFunction) => unknown;
 
 /** Action function type */
 export type Action = (ctx: ActionContext) => unknown;
+
+// =============================== Interfaces =============================== //
 
 /** Command object */
 export interface Command {

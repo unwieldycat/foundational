@@ -1,4 +1,4 @@
-import { Command, Option } from "./types.ts";
+import { ActionContext, Command, Middleware, NextFunction, Option } from "./types.ts";
 import regexes from "./regexes.ts";
 import { parseArguments, parseOptions } from "./parsing.ts";
 import { maxLength, padStringTo } from "./utilities.ts";
@@ -41,9 +41,16 @@ export interface IGroup {
 	 * Add a sub-group
 	 * @param name Name of the group
 	 * @param group Group object
-	 * @returns
+	 * @returns Igroup
 	 */
 	group: (name: string, group: Group) => IGroup;
+
+	/**
+	 * Register a middleware function
+	 * @param middleware Middleware function
+	 * @returns IGroup
+	 */
+	use: (middleware: Middleware) => IGroup;
 }
 
 export interface GroupSpec {
@@ -65,6 +72,7 @@ export class Group implements IGroup {
 	protected _options: Option[];
 	protected _commands: Command[];
 	protected _description: string;
+	protected _middlewares: Middleware[];
 
 	// ------------------------- Protected Methods ------------------------- //
 
@@ -132,24 +140,7 @@ export class Group implements IGroup {
 	protected _run(input: string[] = Deno.args) {
 		const command = this._commands.find((c) => c.name === input[0]);
 
-		if (!command) {
-			const group = this._groups.get(input[0]);
-
-			if (!group) {
-				this._help();
-				return;
-			}
-
-			group._run(input.slice(1));
-			return;
-		}
-
 		const { flags, options } = parseOptions(input, [...this._options, ...(command?.options || [])]);
-
-		if (flags?.help) {
-			this._help(command);
-			return;
-		}
 
 		// A hack to remove all options from input, due to a
 		// limitation with iterating over the array instead
@@ -159,11 +150,44 @@ export class Group implements IGroup {
 		).split(" ");
 
 		const args = parseArguments(
-			command.arguments || "",
+			command?.arguments || "",
 			providedArgs,
 		);
 
-		command.action({ arguments: args, options: options, flags: flags });
+		// Middleware for the command action
+		// This should be the last middleware, so next is ignored
+		const actionMiddleware = (ctx: ActionContext, _next: NextFunction) => {
+			if (!command) {
+				const group = this._groups.get(input[0]);
+
+				if (!group) {
+					this._help();
+					return;
+				}
+
+				group._run(input.slice(1));
+				return;
+			}
+
+			if (flags?.help) {
+				this._help(command);
+				return;
+			}
+
+			command.action(ctx);
+		};
+
+		this.use(actionMiddleware);
+		this._runMiddleware({ arguments: args, flags, options });
+	}
+
+	protected _runMiddleware(context: ActionContext) {
+		const next = () => {
+			const middleware = this._middlewares.shift();
+			if (middleware) middleware(context, next);
+		};
+
+		next();
 	}
 
 	protected _validateCommand = (command: Command): void => {
@@ -224,6 +248,7 @@ export class Group implements IGroup {
 		this._options = [];
 		this._groups = new Map();
 		this._description = spec?.description || "";
+		this._middlewares = [];
 
 		if (spec?.options) {
 			this._validateOptions(spec.options);
@@ -257,6 +282,11 @@ export class Group implements IGroup {
 		group._options.push(...this._options);
 		this._groups.set(name, group);
 
+		return this;
+	}
+
+	use(middleware: Middleware) {
+		this._middlewares.push(middleware);
 		return this;
 	}
 }
