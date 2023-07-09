@@ -74,6 +74,7 @@ export function parseOptions(
 
 		if (optionMeta.flag) {
 			define(flags, optionMeta.name, true);
+			define(flags, optionKeyCamel, true);
 			continue;
 		}
 
