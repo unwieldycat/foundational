@@ -72,5 +72,14 @@ Options can be declared globally when specified in the Application constructor.
 
 Command groups will inherit the global options of their parent, and can have their own global options for their scope if defined in their constructor.
 
-## Examples
-Examples can be found under the `examples/` directory.
+## Middleware
+Middleware functions are a set of user-defined functions that are run before the command, with all the information that the command recieves. 
+
+### Defining
+To define a middleware function, call the `use()` method on a command group or application. The function should take two arguments of type ActionContext and NextFunction respectively. The next function can be called to run the next middleware function or command action.
+
+```typescript
+app.use((ctx, next) => {
+    next();
+})
+```
