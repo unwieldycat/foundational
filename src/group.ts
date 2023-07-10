@@ -219,6 +219,7 @@ export class Group implements IGroup {
 		if (group._commands.length <= 0) {
 			throw new Error("Groups must contain at least 1 command");
 		}
+		if (group === this) throw new Error("Cannot make a group its own child");
 	};
 
 	protected _validateOptions = (optionArray: Option[]): void => {
