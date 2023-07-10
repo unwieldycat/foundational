@@ -3,11 +3,6 @@ All changes will be recorded in this file, formatted loosely around [Keep a Chan
 
 ## 3.0.0
 
-### Todo
-- [x] Middleware system
-- [x] Figure out --version argument
-- [ ] Write tests
-
 ### Added
 - Command groups - group similar commands together by using scope
     - e.g. `app install-package` and `app remove-package` can become `app package install` and `app package remove`
