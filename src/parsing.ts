@@ -3,6 +3,7 @@
 import regexes from "./regexes.ts";
 import { camelCase, define, matchAll } from "./utilities.ts";
 import { Option } from "./types.ts";
+import { error } from "./logging.ts";
 
 // =========================== Parsing Functions =========================== //
 
@@ -21,7 +22,7 @@ export function parseArguments(spec: string, providedArgs: string[]): Record<str
 	const last = keys[2]?.replace(/[[\]<>.]/g, "");
 
 	required.forEach((key, index) => {
-		if (!providedArgs[index]) console.error(`error: Missing argument: ${key}`);
+		if (!providedArgs[index]) error(`Missing argument: ${key}`);
 		define(args, key, providedArgs[index]);
 	});
 
@@ -39,7 +40,7 @@ export function parseArguments(spec: string, providedArgs: string[]): Record<str
 			);
 		} else if (!/[[\]]/g.test(keys[2])) {
 			// Checks if last is not optional
-			console.error(`error: Missing argument: ${last}`);
+			error(`Missing argument: ${last}`);
 		}
 	}
 

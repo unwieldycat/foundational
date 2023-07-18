@@ -2,6 +2,7 @@ import { ActionContext, Command, Middleware, NextFunction, Option } from "./type
 import regexes from "./regexes.ts";
 import { parseArguments, parseOptions } from "./parsing.ts";
 import { maxLength, padStringTo } from "./utilities.ts";
+import { error } from "./logging.ts";
 
 // ================================= Types ================================= //
 
@@ -192,64 +193,64 @@ export class Group implements IGroup {
 
 	protected _validateCommand = (command: Command): void => {
 		if (command.name.length <= 0) {
-			console.error("error: Command names must be at least 1 character");
+			error("Command names must be at least 1 character");
 		}
 		if (!regexes.commandValidate.exec(command.name)) {
-			console.error("error: Command name has invalid characters");
+			error("Command name has invalid characters");
 		}
 		if (this._commands.find((e) => e.name === command.name)) {
-			console.error("error: Command ${command.name} already exists");
+			error("Command ${command.name} already exists");
 		}
 		if (command.options) this._validateOptions(command.options);
 
 		if (command.arguments) {
 			if (!regexes.argumentParse.test(command.arguments)) {
-				console.error(`error: Arguments for command ${command.name} are formatted incorrectly`);
+				error(`Arguments for command ${command.name} are formatted incorrectly`);
 			}
 
 			if (command.arguments.includes("__proto__")) {
-				console.error(`error: Arguments cannot be named "__proto__"`);
+				error(`Arguments cannot be named "__proto__"`);
 			}
 		}
 	};
 
 	protected _validateGroup = (name: string, group: Group): void => {
-		if (name.length <= 0) console.error("error: Group names must be at least 1 character");
+		if (name.length <= 0) error("Group names must be at least 1 character");
 		if (!regexes.commandValidate.exec(name)) {
-			console.error("error: Group name has invalid characters");
+			error("Group name has invalid characters");
 		}
 		if (group._commands.length <= 0) {
-			console.error("error: Groups must contain at least 1 command");
+			error("Groups must contain at least 1 command");
 		}
-		if (group === this) console.error("error: Cannot make a group its own child");
+		if (group === this) error("Cannot make a group its own child");
 	};
 
 	protected _validateOptions = (optionArray: Option[]): void => {
 		for (const option of optionArray) {
 			if (this._options.find((e) => e.name === option.name)) {
-				console.error(`error: Option ${option.name} already exists in global options`);
+				error(`Option ${option.name} already exists in global options`);
 			}
 
 			if (!regexes.optionValidate.test(option.name)) {
-				console.error(`error:  "${option.name}" has an incorrectly formatted name`);
+				error(` "${option.name}" has an incorrectly formatted name`);
 			}
 
 			if (!option.alias) continue;
 
 			if (this._options.find((e) => e.alias === option.alias)) {
-				console.error(
-					`error: Option ${option.name} already exists in global options, or it's alias is already in use`,
+				error(
+					`Option ${option.name} already exists in global options, or it's alias is already in use`,
 				);
 			}
 
 			if (!regexes.aliasValidate.test(option.alias)) {
-				console.error(
-					`error: Alias "${option.alias}" for option ${option.name} is formatted incorrectly`,
+				error(
+					`Alias "${option.alias}" for option ${option.name} is formatted incorrectly`,
 				);
 			}
 
 			if (option.name === "__proto__") {
-				console.error(`error: Option "${option.name}" has illegal name`);
+				error(`Option "${option.name}" has illegal name`);
 			}
 		}
 	};
