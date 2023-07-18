@@ -1,6 +1,7 @@
 // deno-lint-ignore-file
+// @ts-nocheck
 
 export const Deno = {
-	// @ts-ignore
 	args: process.argv.slice(2),
+	exit: (code?: int) => process.exit(code),
 };
