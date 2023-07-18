@@ -6,7 +6,7 @@ Foundational is a multi-command CLI library for Deno and Node that aims to be si
 
 ### Deno
 Import and cache
- `https://deno.land/x/foundational@v2.0.0/mod.ts`
+ `https://deno.land/x/foundational@v3.0.0/mod.ts`
 
 > 💡 **Tip:** For simpler dependency managment, [use an import map instead of a deps.ts file](https://deno.com/manual@v1.34.3/basics/import_maps)
 
