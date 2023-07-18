@@ -3,6 +3,7 @@
 import regexes from "./regexes.ts";
 import { camelCase, define, matchAll } from "./utilities.ts";
 import { Option } from "./types.ts";
+import { error } from "./logging.ts";
 
 // =========================== Parsing Functions =========================== //
 
@@ -21,7 +22,7 @@ export function parseArguments(spec: string, providedArgs: string[]): Record<str
 	const last = keys[2]?.replace(/[[\]<>.]/g, "");
 
 	required.forEach((key, index) => {
-		if (!providedArgs[index]) throw new Error(`Missing argument: ${key}`);
+		if (!providedArgs[index]) error(`Missing argument: ${key}`);
 		define(args, key, providedArgs[index]);
 	});
 
@@ -39,7 +40,7 @@ export function parseArguments(spec: string, providedArgs: string[]): Record<str
 			);
 		} else if (!/[[\]]/g.test(keys[2])) {
 			// Checks if last is not optional
-			throw new Error(`Missing argument: ${last}`);
+			error(`Missing argument: ${last}`);
 		}
 	}
 
@@ -49,8 +50,9 @@ export function parseArguments(spec: string, providedArgs: string[]): Record<str
 export function parseOptions(
 	exec: string[],
 	commandOptions: Option[],
-): Record<string, string | boolean> {
-	const options = {};
+) {
+	const options: Record<string, string> = {};
+	const flags: Record<string, boolean> = {};
 	const stringified = exec.join(" ");
 	const regexMatch = matchAll(regexes.optionParse, stringified);
 
@@ -71,12 +73,20 @@ export function parseOptions(
 				.split(" "),
 		);
 
-		const defaultValue = optionMeta.flag ? false : optionMeta.default;
-		const optionValue = optionMeta.flag || (match[2] || "").replace(/(^")|("$)/g, "");
+		if (optionMeta.flag) {
+			define(flags, optionMeta.name, true);
+			define(flags, optionKeyCamel, true);
+			continue;
+		}
 
-		define(options, optionKeyCamel, optionValue || defaultValue);
-		define(options, optionMeta.name, optionValue || defaultValue);
+		const optionValue = (match[2] || "").replace(/(^")|("$)/g, "");
+
+		define(options, optionKeyCamel, optionValue || optionMeta.default);
+		define(options, optionMeta.name, optionValue || optionMeta.default);
 	}
 
-	return options;
+	return {
+		flags: flags,
+		options: options,
+	};
 }

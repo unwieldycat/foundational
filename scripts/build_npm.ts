@@ -22,7 +22,7 @@ await build({
 		deno: "dev",
 		custom: [
 			{
-				module: "scripts/shims/args.ts",
+				module: "shims.ts",
 				globalNames: ["Deno"],
 			},
 		],

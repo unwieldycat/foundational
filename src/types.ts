@@ -1,72 +1,15 @@
+// ================================= Types ================================= //
+
+/** Next function type */
+export type NextFunction = () => unknown;
+
+/** Middleware function type */
+export type Middleware = (ctx: ActionContext, next: NextFunction) => unknown;
+
+/** Action function type */
+export type Action = (ctx: ActionContext) => unknown;
+
 // =============================== Interfaces =============================== //
-
-/** Object of functions used to build the CLI */
-export interface Application {
-	/**
-	 * Register a command
-	 * @param command - Command configuration
-	 * @returns void
-	 * @example
-	 * ```ts
-	 * app.command({
-	 *     name: 'my-command',
-	 *     description: 'Command example',
-	 *     options: [
-	 *         {
-	 *             name: '--my-option',
-	 *             description: 'Option example',
-	 *             alias: '-o'
-	 *         }
-	 *     ],
-	 *     action: (ctx) => {
-	 *         // ...
-	 *     }
-	 * });
-	 * ```
-	 */
-	command: (command: Command) => void;
-
-	/**
-	 * Register multiple commands
-	 * @param commands - Commands to register
-	 * @returns void
-	 */
-	commands: (...commands: Command[]) => void;
-
-	/**
-	 * Specify global options to be used for all commands
-	 * @param options - Command options
-	 * @returns void
-	 * @example
-	 * ```ts
-	 * app.options(
-	 *     {
-	 *         name: '--verbose',
-	 *         description: 'Verbose application output',
-	 *         alias: '-r',
-	 *         flag: true
-	 *     }
-	 * );
-	 * ```
-	 */
-	options: (...options: Option[]) => void;
-
-	/**
-	 * Parse console input & run
-	 * @param input - User input
-	 * @returns void
-	 */
-	run: (input?: string[]) => void;
-}
-
-/** Application configuration */
-export interface ApplicationSpec {
-	/** App version that shows up in --version */
-	version?: string;
-
-	/** Disable the help option */
-	disableHelpOption?: boolean;
-}
 
 /** Command object */
 export interface Command {
@@ -87,13 +30,16 @@ export interface Command {
 	 * @param ctx - Object of command arguments and options specified by the user
 	 * @returns unknown
 	 */
-	action: (ctx: CommandActionContext) => unknown;
+	action: Action;
 }
 
 /** Arguments & options from the CLI input */
-export interface CommandActionContext {
-	/** Options and flags specified by the user */
-	options: Record<string, string | boolean>;
+export interface ActionContext {
+	/** Options specified by the user */
+	options: Record<string, string>;
+
+	/** Flags specified by the user */
+	flags: Record<string, boolean>;
 
 	/** Arguments specified by the user */
 	arguments: Record<string, string>;
@@ -114,5 +60,5 @@ export interface Option {
 	description?: string;
 
 	/** Default value if not specified by user */
-	default?: string | boolean;
+	default?: string;
 }

@@ -1,10 +1,14 @@
-import { application } from "../mod.ts";
-const app = application({ version: "1.0.0" });
+import { Application } from "../mod.ts";
 
-app.options({
-	name: "--resolution",
-	description: "Specify a resolution for the image (format: 1920x1080, 1024x768, etc.)",
-	alias: "-r",
+const app = new Application({
+	version: "1.0.0",
+	options: [
+		{
+			name: "--resolution",
+			description: "Specify a resolution for the image (format: 1920x1080, 1024x768, etc.)",
+			alias: "-r",
+		},
+	],
 });
 
 app.command({
