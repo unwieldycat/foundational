@@ -21,7 +21,7 @@ export function parseArguments(spec: string, providedArgs: string[]): Record<str
 	const last = keys[2]?.replace(/[[\]<>.]/g, "");
 
 	required.forEach((key, index) => {
-		if (!providedArgs[index]) throw new Error(`Missing argument: ${key}`);
+		if (!providedArgs[index]) console.error(`error: Missing argument: ${key}`);
 		define(args, key, providedArgs[index]);
 	});
 
@@ -39,7 +39,7 @@ export function parseArguments(spec: string, providedArgs: string[]): Record<str
 			);
 		} else if (!/[[\]]/g.test(keys[2])) {
 			// Checks if last is not optional
-			throw new Error(`Missing argument: ${last}`);
+			console.error(`error: Missing argument: ${last}`);
 		}
 	}
 

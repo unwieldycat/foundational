@@ -191,63 +191,65 @@ export class Group implements IGroup {
 	}
 
 	protected _validateCommand = (command: Command): void => {
-		if (command.name.length <= 0) throw new Error("Command names must be at least 1 character");
+		if (command.name.length <= 0) {
+			console.error("error: Command names must be at least 1 character");
+		}
 		if (!regexes.commandValidate.exec(command.name)) {
-			throw new Error("Command name has invalid characters");
+			console.error("error: Command name has invalid characters");
 		}
 		if (this._commands.find((e) => e.name === command.name)) {
-			throw new Error(`Command ${command.name} already exists`);
+			console.error("error: Command ${command.name} already exists");
 		}
 		if (command.options) this._validateOptions(command.options);
 
 		if (command.arguments) {
 			if (!regexes.argumentParse.test(command.arguments)) {
-				throw new Error(`Arguments for command ${command.name} are formatted incorrectly`);
+				console.error(`error: Arguments for command ${command.name} are formatted incorrectly`);
 			}
 
 			if (command.arguments.includes("__proto__")) {
-				throw new Error(`Arguments cannot be named "__proto__"`);
+				console.error(`error: Arguments cannot be named "__proto__"`);
 			}
 		}
 	};
 
 	protected _validateGroup = (name: string, group: Group): void => {
-		if (name.length <= 0) throw new Error("Group names must be at least 1 character");
+		if (name.length <= 0) console.error("error: Group names must be at least 1 character");
 		if (!regexes.commandValidate.exec(name)) {
-			throw new Error("Group name has invalid characters");
+			console.error("error: Group name has invalid characters");
 		}
 		if (group._commands.length <= 0) {
-			throw new Error("Groups must contain at least 1 command");
+			console.error("error: Groups must contain at least 1 command");
 		}
-		if (group === this) throw new Error("Cannot make a group its own child");
+		if (group === this) console.error("error: Cannot make a group its own child");
 	};
 
 	protected _validateOptions = (optionArray: Option[]): void => {
 		for (const option of optionArray) {
 			if (this._options.find((e) => e.name === option.name)) {
-				throw new Error(`Option ${option.name} already exists in global options`);
+				console.error(`error: Option ${option.name} already exists in global options`);
 			}
 
 			if (!regexes.optionValidate.test(option.name)) {
-				throw new Error(`Option "${option.name}" has an incorrectly formatted name`);
+				console.error(`error:  "${option.name}" has an incorrectly formatted name`);
 			}
 
 			if (!option.alias) continue;
 
 			if (this._options.find((e) => e.alias === option.alias)) {
-				throw new Error(
-					`Option ${option.name} already exists in global options, or it's alias is already in use`,
+				console.error(
+					`error: Option ${option.name} already exists in global options, or it's alias is already in use`,
 				);
 			}
 
 			if (!regexes.aliasValidate.test(option.alias)) {
-				throw new Error(
-					`Alias "${option.alias}" for option ${option.name} is formatted incorrectly`,
+				console.error(
+					`error: Alias "${option.alias}" for option ${option.name} is formatted incorrectly`,
 				);
 			}
 
 			if (option.name === "__proto__") {
-				throw new Error(`Option "${option.name}" has illegal name`);
+				console.error(`error: Option "${option.name}" has illegal name`);
 			}
 		}
 	};
